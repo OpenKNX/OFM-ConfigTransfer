@@ -22,9 +22,10 @@ def parse_xml_to_json3(xml_string):
     # result = {"name":[], "default":[]}
     result = {}
     for param in root.findall('.//{http://knx.org/xml/project/20}Parameter'):
-        resultNames.append(param.get('Name'))
-        resultDefaults.append(param.get('Value'))
-        result[param.get('Name')] = param.get('Value')
+        if param.get('Access') != 'None':
+            resultNames.append(param.get('Name'))
+            resultDefaults.append(param.get('Value'))
+            result[param.get('Name')] = param.get('Value')
     # return json.dumps(result, indent=2)
     result = {"names": resultNames, "defaults": resultDefaults}
     return json.dumps(result)
