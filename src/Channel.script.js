@@ -8,9 +8,7 @@
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
 function exportModuleChannelToStrings(module, channel, keyFormat) {
-
-    /* TODO generalize */
-    var params = LOG_params;
+    var params = channel_params[module]; /* TODO generalize */
     
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
@@ -58,9 +56,7 @@ function exportModuleChannelToString(module, channel, keyFormat) {
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
 function importModuleChannelFromString(module, channel, exportStr) {
-
-    /* TODO generalize */
-    var params = LOG_params;
+    var params = channel_params[module]; /* TODO generalize */
     
     var result = [];
 
