@@ -47,7 +47,8 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
 function exportModuleChannelToString(module, channel, keyFormat) {
-    return exportModuleChannelToStrings(module, channel, keyFormat).join("§");
+    var lines = exportModuleChannelToStrings(module, channel, keyFormat);
+    return "OpenKNX,v1,"+module+","+channel + "§" + lines.join("§");
 }
 
 /**
@@ -63,43 +64,53 @@ function importModuleChannelFromString(module, channel, exportStr) {
     
     var result = [];
 
-    /* use defaults for values not defined in import*/
-    var newValues = params.defaults;
-
-    /* use values from import */
     var importLines = exportStr.split("§");
-    for (var i = 0; i < importLines.length; i++) {
-        var line = importLines[i].split("=");
-        var paramIndex = line[0];
-        var paramValue = line.slice(1).join("=");
+    var importHeader = importLines[0].split(",");
+    if (importHeader[0] != "OpenKNX") {
+        result.push("[ERR@HeaderIntro]=" + importHeader[0]);
+    } else if (importHeader[1] != "v1") {
+        result.push("[ERR@HeaderVersion]=" + importHeader[1]);
+    } else if (importHeader[2] != module) {
+        result.push("[ERR@HeaderModule]=" + importHeader[2]);
+    /* TODO check channel? */
+    } else {
+        /* use defaults for values not defined in import*/
+        var newValues = params.defaults;
 
-        /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
-        newValues[paramIndex] = paramValue;
-    };
+        /* use values from import */
+        for (var i = 0; i < importLines.length; i++) {
+            var line = importLines[i].split("=");
+            var paramIndex = line[0];
+            var paramValue = line.slice(1).join("=");
 
-    /* write new values */
-    for (var i = 0; i < params.names.length; i++) {
-        var paramName = params.names[i];
-        var paramFullName = module + "_" + paramName.replace('%C%', channel);
+            /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
+            newValues[paramIndex] = paramValue;
+        };
 
-        /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
-        var paramKey = i;
-        var paramValue = newValues[i];
+        /* write new values */
+        for (var i = 0; i < params.names.length; i++) {
+            var paramName = params.names[i];
+            var paramFullName = module + "_" + paramName.replace('%C%', channel);
 
-        try {
-            var regex = /^\%K\d+\%$/;
-            /* TODO set paramValue to channel-specific value */
-            if (!regex.test(paramValue)) {
-                device.getParameterByName(paramFullName).value = paramValue;
+            /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
+            var paramKey = i;
+            var paramValue = newValues[i];
+
+            try {
+                var regex = /^\%K\d+\%$/;
+                /* TODO set paramValue to channel-specific value */
+                if (!regex.test(paramValue)) {
+                    device.getParameterByName(paramFullName).value = paramValue;
+                }
+
+            } catch (e) {
+                result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
             }
-
-        } catch (e) {
-            result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
         }
+        /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
     }
-    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
-   return result.join("§");
+   return result.length>0 ? result.join("§") : "[Import OK]";
 }
 
 /**
@@ -120,5 +131,5 @@ function copyModuleChannel(module, channelSource, channelTarget) {
  * @param {number} channel 
  */
 function resetModuleChannel(module, channel) {
-    importModuleChannelFromString(module, channel, "");
+    importModuleChannelFromString(module, channel, "OpenKNX,v1,"+module+","+channel);
 }
