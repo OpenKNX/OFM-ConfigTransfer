@@ -8,6 +8,10 @@ function unserializeParamValue(encodeParamValue) {
     return decodeURIComponent(encodeParamValue);
 }
 
+function serializeHeader(module, channel) {
+    return "OpenKNX,v1,"+module+","+channel;
+}
+
 
 /**
  * Transform configuration of one channel to single-line string representation.
@@ -55,7 +59,7 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
  */
 function exportModuleChannelToString(module, channel, keyFormat) {
     var lines = exportModuleChannelToStrings(module, channel, keyFormat);
-    return "OpenKNX,v1,"+module+","+channel + "§" + lines.join("§");
+    return serializeHeader(module, channel) + "§" + lines.join("§");
 }
 
 /**
@@ -136,5 +140,5 @@ function copyModuleChannel(module, channelSource, channelTarget) {
  * @param {number} channel 
  */
 function resetModuleChannel(module, channel) {
-    importModuleChannelFromString(module, channel, "OpenKNX,v1,"+module+","+channel);
+    importModuleChannelFromString(module, channel, serializeHeader(module, channel));
 }
