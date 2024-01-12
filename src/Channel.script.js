@@ -1,4 +1,13 @@
-/* TODO FIXME: needs clean encoding/decoding to prevent issues from `§´,`\n´,`,´ */ 
+
+function serializeParamValue(paramValue) {
+    /* TODO check inclusion of ` ` and common characters without encoding */
+    return encodeURIComponent(paramValue);
+}
+
+function unserializeParamValue(encodeParamValue) {
+    return decodeURIComponent(encodeParamValue);
+}
+
 
 /**
  * Transform configuration of one channel to single-line string representation.
@@ -28,7 +37,7 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
         try { 
             var paramValue = device.getParameterByName(paramFullName).value; 
             if (paramValue != params.defaults[i]) { 
-                result.push(paramKey + "=" + paramValue /*TODO FIXME*/);
+                result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
         } catch (e) { 
             result.push("[ERR@"+paramKey + "]=" + e + ";" + e.message); 
@@ -77,7 +86,7 @@ function importModuleChannelFromString(module, channel, exportStr) {
         for (var i = 0; i < importLines.length; i++) {
             var line = importLines[i].split("=");
             var paramIndex = line[0];
-            var paramValue = line.slice(1).join("=");
+            var paramValue = unserializeParamValue(line.slice(1).join("="));
 
             /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
             newValues[paramIndex] = paramValue;
