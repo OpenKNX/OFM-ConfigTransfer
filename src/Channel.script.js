@@ -28,7 +28,7 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
         var paramName = params.names[i];
         var paramFullName = module + "_" + paramName.replace('%C%', channel);
         
-        /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
+        /* compact or human readable output */
         var paramKey = i;
         if (keyFormat) {
             if (keyFormat=="full") {
@@ -41,6 +41,7 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
         try { 
             var paramValue = device.getParameterByName(paramFullName).value; 
             if (paramValue != params.defaults[i]) { 
+                /* non-default values only */
                 result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
         } catch (e) { 
@@ -129,6 +130,7 @@ function importModuleChannelFromString(module, channel, exportStr) {
  * @param {number} channelTarget 
  */
 function copyModuleChannel(module, channelSource, channelTarget) {
+    /* TODO copy without serialize/deserialize */
     var exportStr = exportModuleChannelToString(module, channelSource);
     importModuleChannelFromString(module, channelTarget, exportStr);
 }
