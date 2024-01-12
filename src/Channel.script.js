@@ -1,3 +1,5 @@
+/* TODO FIXME: needs clean encoding/decoding to prevent issues from `§´,`\n´,`,´ */ 
+
 /**
  * Transform configuration of one channel to single-line string representation.
  * @param {string} module - the module prefix e.g. 'LOG'
