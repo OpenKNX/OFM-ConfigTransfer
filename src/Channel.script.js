@@ -28,7 +28,7 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
         try { 
             var paramValue = device.getParameterByName(paramFullName).value; 
             if (paramValue != params.defaults[i]) { 
-                result.push(paramKey + "=" + paramValue /*TODO FIXME*/); 
+                result.push(paramKey + "=" + paramValue /*TODO FIXME*/);
             }
         } catch (e) { 
             result.push("[ERR@"+paramKey + "]=" + e + ";" + e.message); 
@@ -65,37 +65,58 @@ function importModuleChannelFromString(module, channel, exportStr) {
     var newValues = params.defaults;
 
     /* use values from import */
-    var importLines = exportStr.split("§"); 
-    for (var i = 0; i < importLines.length; i++) { 
-        var line = importLines[i].split("="); 
+    var importLines = exportStr.split("§");
+    for (var i = 0; i < importLines.length; i++) {
+        var line = importLines[i].split("=");
         var paramIndex = line[0];
         var paramValue = line.slice(1).join("=");
 
         /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
         newValues[paramIndex] = paramValue;
-    }; 
+    };
 
     /* write new values */
     for (var i = 0; i < params.names.length; i++) {
         var paramName = params.names[i];
         var paramFullName = module + "_" + paramName.replace('%C%', channel);
-        
+
         /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
         var paramKey = i;
-        var paramValue = newValues[i]; 
+        var paramValue = newValues[i];
 
-        try { 
-            var regex = /^\%K\d+\%$/; 
+        try {
+            var regex = /^\%K\d+\%$/;
             /* TODO set paramValue to channel-specific value */
-            if (!regex.test(paramValue)) { 
-                device.getParameterByName(paramFullName).value = paramValue; 
+            if (!regex.test(paramValue)) {
+                device.getParameterByName(paramFullName).value = paramValue;
             }
 
-        } catch (e) { 
-            result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message); 
+        } catch (e) {
+            result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
         }
     }
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
    return result.join("§");
+}
+
+/**
+ * Copy the configuration from one channel to on other.
+ * @param {string} module 
+ * @param {number} channelSource 
+ * @param {number} channelTarget 
+ */
+function copyModuleChannel(module, channelSource, channelTarget) {
+    var exportStr = exportModuleChannelToString(module, channelSource);
+    importModuleChannelFromString(module, channelTarget, exportStr);
+}
+
+/**
+ * Set channel configuration to default values.
+ * LIMITATION: Default values are independent of assignments.
+ * @param {string} module 
+ * @param {number} channel 
+ */
+function resetModuleChannel(module, channel) {
+    importModuleChannelFromString(module, channel, "");
 }
