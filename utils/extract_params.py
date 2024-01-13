@@ -19,11 +19,17 @@ def template_to_params(xml_string):
 
 path = "lib/OFM-LogicModule/src/"
 filenameTemplate = path + "Logikmodul.templ.xml"
+
+path = "lib/OFM-DFA/src/"
+filenameTemplate = path + "DfaModule.templ.xml"
+
 filenameOutput = filenameTemplate + ".params.json"
 
 with open(filenameTemplate, "r", encoding='utf-8') as fileTemplate:
     params = template_to_params(fileTemplate.read())
-    json_result = "var LOG_param = " + json.dumps(params, indent=2) + ";"
+    # json_result = "var DFA_param = " + json.dumps(params, indent=2) + ";"
+    # TODO extract
+    json_result = "var DFA_param = " + json.dumps(params) + ";"
     with open(filenameOutput, "w", encoding='utf-8') as fileOutput:
         fileOutput.write(json_result)
         print('written to ' + filenameOutput)
