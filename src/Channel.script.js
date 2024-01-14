@@ -9,7 +9,7 @@ function unserializeParamValue(encodeParamValue) {
 }
 
 function serializeHeader(module, channel) {
-    return "OpenKNX,v1,"+module+","+channel;
+    return "OpenKNX,v1,"+module+",x.y.z,"+channel;
 }
 
 
@@ -85,6 +85,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         result.push("[ERR@HeaderVersion]=" + importHeader[1]);
     } else if (importHeader[2] != module) {
         result.push("[ERR@HeaderModule]=" + importHeader[2]);
+    /* TODO module version! */
     /* TODO check channel? */
     } else {
         /* use defaults for values not defined in import*/
