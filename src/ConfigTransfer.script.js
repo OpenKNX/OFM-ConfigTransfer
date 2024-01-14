@@ -1,3 +1,5 @@
+// OFM-ConfigTransfer --
+// SPDX-License-Identifier: AGPL-3.0-only
 
 // TODO update format to v1 when stable
 var uctFormatVer = "ck-dev0";
@@ -374,3 +376,5 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
 function resetModuleChannel(device, module, channel) {
     importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX");
 }
+
+// -- OFM-ConfigTransfer //
