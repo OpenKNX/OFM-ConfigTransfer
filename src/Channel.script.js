@@ -15,12 +15,13 @@ function serializeHeader(module, channel) {
 
 /**
  * Transform configuration of one channel to single-line string representation.
+ * @param {object} device - the device object provided by ETS
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string?} keyFormat - '','name','full','reduced'
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToStrings(module, channel, keyFormat) {
+function exportModuleChannelToStrings(device, module, channel, keyFormat) {
     var params = channel_params[module]; /* TODO generalize */
     
     var result = [];
@@ -53,23 +54,25 @@ function exportModuleChannelToStrings(module, channel, keyFormat) {
 
 /**
  * Transform configuration of one channel to single-line string representation.
+ * @param {object} device - the device object provided by ETS
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string?} keyFormat - '','name','full','reduced'
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToString(module, channel, keyFormat) {
-    var lines = exportModuleChannelToStrings(module, channel, keyFormat);
+function exportModuleChannelToString(device, module, channel, keyFormat) {
+    var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
     return serializeHeader(module, channel) + "§" + lines.join("§");
 }
 
 /**
  * Restore a channel configuration from a single-line string representation.
+ * @param {object} device - the device object provided by ETS
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
-function importModuleChannelFromString(module, channel, exportStr) {
+function importModuleChannelFromString(device, module, channel, exportStr) {
     var params = channel_params[module]; /* TODO generalize */
     
     var result = [];
@@ -125,22 +128,24 @@ function importModuleChannelFromString(module, channel, exportStr) {
 
 /**
  * Copy the configuration from one channel to on other.
- * @param {string} module 
+ * @param {object} device - the device object provided by ETS
+ * @param {string} module
  * @param {number} channelSource 
  * @param {number} channelTarget 
  */
-function copyModuleChannel(module, channelSource, channelTarget) {
+function copyModuleChannel(device, module, channelSource, channelTarget) {
     /* TODO copy without serialize/deserialize */
-    var exportStr = exportModuleChannelToString(module, channelSource);
-    importModuleChannelFromString(module, channelTarget, exportStr);
+    var exportStr = exportModuleChannelToString(device, module, channelSource);
+    importModuleChannelFromString(device, module, channelTarget, exportStr);
 }
 
 /**
  * Set channel configuration to default values.
  * LIMITATION: Default values are independent of assignments.
+ * @param {object} device - the device object provided by ETS
  * @param {string} module 
  * @param {number} channel 
  */
-function resetModuleChannel(module, channel) {
-    importModuleChannelFromString(module, channel, serializeHeader(module, channel));
+function resetModuleChannel(device, module, channel) {
+    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel));
 }
