@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram>
+          <Static>
+            <ParameterTypes>
+              <!-- import/export-field-types -->
+              <ParameterType Id="%AID%_PT-Text32KiB" Name="Text32KiB">
+                <TypeText SizeInBit="262144" />
+              </ParameterType>
+              <!-- Text with nearly 64KiB (maximum length by 16bit) -->
+              <ParameterType Id="%AID%_PT-TextLengthBy16Bit" Name="TextLengthBy16Bit">
+                <TypeText SizeInBit="524280" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-TextMaxLen" Name="TextMaxLen">
+                <!-- max len:        1048575 (no full byte!) -->
+                <TypeText SizeInBit="1048568" />
+              </ParameterType>
+            </ParameterTypes>
+            <Parameters>
+            </Parameters>
+            <ParameterRefs>
+            </ParameterRefs>
+            <ComObjectTable>
+              <!-- No ComObjects -->
+            </ComObjectTable>
+            <ComObjectRefs>
+              <!-- No ComObjects -->
+            </ComObjectRefs>
+            <Script>
+              <op:include href="ConfigTransfer.script.js" prefix="UCT" type="script" />
+            </Script>            
+          </Static>
+          <Dynamic>
+            <ChannelIndependentBlock>
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer" Text="Konfigurationstransfer (Experimentell)" Icon="openknx-export-import"><!-- HelpContext="BASE-OpenKNX" -->
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalwerkzeuge Export/Import (Experimentell)" UIHint="Headline" />
+                <!-- Module-Selection -->
+                <!-- Source-Channel-Number -->
+                <!-- Target-Channel-Number -->
+
+                <!-- Import-Text -->
+                <!-- Output-Text -->
+
+                <!-- Btn Export: $message,$output:=export($module, $source) -->
+                <!-- Btn Import: $message:=import($module, $exportStr $target) -->
+                <!-- Btn Copy: $message:=copy($module, $source, $target) -->
+                <!-- Btn Reset: $message:=copy($module, $target) -->
+
+
+
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+      <Baggages>
+        <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
+        <Baggage TargetPath="" Name="Icons.zip" Id="%FILE-ICONS%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
+      </Baggages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

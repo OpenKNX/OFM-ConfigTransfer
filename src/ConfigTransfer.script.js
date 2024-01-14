@@ -3,33 +3,33 @@
 // context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
 
 function btnChannelExport(device, online, progress, context) {
-    var module = device.getParameterByName(context.module).value;
-    var channelSource = device.getParameterByName(context.channelSource).value;
-    var exportFormat = device.getParameterByName(context.exportFormat).value;
-    var param_exportOutput = device.getParameterByName(context.exportOutput);
+    var module = device.getParameterByName(context.p_module).value;
+    var channelSource = device.getParameterByName(context.p_channelSource).value;
+    var exportFormat = device.getParameterByName(context.p_exportFormat).value;
+    var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat);
 }
 
 function btnChannelImport(device, online, progress, context) {
-    var module = device.getParameterByName(context.module).value;
-    var channelTarget = device.getParameterByName(context.channelTarget).value;
-    var importLine = device.getParameterByName(context.importLine).value;
-    var param_messageOutput = device.getParameterByName(context.messageOutput);
+    var module = device.getParameterByName(context.p_module).value;
+    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+    var importLine = device.getParameterByName(context.p_importLine).value;
+    var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = importModuleChannelFromString(device, module, channelTarget, importLine);
 }
 
 function btnChannelCopy(device, online, progress, context) {
-    var module = device.getParameterByName(context.module).value;
-    var channelSource = device.getParameterByName(context.channelSource).value;
-    var channelTarget = device.getParameterByName(context.channelTarget).value;
-    var param_messageOutput = device.getParameterByName(context.messageOutput);
+    var module = device.getParameterByName(context.p_module).value;
+    var channelSource = device.getParameterByName(context.p_channelSource).value;
+    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+    var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = copyModuleChannel(device, module, channelSource, channelTarget);
 }
 
 function btnChannelReset(device, online, progress, context) {
-    var module = device.getParameterByName(context.module).value;
-    var channelTarget = device.getParameterByName(context.channelTarget).value;
-    var param_messageOutput = device.getParameterByName(context.messageOutput);
+    var module = device.getParameterByName(context.p_module).value;
+    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+    var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = resetModuleChannel(device, module, channelTarget);
 }
 
