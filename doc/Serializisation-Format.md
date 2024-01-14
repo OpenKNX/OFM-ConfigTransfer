@@ -23,6 +23,14 @@
 * SHOULD support multiple channels in one package
 * SHOULD support module base configuration
 * OPTIONAL: support a form of compression
+* SHOULD: support check of completeness
+* SHOULD: support a checksum to detect modification in transfer
+* OPTIONAL: support a signature to detect other modification
+* OPTIONAL: include meta-data of export
+  * OPTIONAL: include export-time
+  * OPTIONAL: include device info, as far as available in ETS
+* SHOULD: support individual serialisation
+  * MUST be detectable from importer
 
 ## Contents
 * Format-Specifier
@@ -51,11 +59,28 @@ FORMAT_MULTI  := HEADER ; ( '\n' ; DATA )*
 ```
 ### Header
 ```
-HEADER := MAGIC ; ',' ; VERSION ; ',' ; ... ; MODULE_PREFIX ; MODULE_VERSION ; CHANNEL_NUMBER
+HEADER   := HEADERv1
+HEADERv1 := MAGIC ; ',' ; VERSION ; ',' ; MODULE_PREFIX ; ',' ; MODULE_VERSION ; ',' ; CHANNEL_NUMBER
+
+HEADERvX := MAGIC ; ',' ; VERSION ; ',' ; ... ; MODULE_PREFIX ; ',' ; MODULE_VERSION ; ',' ; CHANNEL_NUMBER
 ```
 ### Data
 ```
 DATA := DATA_KEY_VALUE | DATA_VALUE_KEYS
+
+KEY_SET := KEY_RANGE ; ( ',' ; KEY_RANGE )+
+KEY_RANGE : = KEY | KEY ; ':' ; KEY | KEY ; ':' ; KEY ; ':' ; KEY 
+```
+
+<!--
+KEY := /\d+/
+KEY_RANGE := /\d+-\d+/ 
+KEY_RANGE := KEY ; '-' ; KEY
+
+KEY_SET := /\d+-\d+(,\d+-\d+)*/
+-->
+
+```
 DATA_KEY_VALUE  := PARAM_NUMBER ; '=' ; VALUE
 DATA_VALUE_KEYS := VALUE ; '~' ; PARAM_NUMBER ( ',' ; PARAM_NUMBER)* 
 ``` 
