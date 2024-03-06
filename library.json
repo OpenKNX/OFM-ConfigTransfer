@@ -1,0 +1,19 @@
+{
+    "name": "OFM-ConfigTransfer",
+    "version": "0.1.0",
+    "description": "Universal Configuration Transfer for OpenKNX Modules in ETS-Applications",
+    "keywords": [
+        "knx",
+        "OpenKNX",
+        "Configuration",
+        "Export",
+        "Import",
+        "ETS"
+    ],
+    "license": "AGPL-3.0-only",
+    "homepage": "https://openknx.de",
+    "authors": {
+        "name": "Cornelius Köpp (OpenKNX)",
+        "maintainer": true
+    }
+}
