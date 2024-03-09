@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/salt
+
+/'
+salt
+{
+  Just plain text
+  [This is my button]
+  ()  Unchecked radio
+  (X) Checked radio
+  []  Unchecked box
+  [X] Checked box
+  "Enter text here   "
+  ^This is a droplist^
+}
+'/
+
+salt
+'skinparam handwritten true
+{
+    ^        ^Logik^DFA^VPM^ | .      | .      | .
+    .                        | **Quelle** | **Aktion** | **Ziel**
+
+
+    . | {Kanal:|.| ^ 2^} | [ Export <&arrow-right> ] | "          "
+    . | "          "     | [ <&arrow-right> Import ] | ^ 2^
+    ' . | ^ 1^ | [ <&arrow-right> Kopieren <&arrow-right> ] | ^99^
+    . | {Kanal:|.| ^ 3^} | [ Kopieren  ] | ^ 5^
+    . | - | [   Reset   ] | ^99^
+}
+
+@enduml
