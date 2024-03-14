@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/salt
+
+salt
+skinparam handwritten true
+{
+    **Kanal-Kopie**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Quelle:                | ^Kanal 23                          ^
+    Ziel:                  | ^Kanal 42                          ^
+    .                      | [ Konfiguration übertragen ]
+    Ausgabe                | "kopie erfolgreich                 "
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Kanal-Kopie**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^ | .
+    Kanäle:                | { ^Kanal 23^ | -->  | ^Kanal 42^ }    | .
+    .                      | [ Konfiguration übertragen ]         | .
+    Ausgabe                | "kopie erfolgreich                 " | .
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+}
+
+@enduml
