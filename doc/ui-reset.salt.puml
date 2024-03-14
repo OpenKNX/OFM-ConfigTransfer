@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/salt
+
+salt
+skinparam handwritten true
+{
+    **Kanal-Kopie**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Kanal:                 | ^Kanal 42                          ^
+    .                      | [ Kanal zurücksetzen ]
+    Ausgabe                | "Reset erfolgreich                 "
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+
+}
+
+@enduml
