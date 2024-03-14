@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/salt
+
+salt
+skinparam handwritten true
+{
+    '^        ^Logik^DFA^VPM^ | .      | .      | .
+    '.                        | **Quelle** | **Aktion** | **Ziel**
+'
+'
+    '. | {Kanal:|.| ^ 2^} | [ Export <&arrow-right> ] | "          "
+    **Import**
+    ' . | Importieren von zuvor exportierter Konfiguration
+    ' OpenKNX-Export-String: | "                              "
+    'Export-String:         | "                                  "
+    'Export-String:         | "OpenKNX,v1,DFA,0.1.0,1,OAM-StateEngine,0.1.0,...§           ^
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+    'Import-Ziel:           | ^Kanal aus Export übernehmen^
+    Import-Ziel:           | ^automatisch aus Export übernehmen ^
+    Kompatiblitätsprüfung: | ^exakte Übereinstimmung            ^
+    .                      | [ Import ]
+    Ausgabe                | "Import erfolgreich                "
+    ' .     | [ <&arrow-right> Import ] | ^ 2^
+    '' . | ^ 1^ | [ <&arrow-right> Kopieren <&arrow-right> ] | ^99^
+    '. | {Kanal:|.| ^ 3^} | [ Kopieren  ] | ^ 5^
+    '. | - | [   Reset   ] | ^99^
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Import**
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+    Import-Ziel:           | ^automatisch aus Export übernehmen ^automatisch aus Export übernehmen^Kanalunabhängige Konfiguration^Kanal 1^...^Kanal 99^
+    Kompatiblitätsprüfung: | ^exakte Übereinstimmung            ^
+    .                      | [ Import ]
+    Ausgabe                | "Import erfolgreich                "
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Import**
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+    Import-Ziel:           | ^automatisch aus Export übernehmen ^
+    Kompatiblitätsprüfung: | ^exakte Version (ETS-App & Modul)  ^exakte Version (ETS-App & Modul)^exakte Modul-Version + gleiche ETS-App^exakte Modul-Version^passenden Parameternamen^Import erzwingen!^
+    .                      | [ Import ]
+    Ausgabe                | "Import erfolgreich                "
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+
+
+}
+
+@enduml
