@@ -1,0 +1,83 @@
+@startuml
+'https://plantuml.com/salt
+
+salt
+skinparam handwritten true
+{
+    **Export**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Inhalt:                | ^Kanal 1                           ^
+    Format:                | ^Standard                          ^
+    .                      | [ Export ]
+    Ausgabe                | "Export erfolgreich                "
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Export**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Inhalt:                | ^Kanal 1                           ^Kanalunabhängige Konfiguration^Kanal 1^...^Kanal 99^
+    Format:                | ^Standard                          ^
+    .                      | [ Export ]
+    Ausgabe                | "Export erfolgreich                "
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Export**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Inhalt:                | ^Kanal 1                           ^
+    Format:                | ^Standard                          ^Standard^Standard Mehrzeilig^Reduzierte Parameternamen^Ultrakompakt (ohne Parameternamen)^
+    .                      | [ Export ]
+    Ausgabe                | "Export erfolgreich                "
+    Export-String:         | "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0§A=0§B=1§...^
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+    **Export**
+    Modul:                 | ^Zustandsmodelle (DFA)             ^
+    Inhalt:                | ^Kanal 1                           ^
+    Format:                | ^Standard Mehrzeilig               ^
+    .                      | [ Export ]
+    Ausgabe                | "Export erfolgreich                "
+    Export-String:         | {+
+    "OpenKNX,v1,DFA@0.1.0,1,OAM-StateEngine@0.1.0
+    A=0
+    B=1
+    . . .
+    .
+    }
+
+    .   | .
+    ... | ...
+    ... | ...
+    --- | ---
+    ... | ...
+    ... | ...
+    .   | .
+
+
+
+
+
+}
+
+@enduml
