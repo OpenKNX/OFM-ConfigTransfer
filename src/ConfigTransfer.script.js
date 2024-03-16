@@ -58,6 +58,9 @@ function serializeHeader(module, channel) {
     return "OpenKNX,v1,"+module+",x.y.z,"+channel;
 }
 
+function getModuleParamsDef(module, channel) {
+    return channel_params[module][channel==0 ? "share" : "templ"];
+}
 
 /**
  * Transform configuration of one channel to single-line string representation.
@@ -68,7 +71,7 @@ function serializeHeader(module, channel) {
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
 function exportModuleChannelToStrings(device, module, channel, keyFormat) {
-    var params = channel_params[module]; /* TODO generalize */
+    var params = getModuleParamsDef(module, channel);
     
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
@@ -119,7 +122,7 @@ function exportModuleChannelToString(device, module, channel, keyFormat) {
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
 function importModuleChannelFromString(device, module, channel, exportStr) {
-    var params = channel_params[module]; /* TODO generalize */
+    var params = getModuleParamsDef(module, channel);
     
     var result = [];
 
