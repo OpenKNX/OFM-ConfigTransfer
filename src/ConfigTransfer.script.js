@@ -16,7 +16,8 @@ function btnChannelExport(device, online, progress, context) {
 
 function btnChannelImport(device, online, progress, context) {
     // TODO remove module -> is part of export-string!
-    var module = device.getParameterByName(context.p_module).value;
+    // var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
+    var module = null;
     // TODO support auto-detection
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
@@ -133,7 +134,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         result.push("[ERR@HeaderIntro]=" + importHeader[0]);
     } else if (importHeader[1] != "v1") {
         result.push("[ERR@HeaderVersion]=" + importHeader[1]);
-    } else if (importHeader[2] != module) {
+    } else if (!channel_params[importHeader[2]] || (importHeader[2] != module && module != null)) {
         result.push("[ERR@HeaderModule]=" + importHeader[2]);
     /* TODO module version! */
     /* TODO check channel? */
