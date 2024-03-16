@@ -2,16 +2,22 @@
 
 // context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
 
+var exportFormats = ["full","full","reduced",""];
+
 function btnChannelExport(device, online, progress, context) {
-    var module = device.getParameterByName(context.p_module).value;
+    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
-    var exportFormat = device.getParameterByName(context.p_exportFormat).value;
+    var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
+    var exportFormat = exportFormats[exportFormatSelection];
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
+    // TODO add p_messageOutput
     param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat);
 }
 
 function btnChannelImport(device, online, progress, context) {
+    // TODO remove module -> is part of export-string!
     var module = device.getParameterByName(context.p_module).value;
+    // TODO support auto-detection
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
@@ -19,7 +25,7 @@ function btnChannelImport(device, online, progress, context) {
 }
 
 function btnChannelCopy(device, online, progress, context) {
-    var module = device.getParameterByName(context.p_module).value;
+    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
@@ -27,7 +33,7 @@ function btnChannelCopy(device, online, progress, context) {
 }
 
 function btnChannelReset(device, online, progress, context) {
-    var module = device.getParameterByName(context.p_module).value;
+    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = resetModuleChannel(device, module, channelTarget);
