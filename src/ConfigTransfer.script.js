@@ -111,6 +111,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  */
 function exportModuleChannelToString(device, module, channel, keyFormat) {
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
+    // TODO add support for multi-line!
     return serializeHeader(module, channel) + "§" + lines.join("§");
 }
 
