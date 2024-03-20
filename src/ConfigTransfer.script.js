@@ -69,7 +69,7 @@ function getModuleParamsDef(module, channel) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string?} keyFormat - '','name','full','reduced'
- * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
+ * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
 function exportModuleChannelToStrings(device, module, channel, keyFormat) {
     var params = getModuleParamsDef(module, channel);
