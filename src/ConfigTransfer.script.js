@@ -179,7 +179,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
 }
 
 /**
- * Copy the configuration from one channel to on other.
+ * Copy the configuration from one channel to an other.
  * @param {object} device - the device object provided by ETS
  * @param {string} module
  * @param {number} channelSource 
