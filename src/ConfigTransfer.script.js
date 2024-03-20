@@ -11,7 +11,8 @@ function btnChannelExport(device, online, progress, context) {
     var exportFormat = exportFormats[exportFormatSelection];
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     // TODO add p_messageOutput
-    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat);
+    var separator = (exportFormatSelection==1) ? "\n" : "§";
+    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator);
 }
 
 function btnChannelImport(device, online, progress, context) {
@@ -108,12 +109,12 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string?} keyFormat - '','name','full','reduced'
+ * @param {string} separator - the separator between header and param-values
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToString(device, module, channel, keyFormat) {
+function exportModuleChannelToString(device, module, channel, keyFormat, separator) {
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
-    // TODO add support for multi-line!
-    return serializeHeader(module, channel) + "§" + lines.join("§");
+    return serializeHeader(module, channel) + separator + lines.join(separator);
 }
 
 /**
