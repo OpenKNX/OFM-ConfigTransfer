@@ -51,8 +51,8 @@ function serializeParamValue(paramValue) {
     return encodeURIComponent(paramValue);
 }
 
-function unserializeParamValue(encodeParamValue) {
-    return decodeURIComponent(encodeParamValue);
+function unserializeParamValue(encodedParamValue) {
+    return decodeURIComponent(encodedParamValue);
 }
 
 function serializeHeader(module, channel) {
