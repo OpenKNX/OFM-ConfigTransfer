@@ -305,7 +305,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     /* write new values */
     for (var i = 0; i < params.names.length; i++) {
         var paramName = params.names[i];
-        var paramFullName = module + "_" + paramName.replace('%C%', channel);
+        var paramFullNameTempl = module + "_" + paramName;
+        var paramFullName      = module + "_" + paramName.replace('%C%', channel);
 
         /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
         var paramKey = i;
@@ -319,7 +320,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
             }
 
         } catch (e) {
-            result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
+            result.push("[ERR@"+paramKey + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
         }
     }
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */    
