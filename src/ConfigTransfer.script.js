@@ -146,11 +146,15 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         /* use values from import */
         for (var i = 0; i < importLines.length; i++) {
             var line = importLines[i].split("=");
-            var paramIndex = line[0];
-            var paramValue = unserializeParamValue(line.slice(1).join("="));
-
-            /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
-            newValues[paramIndex] = paramValue;
+            if (line.length >= 2) {
+                var paramIndex = line[0];
+                var paramValue = unserializeParamValue(line.slice(1).join("="));
+    
+                /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
+                newValues[paramIndex] = paramValue;
+            } else {
+                // TODO ...
+            }
         };
 
         /* write new values */
