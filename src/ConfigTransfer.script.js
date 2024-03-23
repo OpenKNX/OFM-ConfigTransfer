@@ -11,16 +11,15 @@ var uctAppName = "StateEngine";
 
 // context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
 
-var exportFormats = ["full","full","reduced",""];
-
 function btnChannelExport(device, online, progress, context) {
     var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
+
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
-    var exportFormat = exportFormats[exportFormatSelection];
-    var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    // TODO add p_messageOutput
+    var exportFormat = (exportFormatSelection==3) ? "" : "reduced";
     var separator = (exportFormatSelection==1) ? "\n" : "§";
+
+    var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator);
 }
 
