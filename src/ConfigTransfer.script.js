@@ -337,7 +337,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
  */
 function copyModuleChannel(device, module, channelSource, channelTarget) {
     /* TODO copy without serialize/deserialize */
-    var exportStr = exportModuleChannelToString(device, module, channelSource);
+    var exportStr = exportModuleChannelToString(device, module, channelSource, "", "§");
     importModuleChannelFromString(device, module, channelTarget, exportStr);
 }
 
