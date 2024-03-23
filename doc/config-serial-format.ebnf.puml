@@ -1,0 +1,28 @@
+@startebnf
+
+CONFIG_STRING = CONFIG_SINGLELINE | CONFIG_MULTILINE;
+CONFIG_SINGLELINE = CONFIG_HEADER, "§" , {CONFIG_VALUE, "§"} , CONFIG_END;
+CONFIG_MULTILINE = CONFIG_HEADER, "\n" , {CONFIG_VALUE, "\n"} , CONFIG_END;
+
+CONFIG_HEADER = "OpenKNX", ",", VERSION_DEF, ",", APP_DEF, ",", MODULE_DEF, ",", CHANNEL_DEF;
+
+' VERSION_DEF = "v0", [ ":", SEMVER, [":", GENERATOR]];
+VERSION_DEF = "cv0", [ ":", GENERATOR];
+APP_DEF = APP_ID, ":", APP_VER ; [ APP_NAME ];
+'APP_ID  = "0x" , 4 * (? "0-9" ? | ? "a-f" ? | ? "A-F" ?);
+'APP_ID  = "0x" , 4 * (?0-9? | ?A-F?);
+APP_ID  = HEXNUM;
+'APP_VER = "0x" , 2 * (? "0-9" ? | ? "a-f" ? | ? "A-F" ?);
+APP_VER = ( SEMVER | DECVER | HEXNUM);
+
+HEXNUM = "0x" , {(?0-9? | ?A-F?)}-;
+
+CONFIG_VALUE = PARAM_KEY, "=", PARAM_VALUE;
+CONFIG_END = ";OpenKNX";
+
+/'
+digit-excluding-zero = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+digit                = "0" | digit-excluding-zero;
+'/
+
+@endyaml
