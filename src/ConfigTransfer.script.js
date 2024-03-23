@@ -303,6 +303,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     };
 
     /* write new values */
+    var regexExcludeValue = /^\%K\d+\%$/;
     for (var i = 0; i < params.names.length; i++) {
         var paramName = params.names[i];
         var paramFullNameTempl = module + "_" + paramName;
@@ -313,9 +314,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         var paramValue = newValues[i];
 
         try {
-            var regex = /^\%K\d+\%$/;
             /* TODO set paramValue to channel-specific value */
-            if (!regex.test(paramValue)) {
+            if ((paramValue !=null) && !regexExcludeValue.test(paramValue)) {
                 device.getParameterByName(paramFullName).value = paramValue;
             }
 
