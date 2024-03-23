@@ -54,7 +54,13 @@
 <!-- FORMAT := HEADER ; ( SEPARATOR ; DATA )* -->
 ```
 FORMAT := FORMAT_MULTI | FORMAT_SINGLE
+```
+### Single-Line as Required for Import
+```
 FORMAT_SINGLE := HEADER ; ( '§'  ; DATA )*
+```
+### Multi-Line for Human Readability
+```
 FORMAT_MULTI  := HEADER ; ( '\n' ; DATA )*
 ```
 ### Header
