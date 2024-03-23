@@ -19,7 +19,10 @@ function btnChannelExport(device, online, progress, context) {
     var exportFormat = (exportFormatSelection==3) ? "" : "reduced";
     var separator = (exportFormatSelection==1) ? "\n" : "§";
 
+    // TODO add p_messageOutput again?
+
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
+    param_exportOutput.value = "";
     param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator);
 }
 
@@ -138,6 +141,76 @@ function exportModuleChannelToString(device, module, channel, keyFormat, separat
     return serializeHeader(module, channel) + separator + lines.join(separator) + separator + ";OpenKNX";
 }
 
+function parseHeader(module, channel, headerStr) {
+    var header = {
+        "prefix": undefined,
+        "format": undefined,
+        "generator": {
+            "name": undefined,
+            "ver": undefined
+        },
+        "app": {
+            "id": undefined,
+            "ver": undefined,
+            "name": undefined
+        },
+        "modul": {
+            "key": undefined,
+            "ver": undefined
+        },
+        "channel": undefined
+    };
+
+    var headerParts = headerStr.split(",");
+
+    /* 1. check prefix */
+    if (headerParts[0] != "OpenKNX") {
+        throw new Error('Format Prefix does NOT match! "' + headerParts[0] + '" != "OpenKNX"');
+    }
+    header.prefix = headerParts[0];
+
+    /* 2. check format version */
+    if (headerParts.length < 2) {
+        throw new Error("Format Version NOT defined !");
+    }
+    if (headerParts[1] != uctFormatVer) {
+        throw new Error('Format Version does NOT match! "' + headerParts[1] + '" != "'+uctFormatVer+'"');
+    }
+    header.format = headerParts[1];
+
+    /* ensure header completeness */
+    if (headerParts.length < 6) {
+        throw new Error("Header is incomplete! Expected 6 entries, but has only " + headerParts.length);
+    }
+
+    /* TODO include generator, but can be ignored first */
+    var headerGen = headerParts[2];
+    header.generator.name = null;
+    header.generator.ver = null;
+
+    /* check app */
+    var headerApp = headerParts[3].split(":");
+    /* TODO include app-check, but can be ignored first */
+    header.app.id = headerApp[0];
+    header.app.ver = (headerApp.length>=2) ? headerApp[1] : null;
+    header.app.name = (headerApp.length>=3) ? headerApp[2] : null;
+
+    /* check module */
+    var headerModule = headerParts[4].split(":");
+    if (headerModule.length > 2) {
+        /* TODO check need of handling */
+    }
+    header.modul.key = headerModule[0];
+    header.modul.ver = (headerModule.length>=2) ? headerModule[1] : null;
+
+    /* check channel */
+    var headerChannel = headerParts[5];
+    /* TODO validate format! */
+    header.channel = headerChannel;
+
+    return header;
+}
+
 /**
  * Restore a channel configuration from a single-line string representation.
  * @param {object} device - the device object provided by ETS
@@ -146,93 +219,112 @@ function exportModuleChannelToString(device, module, channel, keyFormat, separat
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
 function importModuleChannelFromString(device, module, channel, exportStr) {
-    var params = getModuleParamsDef(module, channel);
-    
     var result = [];
-
     var importLines = exportStr.split("§");
-    var importHeader = importLines[0].split(",");
-    var importEnd = importLines[importLines.length-1];
-    if (importHeader[0] != "OpenKNX") {
-        result.push("[ERR@HeaderIntro]=" + importHeader[0]);
-    } else if (importHeader[1] != uctFormatVer) {
-        result.push("[ERR@HeaderVersion]=" + importHeader[1]);
+
     /*
-    TODO update checks!
+     OpenKNX,cv0,uct:0.1.0,0xHHHH:6.15:StateEngine,LOG:x.y.z,1
+     [0]     [1] [2]       [3]                     [4]       [5]
+     */
+    var header = parseHeader(module, channel, importLines[0]);
 
-    } else if (!channel_params[importHeader[2]] || (importHeader[2] != module && module != null)) {
-        result.push("[ERR@HeaderModule]=" + importHeader[2]);
-    */
-    /* TODO module version! */
-    /* TODO check channel? */
-    } else if (importEnd != ";OpenKNX") {
-        result.push("[ERR@ImportEnd]=" + importEnd);
-    } else {
-        /* use defaults for values not defined in import*/
-        var newValues = params.defaults;
-
-        /* use values from import */
-        for (var i = 0; i < importLines.length; i++) {
-            var line = importLines[i].split("=");
-            if (line.length >= 2) {
-                var paramKey = line[0];
-                var paramValue = unserializeParamValue(line.slice(1).join("="));
-                var paramIndex = -1;
-
-                var regex = /^\d+$/;
-                if (!regex.test(paramKey)) {
-                    // param is given by name
-                    var paramName = paramKey.replace("~", '%C%');
-
-                    // TODO FIXME: replace with a implementation of better runtime!
-                    for (var i = 0; i < params.names.length; i++) {
-                        if (params.names[i] == paramName) {
-                            paramIndex = i;
-                            break;
-                        }
-                    }
-                    // TODO special handling of unknown parameter names!
-                } else if (paramKey < newValues.length) {
-                    // valid index
-                    paramIndex = paramKey;
-                } else {
-                    // TODO error-handling
-                }
-
-                if (paramIndex >=0) {
-                    newValues[paramIndex] = paramValue;
-                } else {
-                    // TODO handling of invalid parameters!
-                }
-            } else {
-                // TODO error-handling; this is not a param=value pair
-            }
-        };
-
-        /* write new values */
-        for (var i = 0; i < params.names.length; i++) {
-            var paramName = params.names[i];
-            var paramFullName = module + "_" + paramName.replace('%C%', channel);
-
-            /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
-            var paramKey = i;
-            var paramValue = newValues[i];
-
-            try {
-                var regex = /^\%K\d+\%$/;
-                /* TODO set paramValue to channel-specific value */
-                if (!regex.test(paramValue)) {
-                    device.getParameterByName(paramFullName).value = paramValue;
-                }
-
-            } catch (e) {
-                result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
-            }
-        }
-        /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
+    /* check for completeness */
+    var importEnd = importLines[importLines.length-1];
+    if (importEnd != ";OpenKNX") {
+        throw new Error('Incomplete Import, NO Suffix ";OpenKNX"');
     }
 
-   return result.length>0 ? result.join("§") : "[Import OK]";
+    /* check app */
+    if (header.app.id != '*' && header.app.id != uctAppId) {
+        throw new Error('Exported from Application "'+header.app.id+'", different from current "'+uctAppId+'"');
+    }
+    /* TODO check version */
+
+    /* check module */
+    if (module != null && header.modul.key != module) {
+        throw new Error('Module "'+module+'" expected, but found "'+header.modul.key+'"');
+    }
+    if (!channel_params[header.modul.key]) {
+        throw new Error('Module "'+header.modul.key+'" NOT part of application!');
+    }
+    module = header.modul.key;
+
+    /* TODO check version */
+    /* TODO check channel */
+
+
+    var params = getModuleParamsDef(module, channel);
+    if (!params) {
+        throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
+    }
+   
+    /* use defaults for values not defined in import*/
+    var newValues = params.defaults;
+
+    /* use values from import */
+    var importContent = importLines.slice(1, -1);
+    for (var i = 0; i < importContent.length; i++) {
+        var line = importContent[i].split("=");
+        if (line.length >= 2) {
+            var paramKey = line[0];
+            var paramValue = unserializeParamValue(line.slice(1).join("="));
+            var paramIndex = -1;
+
+            var regex = /^\d+$/;
+            if (!regex.test(paramKey)) {
+                // param is given by name
+                var paramName = paramKey.replace("~", '%C%');
+
+                // TODO FIXME: replace with a implementation of better runtime!
+                for (var i = 0; i < params.names.length; i++) {
+                    if (params.names[i] == paramName) {
+                        paramIndex = i;
+                        break;
+                    }
+                }
+                // TODO special handling of unknown parameter names!
+            } else if (paramKey < newValues.length) {
+                // valid index
+                paramIndex = paramKey;
+            } else {
+                // TODO error-handling
+            }
+
+            if (paramIndex >=0) {
+                newValues[paramIndex] = paramValue;
+            } else {
+                // TODO handling of invalid parameters!
+                throw new Error('Unknown Parameter: '+ paramIndex + ' (line "'+line+'")');
+            }
+        } else {
+            // TODO error-handling; this is not a param=value pair
+            throw new Error('Invalid Entry: '+ line);
+        }
+    };
+
+    /* write new values */
+    for (var i = 0; i < params.names.length; i++) {
+        var paramName = params.names[i];
+        var paramFullName = module + "_" + paramName.replace('%C%', channel);
+
+        /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
+        var paramKey = i;
+        var paramValue = newValues[i];
+
+        try {
+            var regex = /^\%K\d+\%$/;
+            /* TODO set paramValue to channel-specific value */
+            if (!regex.test(paramValue)) {
+                device.getParameterByName(paramFullName).value = paramValue;
+            }
+
+        } catch (e) {
+            result.push("[ERR@"+paramKey + ";" + paramFullName + "=" + paramValue + "]=" + e + ";" + e.message);
+        }
+    }
+    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */    
+
+    return result.length>0 ? result.join("§") : "[Import OK]";
 }
 
 /**
