@@ -1,4 +1,13 @@
 
+// TODO update format to v1 when stable
+var uctAidParts = "%AID%".split("-");
+var uctFormatVer = "cv0";
+var uctGenVer = "0.1.0";
+var uctGen = "uct";
+var uctAppId = "0xHHHH";
+var uctAppVer = "6.15";
+var uctAppName = "StateEngine";
+
 
 // context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
 
@@ -57,7 +66,20 @@ function unserializeParamValue(encodedParamValue) {
 }
 
 function serializeHeader(module, channel) {
-    return "OpenKNX,v1,"+module+",x.y.z,"+channel;
+    // OpenKNX,v1,0.1.0,0xAFA7:110:StateEngine,LOG:3.8.0,1
+
+    var moduleKey = module;
+    var moduleVer = "x.y.z";
+    var header = [
+        "OpenKNX", 
+        uctFormatVer,
+        uctGen + ":" + uctGenVer,
+        uctAppId + ":" + uctAppVer + ":" + uctAppName,
+        moduleKey + ":" + moduleVer,
+        channel
+    ];
+    return header.join(",");
+
 }
 
 function getModuleParamsDef(module, channel) {
