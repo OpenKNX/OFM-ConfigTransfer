@@ -108,7 +108,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
             if (keyFormat=="full") {
                 paramKey = paramName;
             } else if (keyFormat=="reduced") {
-                paramKey = paramName.replace('f%C%', "~");
+                paramKey = paramName.replace('%C%', "~");
             }
         }
 
