@@ -176,13 +176,37 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         for (var i = 0; i < importLines.length; i++) {
             var line = importLines[i].split("=");
             if (line.length >= 2) {
-                var paramIndex = line[0];
+                var paramKey = line[0];
                 var paramValue = unserializeParamValue(line.slice(1).join("="));
-    
-                /* var paramName = module + "_" + params.names[paramIndex].replace('%C%', channel); */
-                newValues[paramIndex] = paramValue;
+                var paramIndex = -1;
+
+                var regex = /^\d+$/;
+                if (!regex.test(paramKey)) {
+                    // param is given by name
+                    var paramName = paramKey.replace("~", '%C%');
+
+                    // TODO FIXME: replace with a implementation of better runtime!
+                    for (var i = 0; i < params.names.length; i++) {
+                        if (params.names[i] == paramName) {
+                            paramIndex = i;
+                            break;
+                        }
+                    }
+                    // TODO special handling of unknown parameter names!
+                } else if (paramKey < newValues.length) {
+                    // valid index
+                    paramIndex = paramKey;
+                } else {
+                    // TODO error-handling
+                }
+
+                if (paramIndex >=0) {
+                    newValues[paramIndex] = paramValue;
+                } else {
+                    // TODO handling of invalid parameters!
+                }
             } else {
-                // TODO ...
+                // TODO error-handling; this is not a param=value pair
             }
         };
 
