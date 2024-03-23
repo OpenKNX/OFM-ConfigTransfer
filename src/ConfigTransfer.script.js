@@ -156,10 +156,14 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     var importEnd = importLines[importLines.length-1];
     if (importHeader[0] != "OpenKNX") {
         result.push("[ERR@HeaderIntro]=" + importHeader[0]);
-    } else if (importHeader[1] != "v1") {
+    } else if (importHeader[1] != uctFormatVer) {
         result.push("[ERR@HeaderVersion]=" + importHeader[1]);
+    /*
+    TODO update checks!
+
     } else if (!channel_params[importHeader[2]] || (importHeader[2] != module && module != null)) {
         result.push("[ERR@HeaderModule]=" + importHeader[2]);
+    */
     /* TODO module version! */
     /* TODO check channel? */
     } else if (importEnd != ";OpenKNX") {
