@@ -136,7 +136,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  */
 function exportModuleChannelToString(device, module, channel, keyFormat, separator) {
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
-    return serializeHeader(module, channel) + separator + lines.join(separator);
+    return serializeHeader(module, channel) + separator + lines.join(separator) + separator + ";OpenKNX";
 }
 
 /**
@@ -153,6 +153,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
 
     var importLines = exportStr.split("§");
     var importHeader = importLines[0].split(",");
+    var importEnd = importLines[importLines.length-1];
     if (importHeader[0] != "OpenKNX") {
         result.push("[ERR@HeaderIntro]=" + importHeader[0]);
     } else if (importHeader[1] != "v1") {
@@ -161,6 +162,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         result.push("[ERR@HeaderModule]=" + importHeader[2]);
     /* TODO module version! */
     /* TODO check channel? */
+    } else if (importEnd != ";OpenKNX") {
+        result.push("[ERR@ImportEnd]=" + importEnd);
     } else {
         /* use defaults for values not defined in import*/
         var newValues = params.defaults;
@@ -226,5 +229,5 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
  * @param {number} channel 
  */
 function resetModuleChannel(device, module, channel) {
-    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel));
+    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX");
 }
