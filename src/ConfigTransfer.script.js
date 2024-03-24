@@ -230,6 +230,18 @@ function parseHeader(module, channel, headerStr) {
     return header;
 }
 
+function findIndexByParamName(params, paramKey) {
+    var paramName = paramKey.replace("~", '%C%');
+
+    // TODO FIXME: replace with a implementation of better runtime!
+    for (var i = 0; i < params.names.length; i++) {
+        if (params.names[i] == paramName) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 /**
  * Restore a channel configuration from a single-line string representation.
  * @param {object} device - the device object provided by ETS
@@ -291,16 +303,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
 
             if (isNaN(paramKey)) {
                 // param is given by name
-                var paramName = paramKey.replace("~", '%C%');
-
-                // TODO FIXME: replace with a implementation of better runtime!
-                for (var i = 0; i < params.names.length; i++) {
-                    if (params.names[i] == paramName) {
-                        paramIndex = i;
-                        break;
-                    }
-                }
-                // TODO special handling of unknown parameter names!
+                paramIndex = findIndexByParamName(params, paramKey);
             } else if (paramKey < newValues.length) {
                 // valid index
                 paramIndex = paramKey;
