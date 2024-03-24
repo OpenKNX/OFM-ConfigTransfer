@@ -4,16 +4,26 @@ CONFIG_STRING = CONFIG_SINGLELINE | CONFIG_MULTILINE;
 CONFIG_SINGLELINE = CONFIG_HEADER, "§" , {CONFIG_VALUE, "§"} , CONFIG_END;
 CONFIG_MULTILINE = CONFIG_HEADER, "\n" , {CONFIG_VALUE, "\n"} , CONFIG_END;
 
-CONFIG_HEADER = "OpenKNX", ",", VERSION_DEF, ",", APP_DEF, ",", MODULE_DEF, ",", CHANNEL_DEF;
+CONFIG_HEADER = "OpenKNX", ",", VERSION_DEF, ",", CONFIG_PATH;
 
 ' VERSION_DEF = "v0", [ ":", SEMVER, [":", GENERATOR]];
 VERSION_DEF = "cv0", [ ":", GENERATOR];
-APP_DEF = APP_ID, ":", APP_VER ; [ APP_NAME ];
+
+CONFIG_PATH = APP_DEF, "/", MODULE_DEF, "/", CHANNEL_DEF;
+
+
+APP_DEF = ( "*" | APP_ID, [":", [VERSION] , [ ":" , APP_NAME ]] );
 'APP_ID  = "0x" , 4 * (? "0-9" ? | ? "a-f" ? | ? "A-F" ?);
 'APP_ID  = "0x" , 4 * (?0-9? | ?A-F?);
 APP_ID  = HEXNUM;
 'APP_VER = "0x" , 2 * (? "0-9" ? | ? "a-f" ? | ? "A-F" ?);
-APP_VER = ( SEMVER | DECVER | HEXNUM);
+
+MODULE_DEF = MODULE_KEY, [":", VERSION];
+
+VERSION = ( SEMVER | DECVER | HEXNUM);
+
+CHANNEL_DEF = ("0" | "*" | ?1-99?);
+
 
 HEXNUM = "0x" , {(?0-9? | ?A-F?)}-;
 
