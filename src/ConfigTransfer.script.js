@@ -289,8 +289,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
             var paramValue = unserializeParamValue(line.slice(1).join("="));
             var paramIndex = -1;
 
-            var regex = /^\d+$/;
-            if (!regex.test(paramKey)) {
+            if (isNaN(paramKey)) {
                 // param is given by name
                 var paramName = paramKey.replace("~", '%C%');
 
