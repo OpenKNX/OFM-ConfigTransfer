@@ -155,7 +155,9 @@ function parseHeader(module, channel, headerStr) {
         },
         "app": {
             "id": undefined,
+            "idStr": undefined,
             "ver": undefined,
+            "verStr": undefined,
             "name": undefined
         },
         "modul": {
@@ -202,8 +204,11 @@ function parseHeader(module, channel, headerStr) {
     /* check app */
     var headerApp = path[0].split(":");
     /* TODO include app-check, but can be ignored first */
-    header.app.id = headerApp[0];
-    header.app.ver = (headerApp.length>=2) ? headerApp[1] : null;
+    header.app.idStr = headerApp[0];
+    header.app.id = headerApp[0]=="*" ? null : parseInt(headerApp[0]);
+    header.app.verStr = (headerApp.length>=2) ? headerApp[1] : null;
+    /* TODO support different versions */
+    header.app.ver = (headerApp.length>=2 && headerApp[1]!="*") ? parseInt(headerApp[1]) : null;
     header.app.name = (headerApp.length>=3) ? headerApp[2] : null;
 
     /* check module */
