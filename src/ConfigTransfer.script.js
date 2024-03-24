@@ -242,7 +242,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     var importLines = exportStr.split("§");
 
     /*
-     OpenKNX,cv0,uct:0.1.0,0xHHHH:6.15:StateEngine,LOG:x.y.z,1
+     OpenKNX,cv0:uct:0.1.0,0xHHHH:6.15:StateEngine/LOG:x.y.z/1
      [0]     [1] [2]       [3]                     [4]       [5]
      */
     var header = parseHeader(module, channel, importLines[0]);
