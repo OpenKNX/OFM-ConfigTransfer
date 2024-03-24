@@ -1,6 +1,6 @@
 
 // TODO update format to v1 when stable
-var uctFormatVer = "cv0";
+var uctFormatVer = "ck-dev0";
 var uctGenVer = "0.1.0";
 var uctGen = "uct";
 var uctAppId = version_information[0];
