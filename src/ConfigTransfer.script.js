@@ -62,20 +62,30 @@ function unserializeParamValue(encodedParamValue) {
 }
 
 function serializeHeader(module, channel) {
-    // OpenKNX,v1,0.1.0,0xAFA7:110:StateEngine,LOG:3.8.0,1
+    // OpenKNX,v1:0.1.0,0xAFA7:110:StateEngine/LOG:3.8.0/1
 
-    var moduleKey = module;
-    var moduleVer = "x.y.z";
-    var header = [
-        "OpenKNX", 
-        uctFormatVer,
-        uctGen + ":" + uctGenVer,
-        uctAppId + ":" + uctAppVer + ":" + uctAppName,
-        moduleKey + ":" + moduleVer,
-        channel
+    var version = [uctFormatVer];
+    // TODO make optional
+    version.push(uctGen);
+    version.push(uctGenVer);
+
+    var pathApp = [
+        "0x"+uctAppId.toString(16).toUpperCase(), 
+        "0x"+uctAppVer.toString(16).toUpperCase()
     ];
-    return header.join(",");
+    if (uctAppName) {
+        pathApp.push(uctAppName);
+    }
 
+    var pathModule = [
+        module,
+        channel_params[module].version != undefined ? channel_params[module].version : '-'
+    ];
+
+    var path =  [pathApp.join(":"), pathModule.join(":"), channel];
+
+    var header = ["OpenKNX", version.join(":"), path.join("/")];
+    return header.join(",");
 }
 
 function getModuleParamsDef(module, channel) {
