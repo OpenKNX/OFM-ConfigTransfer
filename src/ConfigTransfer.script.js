@@ -8,8 +8,6 @@ var uctAppVer = version_information[1];
 var uctAppName = null;
 
 
-// context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
-
 function btnChannelExport(device, online, progress, context) {
     var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
@@ -51,9 +49,6 @@ function btnChannelReset(device, online, progress, context) {
     param_messageOutput.value = resetModuleChannel(device, module, channelTarget);
 }
 
-// function importModuleChannelFromString(device, module, channel, exportStr) {
-// function copyModuleChannel(device, module, channelSource, channelTarget) {
-// function resetModuleChannel(device, module, channel) {
 
 
 
