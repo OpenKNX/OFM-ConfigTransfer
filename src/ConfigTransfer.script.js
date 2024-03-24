@@ -65,9 +65,11 @@ function serializeHeader(module, channel) {
     // OpenKNX,v1:0.1.0,0xAFA7:110:StateEngine/LOG:3.8.0/1
 
     var version = [uctFormatVer];
-    // TODO make optional
+    /* TODO make optional */
+    /*
     version.push(uctGen);
     version.push(uctGenVer);
+    */
 
     var pathApp = [
         "0x"+uctAppId.toString(16).toUpperCase(), 
