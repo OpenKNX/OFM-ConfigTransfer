@@ -1,12 +1,11 @@
 
 // TODO update format to v1 when stable
-var uctAidParts = "%AID%".split("-");
 var uctFormatVer = "cv0";
 var uctGenVer = "0.1.0";
 var uctGen = "uct";
-var uctAppId = "0xHHHH";
-var uctAppVer = "6.15";
-var uctAppName = "StateEngine";
+var uctAppId = version_information[0];
+var uctAppVer = version_information[1];
+var uctAppName = null;
 
 
 // context { module: ..., channelSource: ..., channelTarget: ..., exportOutput: ..., exportFormat: , importLine:.. , messageOutput: ...}
