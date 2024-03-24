@@ -294,7 +294,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
             // TODO error-handling; this is not a param=value pair
             throw new Error('Invalid Entry: '+ line);
         }
-    };
+    }
 
     /* write new values */
     var regexExcludeValue = /^\%K\d+\%$/;
