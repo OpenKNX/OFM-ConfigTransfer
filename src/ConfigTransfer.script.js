@@ -217,6 +217,9 @@ function parseHeader(module, channel, headerStr) {
     /* check channel */
     var headerChannel = path[2];
     /* TODO validate format! */
+    if (headerChannel!="*" && (headerChannel <0 || headerChannel >99)) {
+        throw new Error("Invalidi Channel-Definition! Allowed Formar 0|1-99|*, but found " + headerChannel);
+    }
     header.channel = headerChannel;
 
     return header;
