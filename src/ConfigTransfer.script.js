@@ -177,30 +177,37 @@ function parseHeader(module, channel, headerStr) {
     if (headerParts.length < 2) {
         throw new Error("Format Version NOT defined !");
     }
-    if (headerParts[1] != uctFormatVer) {
-        throw new Error('Format Version does NOT match! "' + headerParts[1] + '" != "'+uctFormatVer+'"');
+    var versionParts = headerParts[1].split(":");
+    if (versionParts[0] != uctFormatVer) {
+        throw new Error('Format Version does NOT match! "' + versionParts[0] + '" != "'+uctFormatVer+'"');
     }
-    header.format = headerParts[1];
+    header.format = versionParts[0];
 
     /* ensure header completeness */
-    if (headerParts.length < 6) {
-        throw new Error("Header is incomplete! Expected 6 entries, but has only " + headerParts.length);
+    if (headerParts.length < 3) {
+        throw new Error("Header is incomplete! Expected 3 parts (separated by ',') but has only " + headerParts.length);
     }
 
     /* TODO include generator, but can be ignored first */
-    var headerGen = headerParts[2];
+    // versionParts.length>1 ? versionParts[1] : null;
+    // versionParts.length>2 ? versionParts[2] : null;
     header.generator.name = null;
     header.generator.ver = null;
 
+    var path = headerParts[2].split("/");
+    if (path.length != 3) {
+        throw new Error("Path-Length is expected to have 3 parts (separated by '/') but has only " + path.length);
+    }
+
     /* check app */
-    var headerApp = headerParts[3].split(":");
+    var headerApp = path[0].split(":");
     /* TODO include app-check, but can be ignored first */
     header.app.id = headerApp[0];
     header.app.ver = (headerApp.length>=2) ? headerApp[1] : null;
     header.app.name = (headerApp.length>=3) ? headerApp[2] : null;
 
     /* check module */
-    var headerModule = headerParts[4].split(":");
+    var headerModule = path[1].split(":");
     if (headerModule.length > 2) {
         /* TODO check need of handling */
     }
@@ -208,7 +215,7 @@ function parseHeader(module, channel, headerStr) {
     header.modul.ver = (headerModule.length>=2) ? headerModule[1] : null;
 
     /* check channel */
-    var headerChannel = headerParts[5];
+    var headerChannel = path[2];
     /* TODO validate format! */
     header.channel = headerChannel;
 
