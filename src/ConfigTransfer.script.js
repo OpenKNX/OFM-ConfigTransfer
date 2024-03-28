@@ -146,7 +146,8 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  */
 function exportModuleChannelToString(device, module, channel, keyFormat, separator) {
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
-    return serializeHeader(module, channel) + separator + lines.join(separator) + separator + ";OpenKNX";
+    lines.push(";OpenKNX");
+    return serializeHeader(module, channel) + separator + lines.join(separator);
 }
 
 function parseHeader(module, channel, headerStr) {
