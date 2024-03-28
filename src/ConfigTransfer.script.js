@@ -129,7 +129,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
                 result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
         } catch (e) { 
-            result.push("[ERR@"+paramKey + "]=" + e + ";" + e.message); 
+            throw new Error("[ERR@"+paramKey + "]=" + e + ";" + e.message);
         }
     }
     return result;
