@@ -290,7 +290,14 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     module = header.modul.key;
 
     /* TODO check version */
-    /* TODO check channel */
+
+    /* allow channel auto-selection from export-string */
+    if (channel == 255) {
+        if (isNaN(header.channel)) {
+            throw new Error('No explicit channel defined in export-string!');
+        }
+        channel = header.channel;
+    }
 
 
     var params = getModuleParamsDef(module, channel);
