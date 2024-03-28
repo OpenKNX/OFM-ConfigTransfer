@@ -154,6 +154,18 @@ function exportModuleChannelToString(device, module, channel, keyFormat, separat
     return serializeHeader(module, channel) + separator + lines.join(separator);
 }
 
+function parseVersion(v) {
+    var vParts = v.split('.');
+    if (vParts.length == 1) {
+        var vInt = parseInt(v);
+        return {major: (vInt-vInt%16)/16, minor:vInt%16};
+    } else if (vParts.length <= 3) {
+        return { major: parseInt(vParts[0]), minor: parseInt(vParts[1]), patch: parseInt(vParts[2]) }; 
+    } else {
+        throw new Error("Version Format Error: " + v);
+    }
+}
+
 function parseHeader(module, channel, headerStr) {
     var header = {
         "prefix": undefined,
