@@ -289,7 +289,14 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     }
     module = header.modul.key;
 
-    /* TODO check version */
+    /* check module version */
+    if (header.modul.ver != null && header.modul.ver != '*') {
+        if (header.modul.ver == '-') {
+            /* no version defined - TODO check warning*/
+        } else if (header.modul.ver != channel_params[module].version) {
+            throw new Error('Given Moduled Version '+header.modul.ver+' does NOT match current'+channel_params[module].version+'!');
+        }
+    }
 
     /* allow channel auto-selection from export-string */
     if (channel == 255) {
