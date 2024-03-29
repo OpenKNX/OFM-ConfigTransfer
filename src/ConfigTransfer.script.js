@@ -243,7 +243,7 @@ function parseHeader(module, channel, headerStr) {
     var headerChannel = path[2];
     /* TODO validate format! */
     if (headerChannel!="*" && (headerChannel <0 || headerChannel >99)) {
-        throw new Error("Invalidi Channel-Definition! Allowed Formar 0|1-99|*, but found " + headerChannel);
+        throw new Error("Invalid Channel-Definition! Allowed Formar 0|1-99|*, but found " + headerChannel);
     }
     header.channel = headerChannel;
 
@@ -305,7 +305,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         if (header.modul.ver == '-') {
             /* no version defined - TODO check warning*/
         } else if (header.modul.ver != channel_params[module].version) {
-            throw new Error('Given Moduled Version '+header.modul.ver+' does NOT match current'+channel_params[module].version+'!');
+            throw new Error('Given Module Version '+header.modul.ver+' does NOT match current'+channel_params[module].version+'!');
         }
     }
 
