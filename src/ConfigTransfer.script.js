@@ -75,9 +75,10 @@ function serializeHeader(module, channel) {
         pathApp.push(uctAppName);
     }
 
+    var moduleVersion = channel_params[module].version;
     var pathModule = [
         module,
-        channel_params[module].version != undefined ? channel_params[module].version : '-'
+        ((moduleVersion != undefined) ? hexNumberStr(moduleVersion) : '-')
     ];
 
     var path =  [pathApp.join(":"), pathModule.join(":"), channel];
@@ -304,6 +305,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     if (header.modul.ver != null && header.modul.ver != '*') {
         if (header.modul.ver == '-') {
             /* no version defined - TODO check warning*/
+        } else if (isNaN(header.modul.ver)) {
+            throw new Error('Given Module Version '+header.modul.ver+' is NOT numeric!');
         } else if (header.modul.ver != channel_params[module].version) {
             throw new Error('Given Module Version '+header.modul.ver+' does NOT match current'+channel_params[module].version+'!');
         }
