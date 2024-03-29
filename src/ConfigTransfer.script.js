@@ -70,10 +70,7 @@ function serializeHeader(module, channel) {
     version.push(uctGenVer);
     */
 
-    var pathApp = [
-        "0x"+uctAppId.toString(16).toUpperCase(), 
-        "0x"+uctAppVer.toString(16).toUpperCase()
-    ];
+    var pathApp = [hexNumberStr(uctAppId), hexNumberStr(uctAppVer)];
     if (uctAppName) {
         pathApp.push(uctAppName);
     }
@@ -149,6 +146,11 @@ function exportModuleChannelToString(device, module, channel, keyFormat, separat
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
     lines.push(";OpenKNX");
     return serializeHeader(module, channel) + separator + lines.join(separator);
+}
+
+
+function hexNumberStr(x) {
+    return "0x"+x.toString(16).toUpperCase();
 }
 
 function parseVersion(v) {
