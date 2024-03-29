@@ -26,10 +26,7 @@ function btnChannelExport(device, online, progress, context) {
 }
 
 function btnChannelImport(device, online, progress, context) {
-    // TODO remove module -> is part of export-string!
-    // var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
-    var module = null;
-    // TODO support auto-detection
+    var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
