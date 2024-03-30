@@ -343,6 +343,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
                 paramIndex = findIndexByParamName(params, paramKey);
             } else if (paramKey < newValues.length) {
                 // valid index
+                // TODO FIXME: Ensure same version!
                 paramIndex = paramKey;
             } else {
                 // TODO error-handling
