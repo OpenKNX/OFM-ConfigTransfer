@@ -97,6 +97,15 @@ function getModuleParamsDef(module, channel) {
     return module_params[channel==0 ? "share" : "templ"];
 }
 
+function getDeviceParameter(device, paramFullName, paramRefIdSuffix) {
+    var paramObj = device.getParameterByName(paramFullName);
+    var paramObjRefId = paramObj.parameterRefId;
+    if (paramObjRefId.length>2 && paramObjRefId.slice(-2)!=paramRefIdSuffix) {
+        paramObj = device.getParameterById(paramObjRefId.slice(0,-2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
+    }
+    return paramObj;
+}
+
 /**
  * Transform configuration of one channel to single-line string representation.
  * @param {object} device - the device object provided by ETS
@@ -112,7 +121,9 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
 
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
-        var paramName = params.names[i];
+        var paramNameDef = params.names[i].split(":");
+        var paramName = paramNameDef[0];
+        var paramRefIdSuffix = (paramNameDef>1) ? parseInt(paramNameDef[1]) : 1;
         var paramFullName = module + "_" + paramName.replace('~', channel);
         
         /* compact or human readable output */
@@ -122,10 +133,12 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
         }
 
         try { 
-            var paramValue = device.getParameterByName(paramFullName).value;
+            var paramObj = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
+            var paramValue = paramObj.value;
+
             if (paramValue != params.defaults[i] && (exportAll || paramObj.isActive)) {
                 /* non-default values only */
-                result.push(paramKey + "=" +  serializeParamValue(paramValue));
+                result.push(paramKey + (paramRefIdSuffix!=1 ? ":"+paramRefIdSuffix : '') + "=" +  serializeParamValue(paramValue));
             }
         } catch (e) { 
             throw new Error("[ERR@"+paramKey + "]=" + e + ";" + e.message);
@@ -252,10 +265,19 @@ function parseHeader(module, channel, headerStr) {
     return header;
 }
 
-function findIndexByParamName(params, paramKey) {
+function findIndexByParamName(params, paramKey, paramRefSuffix) {
     var paramName = paramKey;
 
     // TODO FIXME: replace with a implementation of better runtime!
+    if (paramRefSuffix==1) {
+        for (var i = 0; i < params.names.length; i++) {
+            if (params.names[i] == paramName) {
+                return i;
+            }
+        }
+    }
+    paramName = paramName + ':' + paramRefSuffix;
+    // TODO FIXME remove redundancy!
     for (var i = 0; i < params.names.length; i++) {
         if (params.names[i] == paramName) {
             return i;
@@ -335,13 +357,17 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     for (var i = 0; i < importContent.length; i++) {
         var line = importContent[i].split("=");
         if (line.length >= 2) {
-            var paramKey = line[0];
+            var paramPart = line[0].split(":");
+            var paramKey = paramPart[0];
+            /* TODO check format */
+            var paramRefSuffix = paramPart.length>1 ? parseInt(paramPart[1]) : 1;
+
             var paramValue = unserializeParamValue(line.slice(1).join("="));
             var paramIndex = -1;
 
             if (isNaN(paramKey)) {
                 // param is given by name
-                paramIndex = findIndexByParamName(params, paramKey);
+                paramIndex = findIndexByParamName(params, paramKey, paramRefSuffix);
             } else if (paramKey < newValues.length) {
                 // valid index
                 // TODO FIXME: Ensure same version!
@@ -365,7 +391,10 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     /* write new values */
     var regexExcludeValue = /^\%K\d+\%$/;
     for (var i = 0; i < params.names.length; i++) {
-        var paramName = params.names[i];
+        var paramNameDef = params.names[i].split(":");
+        var paramName = paramNameDef[0];
+        var paramRefIdSuffix = (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1;
+
         var paramFullNameTempl = module + "_" + paramName;
         var paramFullName      = module + "_" + paramName.replace('~', channel);
 
@@ -375,7 +404,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
         try {
             /* TODO set paramValue to channel-specific value */
             if ((paramValue !=null) && !regexExcludeValue.test(paramValue)) {
-                device.getParameterByName(paramFullName).value = paramValue;
+                getDeviceParameter(device, paramFullName, paramRefIdSuffix).value = paramValue;
             }
 
         } catch (e) {
