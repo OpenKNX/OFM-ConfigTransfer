@@ -14,6 +14,13 @@ Von Cornelius Köpp 2024
 
 
 
+## Inhaltsverzeichnis
+* [Funktionen](#funktionen)
+  * [Export](#export)
+  * [Import](#import)
+  * [Kanaltransfer](#kanaltransfer)
+  * [Standardwerte](#standardwerte)
+
 ## Funktionen
 
 
