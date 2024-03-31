@@ -15,7 +15,7 @@ function btnChannelExport(device, online, progress, context) {
     var channelSource = device.getParameterByName(context.p_channelSource).value;
 
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
-    var exportFormat = (exportFormatSelection==3) ? "" : "reduced";
+    var exportFormat = (exportFormatSelection==3) ? "" : "name";
     var separator = (exportFormatSelection==1) ? "\n" : "§";
 
     // TODO add p_messageOutput again?
@@ -100,28 +100,26 @@ function getModuleParamsDef(module, channel) {
  * @param {object} device - the device object provided by ETS
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
- * @param {string?} keyFormat - '','name','full','reduced'
+ * @param {string} keyFormat - ''=defindex,'name'
  * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
 function exportModuleChannelToStrings(device, module, channel, keyFormat) {
     var params = getModuleParamsDef(module, channel);
-    
+
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
         var paramName = params.names[i];
-        var paramFullName = module + "_" + paramName.replace('%C%', channel);
+        var paramFullName = module + "_" + paramName.replace('~', channel);
         
         /* compact or human readable output */
         var paramKey = i;
-        if (keyFormat=="full") {
+        if (keyFormat=="name") {
             paramKey = paramName;
-        } else if (keyFormat=="reduced") {
-            paramKey = paramName.replace('%C%', "~");
         }
 
         try { 
-            var paramValue = device.getParameterByName(paramFullName).value; 
-            if (paramValue != params.defaults[i]) { 
+            var paramValue = device.getParameterByName(paramFullName).value;
+            if (paramValue != params.defaults[i]) {
                 /* non-default values only */
                 result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
@@ -137,7 +135,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  * @param {object} device - the device object provided by ETS
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
- * @param {string?} keyFormat - '','name','full','reduced'
+ * @param {string} keyFormat - ''=defindex,'name'
  * @param {string} separator - the separator between header and param-values
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
@@ -250,7 +248,7 @@ function parseHeader(module, channel, headerStr) {
 }
 
 function findIndexByParamName(params, paramKey) {
-    var paramName = paramKey.replace("~", '%C%');
+    var paramName = paramKey;
 
     // TODO FIXME: replace with a implementation of better runtime!
     for (var i = 0; i < params.names.length; i++) {
@@ -364,9 +362,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     for (var i = 0; i < params.names.length; i++) {
         var paramName = params.names[i];
         var paramFullNameTempl = module + "_" + paramName;
-        var paramFullName      = module + "_" + paramName.replace('%C%', channel);
+        var paramFullName      = module + "_" + paramName.replace('~', channel);
 
-        /* TODO make configurable: i || paramName || params.names[i].replace('f%C%', "~") */
         var paramKey = i;
         var paramValue = newValues[i];
 
