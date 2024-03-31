@@ -386,11 +386,11 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
                 newValues[paramIndex] = paramValue;
             } else {
                 // TODO handling of invalid parameters!
-                throw new Error('Unknown Parameter: '+ paramIndex + ' (line "'+line+'")');
+                throw new Error('Unknown Parameter: '+ paramKey + ' (line "'+importContent[i]+'")');
             }
         } else {
             // TODO error-handling; this is not a param=value pair
-            throw new Error('Invalid Entry: '+ line);
+            throw new Error('Invalid Entry: '+ importContent[i]);
         }
     }
 
