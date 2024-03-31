@@ -18,13 +18,13 @@ function btnChannelExport(device, online, progress, context) {
 
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
-    var separator = (exportFormatSelection==1) ? "\n" : "§";
+    var multiLine = (exportFormatSelection==1);
 
     // TODO add p_messageOutput again?
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = "";
-    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator, includeInactive);
+    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeInactive);
 }
 
 function btnChannelImport(device, online, progress, context) {
@@ -153,13 +153,14 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} keyFormat - ''=defindex,'name'
- * @param {string} separator - the separator between header and param-values
+ * @param {boolean} multiLine - defines the separator between header and param-values and end ('\n' for multiline, '§' else)
  * @param {boolean} includeNonActive - export all values, not only the actives
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToString(device, module, channel, keyFormat, separator, includeNonActive) {
+function exportModuleChannelToString(device, module, channel, keyFormat, multiLine, includeNonActive) {
     var lines = exportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive);
     lines.push(";OpenKNX");
+    var separator = multiLine ? '\n' : '§';
     return serializeHeader(module, channel) + separator + lines.join(separator);
 }
 
@@ -428,7 +429,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
         throw new Error('Source and target of copy must not be the same!');
     }
     /* TODO copy without serialize/deserialize */
-    var exportStr = exportModuleChannelToString(device, module, channelSource, "", "§", true);
+    var exportStr = exportModuleChannelToString(device, module, channelSource, "", false, true);
     importModuleChannelFromString(device, module, channelTarget, exportStr);
 }
 
