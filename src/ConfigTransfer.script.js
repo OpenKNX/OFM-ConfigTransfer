@@ -124,24 +124,24 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
 
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
-        var paramNameDef = params.names[i].split(":");
-        var paramName = paramNameDef[0];
-        var paramRefIdSuffix = (paramNameDef>1) ? parseInt(paramNameDef[1]) : 1;
-        var paramFullName = module + "_" + paramName.replace('~', channel);
         
         /* compact or human readable output */
         var paramKey = i;
         if (keyFormat=="name") {
-            paramKey = paramName;
+            paramKey = params.names[i];
         }
 
         try { 
+            var paramNameDef = params.names[i].split(":");
+            var paramName = paramNameDef[0];
+            var paramRefIdSuffix = (paramNameDef>1) ? parseInt(paramNameDef[1]) : 1;
+
+            var paramFullName = module + "_" + paramName.replace('~', channel);
             var paramObj = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
             var paramValue = paramObj.value;
-
             if (paramValue != params.defaults[i] && (exportAll || paramObj.isActive)) {
                 /* non-default values only */
-                result.push(paramKey + (paramRefIdSuffix!=1 ? ":"+paramRefIdSuffix : '') + "=" +  serializeParamValue(paramValue));
+                result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
         } catch (e) { 
             throw new Error("[ERR@"+paramKey + "]=" + e + ";" + e.message);
