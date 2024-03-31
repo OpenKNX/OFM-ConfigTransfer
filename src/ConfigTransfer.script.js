@@ -132,12 +132,11 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
         }
 
         try { 
-            var paramNameDef = params.names[i].split(":");
-            var paramName = paramNameDef[0];
-            var paramRefIdSuffix = (paramNameDef>1) ? parseInt(paramNameDef[1]) : 1;
 
-            var paramFullName = module + "_" + paramName.replace('~', channel);
-            var paramObj = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
+            /* TODO extract to function! */
+            var paramNameDef = params.names[i].split(":");
+            var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
+            var paramObj = getDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
 
             if (exportAll || paramObj.isActive) {
                 var paramValue = paramObj.value;
