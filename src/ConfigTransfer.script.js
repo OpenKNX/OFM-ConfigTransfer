@@ -138,10 +138,13 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
 
             var paramFullName = module + "_" + paramName.replace('~', channel);
             var paramObj = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
-            var paramValue = paramObj.value;
-            if (paramValue != params.defaults[i] && (exportAll || paramObj.isActive)) {
-                /* non-default values only */
-                result.push(paramKey + "=" +  serializeParamValue(paramValue));
+
+            if (exportAll || paramObj.isActive) {
+                var paramValue = paramObj.value;
+                if (paramValue != params.defaults[i]) {
+                    /* non-default values only */
+                    result.push(paramKey + "=" +  serializeParamValue(paramValue));
+                }
             }
         } catch (e) { 
             throw new Error("[ERR@"+paramKey + "]=" + e + ";" + e.message);
