@@ -89,7 +89,7 @@ function serializeHeader(module, channel) {
 
 function getModuleParamsDef(module, channel) {
     var module_params = channel_params[module];
-    if (channel>0 && module_params.channels && (channel > module_params.channels)) {
+    if (channel>0 && (!module_params.channels || (channel > module_params.channels))) {
         throw new Error("Channel " + channel + " NOT available in module " + module + "!");
     }
     return module_params[channel==0 ? "share" : "templ"];
