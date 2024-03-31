@@ -365,6 +365,14 @@
                 </TypeRestriction>
               </ParameterType>
               
+              <ParameterType Id="%AID%_PT-ExportParamSelection" Name="ExportParamSelection">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration   Value="0" Id="%ENID%" Text="aktive/sichtbare (Standard)"               />
+                  <Enumeration   Value="1" Id="%ENID%" Text="alle (auch inaktive/unsichtbare)"          />
+                </TypeRestriction>
+              </ParameterType>
+
+              
             </ParameterTypes>
             <Parameters>
 
@@ -375,6 +383,7 @@
 
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
               <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"           Text="Inhalt/Kanal"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"   Text="Exportierte Parameter" Value="0"   />
               <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"           Text="Format"                Value="0"   />
               <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"              Text="Export-Resultat"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"             Text="Export-String"         Value=""    />
@@ -400,6 +409,7 @@
               <ParameterRef Id="%AID%_P-%TT%00202_R-%TT%0020201" RefId="%AID%_P-%TT%00202" />
               <ParameterRef Id="%AID%_P-%TT%00203_R-%TT%0020301" RefId="%AID%_P-%TT%00203" />
               <ParameterRef Id="%AID%_P-%TT%00204_R-%TT%0020401" RefId="%AID%_P-%TT%00204" />
+              <ParameterRef Id="%AID%_P-%TT%00205_R-%TT%0020501" RefId="%AID%_P-%TT%00205" />
               <ParameterRef Id="%AID%_P-%TT%00300_R-%TT%0030001" RefId="%AID%_P-%TT%00300" />
               <ParameterRef Id="%AID%_P-%TT%00301_R-%TT%0030101" RefId="%AID%_P-%TT%00301" />
               <ParameterRef Id="%AID%_P-%TT%00302_R-%TT%0030201" RefId="%AID%_P-%TT%00302" />
@@ -466,8 +476,9 @@
                   -->
                   <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
-                  <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;UCT_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;UCT_ExportSource&quot;, &quot;p_exportFormatSelection&quot;:&quot;UCT_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;UCT_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;UCT_ExportOutput&quot;  }" />
+                  <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;UCT_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;UCT_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;UCT_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;UCT_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;UCT_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;UCT_ExportOutput&quot;  }" />
                   <!--
                   <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
                   -->

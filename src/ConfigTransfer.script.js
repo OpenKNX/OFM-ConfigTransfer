@@ -14,6 +14,8 @@ function btnChannelExport(device, online, progress, context) {
     var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
 
+    var includeInactive = device.getParameterByName(context.p_exportParamSelectionSelection).value;
+
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
     var separator = (exportFormatSelection==1) ? "\n" : "§";
@@ -22,7 +24,7 @@ function btnChannelExport(device, online, progress, context) {
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = "";
-    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator);
+    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, separator, includeInactive);
 }
 
 function btnChannelImport(device, online, progress, context) {
@@ -101,10 +103,12 @@ function getModuleParamsDef(module, channel) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} keyFormat - ''=defindex,'name'
+ * @param {boolean} includeNonActive - export all values, not only the actives
  * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
-function exportModuleChannelToStrings(device, module, channel, keyFormat) {
+function exportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive) {
     var params = getModuleParamsDef(module, channel);
+    var exportAll = !!includeNonActive;
 
     var result = [];
     for (var i = 0; i < params.names.length; i++) {
@@ -119,7 +123,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
 
         try { 
             var paramValue = device.getParameterByName(paramFullName).value;
-            if (paramValue != params.defaults[i]) {
+            if (paramValue != params.defaults[i] && (exportAll || paramObj.isActive)) {
                 /* non-default values only */
                 result.push(paramKey + "=" +  serializeParamValue(paramValue));
             }
@@ -137,10 +141,11 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat) {
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} keyFormat - ''=defindex,'name'
  * @param {string} separator - the separator between header and param-values
+ * @param {boolean} includeNonActive - export all values, not only the actives
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToString(device, module, channel, keyFormat, separator) {
-    var lines = exportModuleChannelToStrings(device, module, channel, keyFormat);
+function exportModuleChannelToString(device, module, channel, keyFormat, separator, includeNonActive) {
+    var lines = exportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive);
     lines.push(";OpenKNX");
     return serializeHeader(module, channel) + separator + lines.join(separator);
 }
@@ -394,7 +399,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
         throw new Error('Source and target of copy must not be the same!');
     }
     /* TODO copy without serialize/deserialize */
-    var exportStr = exportModuleChannelToString(device, module, channelSource, "", "§");
+    var exportStr = exportModuleChannelToString(device, module, channelSource, "", "§", true);
     importModuleChannelFromString(device, module, channelTarget, exportStr);
 }
 
