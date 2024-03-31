@@ -356,12 +356,12 @@
 
               <ParameterType Id="%AID%_PT-ExportFormat" Name="ExportFormat">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration   Value="0" Id="%ENID%" Text="Standardformat (für Import)"                                       />
-                  <Enumeration   Value="1" Id="%ENID%" Text="Menschenlesbar/Mehrzeilige (für Analyse)"                           />
+                  <Enumeration   Value="0" Id="%ENID%" Text="Standardformat (für Import)"               />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Menschenlesbar/Mehrzeilige (für Analyse)"  />
                   <!--
-                  <Enumeration   Value="2" Id="%ENID%" Text="Reduzierte Parameternamen"                                   />
+                  <Enumeration   Value="2" Id="%ENID%" Text="Reduzierte Parameternamen"                 />
                   -->
-                  <Enumeration   Value="3" Id="%ENID%" Text="Kompakt (Import nur in selber Version)" />
+                  <Enumeration   Value="3" Id="%ENID%" Text="Kompakt (Import nur in selber Version)"    />
                 </TypeRestriction>
               </ParameterType>
               
