@@ -32,6 +32,7 @@ function btnChannelImport(device, online, progress, context) {
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
+    param_messageOutput.value = "Importing Channel ...";
     param_messageOutput.value = importModuleChannelFromString(device, module, channelTarget, importLine);
 }
 
@@ -40,6 +41,7 @@ function btnChannelCopy(device, online, progress, context) {
     var channelSource = device.getParameterByName(context.p_channelSource).value;
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
+    param_messageOutput.value = "Copying Channel ...";
     param_messageOutput.value = copyModuleChannel(device, module, channelSource, channelTarget);
 }
 
@@ -47,6 +49,7 @@ function btnChannelReset(device, online, progress, context) {
     var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
+    param_messageOutput.value = "Resetting Channel ...";
     param_messageOutput.value = resetModuleChannel(device, module, channelTarget);
 }
 
