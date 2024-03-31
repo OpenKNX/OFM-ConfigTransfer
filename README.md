@@ -20,6 +20,9 @@ Von Cornelius Köpp 2024
   * [Import](#import)
   * [Kanaltransfer](#kanaltransfer)
   * [Standardwerte](#standardwerte)
+* [Integration in ETS-Applikation](#integration-in-ets-applikation)
+  * [Voraussetzungen](#voraussetzungen)
+  * [ApplikationName.xml](#applikationnamexml)
 
 ## Funktionen
 
@@ -61,3 +64,20 @@ Durch die ETS-Funktion **Standardparmeter** werden alle Parameter des Gerätes a
 * Es erfolgt kein (direkter) Schreibzugriff auf Parameter anderer Kanäle oder Module um deren Konfiguration nicht zu verändern. 
   Bei kanalübergreifenden Abhängigkeiten können Nebeneffekte jedoch nicht ausgeschlossen werden. 
 
+
+
+## Integration in ETS-Applikation
+
+Zur Integration des Konfigurationstransfers muss nur die OpenKNX ETS Applikation erweitert werden. 
+An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies kann sich mit zukünftigen Funktionserweiterungen jedoch noch ändern.
+
+### Voraussetzungen
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version <span style="color:red;">größer 3.0.10 (TODO Update)</span> benötigt um die Modulinformationen zur integrieren.
+
+### ApplikationName.xml
+An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden
+```
+  <op:define prefix="UCT"
+             share="../lib/OFM-ConfigTransfer/src/ConfigTransfer.share.xml"
+             ModuleType="9" />
+```
