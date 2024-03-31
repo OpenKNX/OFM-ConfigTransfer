@@ -23,7 +23,7 @@ function btnChannelExport(device, online, progress, context) {
     // TODO add p_messageOutput again?
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    param_exportOutput.value = "";
+    param_exportOutput.value = "Exporting Channel ...";
     param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeInactive);
 }
 
