@@ -365,9 +365,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
             /* TODO check format */
             var paramRefSuffix = paramPart.length>1 ? parseInt(paramPart[1]) : 1;
 
-            var paramValue = unserializeParamValue(line.slice(1).join("="));
             var paramIndex = -1;
-
             if (isNaN(paramKey)) {
                 // param is given by name
                 paramIndex = findIndexByParamName(params, paramKey, paramRefSuffix);
@@ -380,6 +378,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
             }
 
             if (paramIndex >=0) {
+                var paramValue = unserializeParamValue(line.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
             } else {
                 // TODO handling of invalid parameters!
