@@ -30,7 +30,7 @@ Von Cornelius Köpp 2024
 ### Export
 Exportieren eines Modul-Kanals (oder der Modul-Basiskonfiguration) in eine Zeichenkette. 
 
-Der Export erfolgt in eine einzeilige (zum Import) oder mehrzeilige (zum Analyse) Zeichenkette in einem standardisierten und identifizierbaren Format.
+Der Export erfolgt in eine einzeilige (zum Import) oder mehrzeilige (zur Analyse) Zeichenkette in einem standardisierten und identifizierbaren Format.
 Dieses enthält neben der individuellen Konfiguration auch folgende Informationen als Referenz:
 * Applikations-ID und Applikations-Version der OpenKNX-Applikation
 * Modul-Schlüssel und soweit vorhanden Modul-Version
