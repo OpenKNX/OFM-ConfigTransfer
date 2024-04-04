@@ -126,10 +126,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
     for (var i = 0; i < params.names.length; i++) {
         
         /* compact or human readable output */
-        var paramKey = i;
-        if (keyFormat=="name") {
-            paramKey = params.names[i];
-        }
+        var paramKey = (keyFormat=="name") ? params.names[i] : i;
 
         try { 
 
