@@ -1,20 +1,22 @@
 @startebnf
 
-CONFIG_STRING = CONFIG_HEADER, ("§" , {CONFIG_VALUE, "§"} | "\n" , {CONFIG_VALUE, "\n"}), CONFIG_END;
+title OpenKNX Universal Config Transfer Serialization Format
 
-CONFIG_HEADER = "OpenKNX", ",", VERSION_DEF, ",", CONFIG_PATH;
+UCT_STRING = UCT_HEADER, ("§" (*Single-Line:\nRequired for Import *), {CONFIG_VALUE, "§"} | "\n" (*Multi-Line:\nFor Humans *), {CONFIG_VALUE, "\n"}), UCT_END;
+
+UCT_HEADER = "OpenKNX", ",", VERSION_DEF, ",", CONFIG_PATH;
 
 ' VERSION_DEF = "v0", [ ":", SEMVER, [":", GENERATOR]];
-VERSION_DEF = "cv0", [ ":", GENERATOR];
+VERSION_DEF = "cv0" (* May change in first release! *), [ ":", GENERATOR];
 
 CONFIG_PATH = APP_DEF, "/", MODULE_DEF, "/", CHANNEL_DEF;
 
 
-APP_DEF = ( "*" | APP_ID, [":", [VERSION] , [ ":" , APP_NAME ]] );
+APP_DEF = ( "*" | APP_ID, [":", [VERSION] , [ ":" , APP_NAME ](* Not yet included *)] );
 
 MODULE_DEF = MODULE_KEY, [":", VERSION];
 
-CHANNEL_DEF = ("0" | "*" | ?1-99?);
+CHANNEL_DEF = ("0" (* Base-Config outside of Channel *) | "*" | ?1-99?);
 
 APP_ID  = HEXNUM;
 
@@ -28,7 +30,7 @@ CONFIG_VALUE = PARAM_KEY, "=", PARAM_VALUE;
 
 PARAM_KEY = PARAM_NAME, [":", PARAM_REF_ID];
 
-CONFIG_END = ";OpenKNX";
+UCT_END = ";OpenKNX";
 
 /'
 digit-excluding-zero = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
