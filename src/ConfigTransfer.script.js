@@ -183,7 +183,7 @@ function parseVersion(v) {
     }
 }
 
-function parseHeader(module, channel, headerStr) {
+function uctParseHeader(headerStr) {
     var header = {
         "prefix": undefined,
         "format": undefined,
@@ -209,7 +209,7 @@ function parseHeader(module, channel, headerStr) {
 
     /* 1. check prefix */
     if (headerParts[0] != "OpenKNX") {
-        throw new Error('Format Prefix does NOT match! "' + headerParts[0] + '" != "OpenKNX"');
+        throw new Error('Format Prefix does NOT match! Expected "OpenKNX" but found "' + headerParts[0] + '"!');
     }
     header.prefix = headerParts[0];
 
@@ -219,7 +219,7 @@ function parseHeader(module, channel, headerStr) {
     }
     var versionParts = headerParts[1].split(":");
     if (versionParts[0] != uctFormatVer) {
-        throw new Error('Format Version does NOT match! "' + versionParts[0] + '" != "'+uctFormatVer+'"');
+        throw new Error('Format Version does NOT match! Expected "'+uctFormatVer+'" but found "' + versionParts[0] + '"!');
     }
     header.format = versionParts[0];
 
@@ -236,7 +236,7 @@ function parseHeader(module, channel, headerStr) {
 
     var path = headerParts[2].split("/");
     if (path.length != 3) {
-        throw new Error("Path-Length is expected to have 3 parts (separated by '/') but has only " + path.length);
+        throw new Error("Path is expected to have 3 parts (separated by '/') but has only " + path.length);
     }
 
     /* check app */
@@ -300,11 +300,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     var result = [];
     var importLines = exportStr.split("§");
 
-    /*
-     OpenKNX,cv0:uct:0.1.0,0xHHHH:6.15:StateEngine/LOG:x.y.z/1
-     [0]     [1] [2]       [3]                     [4]       [5]
-     */
-    var header = parseHeader(module, channel, importLines[0]);
+    var header = uctParseHeader(importLines[0]);
 
     /* check for completeness */
     var importEnd = importLines[importLines.length-1];
