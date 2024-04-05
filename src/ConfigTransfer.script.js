@@ -24,7 +24,7 @@ function btnChannelExport(device, online, progress, context) {
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = "Exporting Channel ...";
-    param_exportOutput.value = exportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeInactive);
+    param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeInactive);
 }
 
 function btnChannelImport(device, online, progress, context) {
@@ -35,7 +35,7 @@ function btnChannelImport(device, online, progress, context) {
     
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = "Importing Channel ...";
-    param_messageOutput.value = importModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
+    param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
 }
 
 function btnChannelCopy(device, online, progress, context) {
@@ -44,7 +44,7 @@ function btnChannelCopy(device, online, progress, context) {
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = "Copying Channel ...";
-    param_messageOutput.value = copyModuleChannel(device, module, channelSource, channelTarget);
+    param_messageOutput.value = uctCopyModuleChannel(device, module, channelSource, channelTarget);
 }
 
 function btnChannelReset(device, online, progress, context) {
@@ -52,22 +52,22 @@ function btnChannelReset(device, online, progress, context) {
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = "Resetting Channel ...";
-    param_messageOutput.value = resetModuleChannel(device, module, channelTarget);
+    param_messageOutput.value = uctResetModuleChannel(device, module, channelTarget);
 }
 
 
 
 
-function serializeParamValue(paramValue) {
+function uctSerializeParamValue(paramValue) {
     /* TODO check inclusion of ` ` and common characters without encoding */
     return encodeURIComponent(paramValue);
 }
 
-function unserializeParamValue(encodedParamValue) {
+function uctUnserializeParamValue(encodedParamValue) {
     return decodeURIComponent(encodedParamValue);
 }
 
-function serializeHeader(module, channel) {
+function uctCreateHeader(module, channel) {
     // OpenKNX,v1:0.1.0,0xAFA7:110:StateEngine/LOG:3.8.0/1
 
     var version = [uctFormatVer];
@@ -120,7 +120,7 @@ function getDeviceParameter(device, paramFullName, paramRefIdSuffix) {
  * @param {boolean} includeNonActive - export all values, not only the actives
  * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
-function exportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive) {
+function uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive) {
     var params = getModuleParamsDef(module, channel);
     var exportAll = !!includeNonActive;
 
@@ -141,7 +141,7 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
                 var paramValue = paramObj.value;
                 if (paramValue != params.defaults[i]) {
                     /* non-default values only */
-                    result.push(paramKey + "=" +  serializeParamValue(paramValue));
+                    result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
                 }
             }
         } catch (e) { 
@@ -161,11 +161,11 @@ function exportModuleChannelToStrings(device, module, channel, keyFormat, includ
  * @param {boolean} includeNonActive - export all values, not only the actives
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function exportModuleChannelToString(device, module, channel, keyFormat, multiLine, includeNonActive) {
-    var lines = exportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive);
+function uctExportModuleChannelToString(device, module, channel, keyFormat, multiLine, includeNonActive) {
+    var lines = uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive);
     lines.push(";OpenKNX");
     var separator = multiLine ? '\n' : '§';
-    return serializeHeader(module, channel) + separator + lines.join(separator);
+    return uctCreateHeader(module, channel) + separator + lines.join(separator);
 }
 
 
@@ -173,7 +173,7 @@ function hexNumberStr(x) {
     return "0x"+x.toString(16).toUpperCase();
 }
 
-function parseVersion(v) {
+function uctParseVersion(v) {
     var vParts = v.split('.');
     if (vParts.length == 1) {
         var vInt = parseInt(v);
@@ -298,7 +298,7 @@ function findIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
-function importModuleChannelFromString(device, module, channel, exportStr, importCheck) {
+function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
 
     var checkModuleVersion = (importCheck >= 1);
     var checkAppId =  (importCheck >= 7);
@@ -403,7 +403,7 @@ function importModuleChannelFromString(device, module, channel, exportStr, impor
             }
 
             if (paramIndex >=0) {
-                var paramValue = unserializeParamValue(line.slice(1).join("="));
+                var paramValue = uctUnserializeParamValue(line.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
             } else {
                 // TODO handling of invalid parameters!
@@ -450,13 +450,13 @@ function importModuleChannelFromString(device, module, channel, exportStr, impor
  * @param {number} channelSource 
  * @param {number} channelTarget 
  */
-function copyModuleChannel(device, module, channelSource, channelTarget) {
+function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     if (channelTarget == channelSource) {
         throw new Error('Source and target of copy must NOT be the same!');
     }
     /* TODO copy without serialize/deserialize */
-    var exportStr = exportModuleChannelToString(device, module, channelSource, "", false, true);
-    importModuleChannelFromString(device, module, channelTarget, exportStr, 7);
+    var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
+    uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
     return "[Copied Channel "+channelSource+" of Module "+module+" to Channel "+channelTarget+": OK]";
 }
 
@@ -467,8 +467,8 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
  * @param {string} module 
  * @param {number} channel 
  */
-function resetModuleChannel(device, module, channel) {
-    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX", 7);
+function uctResetModuleChannel(device, module, channel) {
+    uctImportModuleChannelFromString(device, module, channel, uctCreateHeader(module, channel) + '§' + ";OpenKNX", 7);
     return "[Channel "+channel+" of Module "+module+" Reset: OK]";
 }
 
