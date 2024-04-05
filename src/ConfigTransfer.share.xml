@@ -356,8 +356,8 @@
                   <Enumeration   Value="1" Id="%ENID%" Text="Menschenlesbar/Mehrzeilige (für Analyse)"  />
                   <!--
                   <Enumeration   Value="2" Id="%ENID%" Text="Reduzierte Parameternamen"                 />
-                  -->
                   <Enumeration   Value="3" Id="%ENID%" Text="Kompakt (Import nur in selber Version)"    />
+                  -->
                 </TypeRestriction>
               </ParameterType>
               
