@@ -457,6 +457,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
     /* TODO copy without serialize/deserialize */
     var exportStr = exportModuleChannelToString(device, module, channelSource, "", false, true);
     importModuleChannelFromString(device, module, channelTarget, exportStr, 7);
+    return "[Copied Channel "+channelSource+" of Module "+module+" to Channel "+channelTarget+": OK]";
 }
 
 /**
@@ -468,6 +469,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
  */
 function resetModuleChannel(device, module, channel) {
     importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX", 7);
+    return "[Channel "+channel+" of Module "+module+" Reset: OK]";
 }
 
 // -- OFM-ConfigTransfer //
