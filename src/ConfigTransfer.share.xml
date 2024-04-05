@@ -344,13 +344,9 @@
 
               <ParameterType Id="%AID%_PT-ImportCheck" Name="ImportCheck">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration   Value="0" Id="%ENID%" Text="exakte Übereinstimmung (ETS-App &amp; Modul)"         />
-                  <Enumeration   Value="1" Id="%ENID%" Text="exakte Modul-Version + gleiche nicht neuere ETS-App"  />
-                  <Enumeration   Value="2" Id="%ENID%" Text="exakte Modul-Version + gleiche ETS-App"               />
-                  <Enumeration   Value="3" Id="%ENID%" Text="exakte Modul-Version"                                 />
-                  <Enumeration   Value="4" Id="%ENID%" Text="auch ältere Modul-Version"                            />
-                  <Enumeration   Value="5" Id="%ENID%" Text="passende Parameternamen"                              />
-                  <Enumeration Value="255" Id="%ENID%" Text="Import erzwingen!"                                    />
+                  <Enumeration   Value="7" Id="%ENID%" Text="streng       (selbe Modul- &amp; ETS-App-Version)"     />
+                  <Enumeration   Value="1" Id="%ENID%" Text="moderat   (selbe Modul-Version)"  />
+                  <Enumeration   Value="0" Id="%ENID%" Text="locker       (gleiche Parameternamen)"          />
                 </TypeRestriction>
               </ParameterType>
 
@@ -367,8 +363,8 @@
               
               <ParameterType Id="%AID%_PT-ExportParamSelection" Name="ExportParamSelection">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration   Value="0" Id="%ENID%" Text="aktive/sichtbare (Standard)"               />
-                  <Enumeration   Value="1" Id="%ENID%" Text="alle (auch inaktive/unsichtbare)"          />
+                  <Enumeration   Value="0" Id="%ENID%" Text="nur aktive/sichtbare (Standard)"                     />
+                  <Enumeration   Value="1" Id="%ENID%" Text="alle Parameter (auch inaktive/unsichtbare)"          />
                 </TypeRestriction>
               </ParameterType>
 
@@ -378,7 +374,7 @@
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TextMaxLen"             Text="Export-String"         Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"           Text="Import-Ziel"           Value="255" />
-              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"            Text="Kompatiblitätsprüfung" Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"            Text="Kompatiblitätsprüfung" Value="7"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"              Text="Import-Resultat"       Value=""    />
 
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
@@ -461,6 +457,17 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
+                  <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
+                    <when test="7">
+                    </when>
+                    <when test="1">
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
+                    </when>
+                    <when test="0">
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                    </when>
+                  </choose>
+
                   <Button Id="%AID%_B-%TT%00100" Text="Importieren"   EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;UCT_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;UCT_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;UCT_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;UCT_ImportUserLog&quot; }" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
                 </ParameterBlock>

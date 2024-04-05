@@ -31,9 +31,11 @@ function btnChannelImport(device, online, progress, context) {
     var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
+    var importCheck = device.getParameterByName(context.p_importCheck).value;
+    
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = "Importing Channel ...";
-    param_messageOutput.value = importModuleChannelFromString(device, module, channelTarget, importLine);
+    param_messageOutput.value = importModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
 }
 
 function btnChannelCopy(device, online, progress, context) {
@@ -296,7 +298,12 @@ function findIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
-function importModuleChannelFromString(device, module, channel, exportStr) {
+function importModuleChannelFromString(device, module, channel, exportStr, importCheck) {
+
+    var checkModuleVersion = (importCheck >= 1);
+    var checkAppId =  (importCheck >= 7);
+    var checkAppVersion = (importCheck >= 7);
+
     var result = [];
     var importLines = exportStr.split("§");
 
@@ -305,14 +312,8 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     /* check for completeness */
     var importEnd = importLines[importLines.length-1];
     if (importEnd != ";OpenKNX") {
-        throw new Error('Incomplete Import, NO Suffix ";OpenKNX"');
+        throw new Error('Incomplete Import, MISSING End-Marker ";OpenKNX"!');
     }
-
-    /* check app */
-    if (header.app.id != '*' && header.app.id != uctAppId) {
-        throw new Error('Exported from Application "'+header.app.id+'", different from current "'+uctAppId+'"');
-    }
-    /* TODO check version */
 
     /* check module */
     if (module != null && header.modul.key != module) {
@@ -324,15 +325,43 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     module = header.modul.key;
 
     /* check module version */
-    if (header.modul.ver != null && header.modul.ver != '*') {
-        if (header.modul.ver == '-') {
-            /* no version defined - TODO check warning*/
-        } else if (isNaN(header.modul.ver)) {
-            throw new Error('Given Module Version '+header.modul.ver+' is NOT numeric!');
+    if (checkModuleVersion) {
+        if (!checkAppVersion) {
+            if (channel_params[module].version==undefined) {
+                throw new Error('Can not ensure same version of unversioned module without app version check!');
+            }
+            if (header.modul.ver=='-') {
+                throw new Error('Found module version "-", can not ensure same without app version check!');
+            }
+        }
+        if (checkAppVersion && channel_params[module].version==undefined && header.modul.ver!='-') {
+            // ok, for same app version
         } else if (header.modul.ver != channel_params[module].version) {
-            throw new Error('Given Module Version '+header.modul.ver+' does NOT match current'+channel_params[module].version+'!');
+            throw new Error('Module version '+channel_params[module].version+' expected, but found ' +header.modul.ver+'!');
         }
     }
+    /*
+    if (header.modul.ver != null && header.modul.ver != '*') {
+        if (header.modul.ver == '-') {
+            // no version defined - TODO check warning
+        } else if (isNaN(header.modul.ver)) {
+            throw new Error('Given Module Version '+header.modul.ver+' is NOT numeric!');
+        } else
+    }
+    */
+
+    /* check app */
+    // if (header.app.id != '*' && (header.app.id != uctAppId)) {
+    if (checkAppId) {
+        if ((header.app.id != uctAppId)) {
+            throw new Error('Application '+uctAppId+' expected, but found '+header.app.id+'!');
+        }
+        /* TODO check version */
+        if (checkAppVersion && header.app.ver != uctAppVer) {
+            throw new Error('Application version '+uctAppVer+' expected, but found '+header.app.ver+'!');
+        }
+    }
+
 
     /* allow channel auto-selection from export-string */
     if (channel == 255) {
@@ -347,7 +376,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
     if (!params) {
         throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
     }
-   
+
     /* use defaults for values not defined in import*/
     var newValues = params.defaults;
 
@@ -427,7 +456,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
     }
     /* TODO copy without serialize/deserialize */
     var exportStr = exportModuleChannelToString(device, module, channelSource, "", false, true);
-    importModuleChannelFromString(device, module, channelTarget, exportStr);
+    importModuleChannelFromString(device, module, channelTarget, exportStr, 7);
 }
 
 /**
@@ -438,7 +467,7 @@ function copyModuleChannel(device, module, channelSource, channelTarget) {
  * @param {number} channel 
  */
 function resetModuleChannel(device, module, channel) {
-    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX");
+    importModuleChannelFromString(device, module, channel, serializeHeader(module, channel) + '§' + ";OpenKNX", 7);
 }
 
 // -- OFM-ConfigTransfer //
