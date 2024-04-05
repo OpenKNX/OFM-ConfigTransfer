@@ -423,7 +423,7 @@ function importModuleChannelFromString(device, module, channel, exportStr) {
  */
 function copyModuleChannel(device, module, channelSource, channelTarget) {
     if (channelTarget == channelSource) {
-        throw new Error('Source and target of copy must not be the same!');
+        throw new Error('Source and target of copy must NOT be the same!');
     }
     /* TODO copy without serialize/deserialize */
     var exportStr = exportModuleChannelToString(device, module, channelSource, "", false, true);
