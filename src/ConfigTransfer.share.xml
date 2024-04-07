@@ -541,6 +541,11 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" />
+                  <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
+                    <when test="1">
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen, durch Einstellungen die ausgeblendet sind und keine Wirkung entfalten.&#xD;&#xA;&#xD;&#xA;Kann die Kompatiblität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
+                    </when>
+                  </choose>                  
                   <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
                   <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                   <!--
