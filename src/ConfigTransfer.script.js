@@ -448,7 +448,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     }
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */    
 
-    return result.length>0 ? result.join("§") : "[Import "+module+":"+channel+" OK]";
+    return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
 }
 
 /**
