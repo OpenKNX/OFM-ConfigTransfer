@@ -391,7 +391,7 @@
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"          Text="Kanal"                 Value="1"   />
-              <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"              Text="Transfer-Resultat"     Value=""    />
+              <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"              Text="Resultat"              Value=""    />
 
             </Parameters>
             <ParameterRefs>
