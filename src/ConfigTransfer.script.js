@@ -480,4 +480,13 @@ function uctResetModuleChannel(device, module, channel) {
     return "[Channel "+channel+" of Module "+module+" Reset: OK]";
 }
 
+function uctParamResetResult(input, output, context) {
+    // reset `result` parameter
+    output.result = '';
+}
+
+function uctParamResetNothing(input, output, context) {
+    // do nothing
+} 
+
 // -- OFM-ConfigTransfer //

@@ -431,6 +431,48 @@
               <ParameterRef Id="%AID%_P-%TT%00402_R-%TT%0040201" RefId="%AID%_P-%TT%00402" />
 
             </ParameterRefs>
+            <ParameterCalculations>
+              <ParameterCalculation Id="%AID%_PC-%TT%00001" Language="JavaScript" Name="UctImportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" AliasName="ImportInput"           />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" AliasName="ImportTarget"          />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" AliasName="ImportCheck"           />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" AliasName="result"                /><!-- ImportUserLog -->
+                </RParameters>
+              </ParameterCalculation>
+              <ParameterCalculation Id="%AID%_PC-%TT%00002" Language="JavaScript" Name="UctExportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" AliasName="ExportModul"           />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" AliasName="ExportSource"          />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" AliasName="ExportParamSelection"  />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" AliasName="ExportFormat"          />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" AliasName="result"                /><!-- ExportOutput -->
+                </RParameters>
+              </ParameterCalculation>
+              <ParameterCalculation Id="%AID%_PC-%TT%00003" Language="JavaScript" Name="UctCopyParamReset"   LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" AliasName="CopySource"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" AliasName="CopyTarget"              />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  /><!-- CopyUserLog -->
+                </RParameters>
+              </ParameterCalculation>
+              <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamReset"  LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" AliasName="ResetModul"                />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" AliasName="ResetChannel"              />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" AliasName="result"                    /><!-- ResetUserLog -->
+                </RParameters>
+              </ParameterCalculation>
+            </ParameterCalculations>
             <ComObjectTable>
               <!-- No ComObjects -->
             </ComObjectTable>
