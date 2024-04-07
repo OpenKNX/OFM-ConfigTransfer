@@ -251,11 +251,9 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
+                <!-- 
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <!--
-                  <Enumeration Value="255" Id="%ENID%" Text="automatisch aus Export übernehmen"    />
-                  <Enumeration   Value="0" Id="%ENID%" Text="Kanalunabhängige Modulkonfiguration"  />
-                  -->
                   <Enumeration   Value="1" Id="%ENID%" Text="1" />
                   <Enumeration   Value="2" Id="%ENID%" Text="2" />
                   <Enumeration   Value="3" Id="%ENID%" Text="3" />
@@ -356,6 +354,7 @@
                   <Enumeration  Value="98" Id="%ENID%" Text="98" />
                   <Enumeration  Value="99" Id="%ENID%" Text="99" />
                 </TypeRestriction>
+                -->
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ImportCheck" Name="ImportCheck">
