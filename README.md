@@ -20,6 +20,7 @@ Von Cornelius Köpp 2024
   * [Import](#import)
   * [Kanaltransfer](#kanaltransfer)
   * [Standardwerte](#standardwerte)
+* [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
 * [Integration in ETS-Applikation](#integration-in-ets-applikation)
   * [Voraussetzungen](#voraussetzungen)
   * [ApplikationName.xml](#applikationnamexml)
@@ -63,6 +64,15 @@ Durch die ETS-Funktion **Standardparmeter** werden alle Parameter des Gerätes a
 * Parameter mit Kanal-Spezifischen Werten können (bislang) nicht zurückgesetzt werden
 * Es erfolgt kein (direkter) Schreibzugriff auf Parameter anderer Kanäle oder Module um deren Konfiguration nicht zu verändern. 
   Bei kanalübergreifenden Abhängigkeiten können Nebeneffekte jedoch nicht ausgeschlossen werden. 
+
+
+
+## Geprüfte OpenKNX-Module
+| Module            | Version | Test | Ergänzende Bemerkungen zur Prüfung                                                                                                                          | ETS-Log       |
+|-------------------|---------|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| OFM-DFA           | 0.1     | OK   | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                     | -             |
+| OFM-LogicModule   | 3.1     | OK*  | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Diese ist bedingt durch die Einbindung als ETS-Modul. | WARN-Einträge |
+| OFM-SensorModule  |         | OK   |                                                                                                                                                             | ?             |
 
 
 
