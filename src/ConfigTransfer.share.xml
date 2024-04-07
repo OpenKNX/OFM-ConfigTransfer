@@ -387,7 +387,7 @@
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
               <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"          Text="Quell-Kanal "          Value="1"   />
               <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"          Text="Ziel-Kanal"            Value="1"   />
-              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"              Text="Transfer-Resultat"     Value=""    />
+              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"              Text="Kopier-Resultat"       Value=""    />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"          Text="Kanal"                 Value="1"   />
@@ -492,8 +492,8 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" />
                 </ParameterBlock>
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanaltransfer" ><!-- Icon="openknx-export-import" -->
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaltransfer" UIHint="Headline" />
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" ><!-- Icon="openknx-export-import" -->
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
                   <!-- 
                   <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
                   <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"    ParameterType="%AID%_PT-ModuleChannel"  Text="Quell-Kanal "          Value="1"   />
