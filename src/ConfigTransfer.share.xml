@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <op:nowarn id="3" regex="uctSerializeParamValue" />
+  <op:nowarn id="3" regex="uctUnserializeParamValue" />
+  <op:nowarn id="3" regex="uctCreateHeader" />
+  <op:nowarn id="3" regex="uctParseHeader" />
+  <op:nowarn id="3" regex="uctExportModuleChannelToStrings" />
+  <op:nowarn id="3" regex="uctExportModuleChannelToString" />
+  <op:nowarn id="3" regex="uctImportModuleChannelFromString" />
+  <op:nowarn id="3" regex="uctCopyModuleChannel" />
+  <op:nowarn id="3" regex="uctResetModuleChannel" />
+  <!--
+  <op:nowarn id="3" regex="getModuleParamsDef" />
+  <op:nowarn id="3" regex="getDeviceParameter" />
+  <op:nowarn id="3" regex="hexNumberStr" />
+  <op:nowarn id="3" regex="uctParseVersion" />
+  <op:nowarn id="3" regex="findIndexByParamName" />
+  -->
   <ManufacturerData>
     <Manufacturer RefId="M-00FA">
       <ApplicationPrograms>
