@@ -505,7 +505,7 @@
                 <!-- Btn Copy: $message:=copy($module, $source, $target) -->
                 <!-- Btn Reset: $message:=copy($module, $target) -->
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" ><!-- Icon="openknx-export-import" -->
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="import" ><!-- Icon="openknx-export-import" -->
                   <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
 
                   <!-- 
@@ -533,7 +533,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
                 </ParameterBlock>
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" ><!-- Icon="openknx-export-import" -->
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="export" ><!-- Icon="openknx-export-import" -->
                   <ParameterSeparator Id="%AID%_PS-nnn" Text="Export" UIHint="Headline" />
                   <!-- 
                   <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
@@ -558,7 +558,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" />
                 </ParameterBlock>
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" ><!-- Icon="openknx-export-import" -->
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="card-multiple-outline" ><!-- Icon="openknx-export-import" -->
                   <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
                   <!-- 
                   <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
@@ -573,7 +573,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
                 </ParameterBlock>
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" ><!-- Icon="openknx-export-import" -->
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="card-remove-outline" ><!-- Icon="openknx-export-import" -->
                   <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
                   <!-- 
                   <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"    ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
