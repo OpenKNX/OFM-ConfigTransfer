@@ -488,7 +488,7 @@
           </Static>
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer" Text="Konfigurationstransfer (Experimentell)" Icon="openknx-export-import"><!-- HelpContext="BASE-OpenKNX" -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer" Text="Konfigurationstransfer (Experimentell)" Icon="ofm-configtransfer"><!-- HelpContext="BASE-OpenKNX" -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Konfigurationstransfer" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG: Es wird dringend empfohlen regelmäßige Backups anzulegen!&#xD;&#xA;Die Rückgängig-Funktion der ETS reicht NICHT aus um alle Parameter-Änderungen einer Kanaltransfer-Operation abzudecken." UIHint="Information" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="HINWEIS: Der Konfigurationstransfer erfolgt unabhängig vom betroffenen Modul. Inkompatiblitäten/Funktionseinschränkungen sind möglich, vor allem falls Parameter genutzt werden deren Standardwert dynamisch je Kanal definiert ist." UIHint="Information" />
