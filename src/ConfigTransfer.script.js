@@ -439,7 +439,15 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         try {
             /* TODO set paramValue to channel-specific value */
             if ((paramValue !=null) && !regexExcludeValue.test(paramValue)) {
-                getDeviceParameter(device, paramFullName, paramRefIdSuffix).value = paramValue;
+                var param = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
+                if (typeof param.value == "number") {
+                    // At least in German Localisation with ',' as decimal separator: 
+                    // using string with '.' as decimal separator would remove decimal separtor a all
+                    // parse string to number to prevent this problem
+                    param.value = parseFloat(paramValue);
+                } else {
+                    param.value = paramValue;
+                }
             }
 
         } catch (e) {
