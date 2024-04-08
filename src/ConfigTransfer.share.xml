@@ -35,6 +35,10 @@
                 <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="1048568" />
               </ParameterType>
+              <ParameterType Id="%AID%_PT-TransferString" Name="TransferString" ValidationErrorRef="%AID%_M-%TT%00001">
+                <!-- max len:        1048575 (no full byte!) -->
+                <TypeText SizeInBit="1048568" Pattern="^OpenKNX,.+§;OpenKNX$" />
+              </ParameterType>
 
               <ParameterType Id="%AID%_PT-ImportTarget" Name="ImportTarget">
                 <TypeRestriction Base="Value" SizeInBit="8">
@@ -384,7 +388,7 @@
             </ParameterTypes>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TextMaxLen"             Text="Export-String"         Value=""    />
+              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"         Text="Export-String"         Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"           Text="Import-Ziel"           Value="255" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"            Text="Kompatiblitätsprüfung" Value="7"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"              Text="Import-Resultat"       Value=""    />
@@ -477,7 +481,10 @@
             </ComObjectRefs>
             <Script>
               <op:include href="ConfigTransfer.script.js" prefix="UCT" type="script" />
-            </Script>            
+            </Script>
+            <Messages>
+              <Message Id="%AID%_M-%TT%00001" Name="InvalidTransferString" Text="Kein gültiger/vollständiger OpenKNX-ConfigTransfer-String. Erwarte mindestens Beginn &quot;OpenKNX,&quot; und Ende &quot;§;OpenKNX&quot;." />
+            </Messages>            
           </Static>
           <Dynamic>
             <ChannelIndependentBlock>
