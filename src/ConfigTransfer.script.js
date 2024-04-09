@@ -342,7 +342,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
                 throw new Error('Found module version "-", can not ensure same without app version check!');
             }
         }
-        if (checkAppVersion && channel_params[module].version==undefined && header.modul.ver!='-') {
+        if (checkAppVersion && channel_params[module].version==undefined && header.modul.ver=='-') {
             // ok, for same app version
         } else if (header.modul.ver != channel_params[module].version) {
             throw new Error('Module version '+channel_params[module].version+' expected, but found ' +header.modul.ver+'!');
