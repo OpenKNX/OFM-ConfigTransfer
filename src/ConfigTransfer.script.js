@@ -387,9 +387,16 @@ function uctPrepareParamValues(params, importContent, result) {
     /* use values from import */
     for (var i = 0; i < importContent.length; i++) {
         var entry = importContent[i];
-
+        var start = entry.slice(0, 1);
         var paramValuePair = entry.split("=");
-        if (paramValuePair.length >= 2) {
+        if (start=="#") {
+            // ignore comments
+        } else if (start==">") {
+            // output-message for user
+            result.push(entry);
+        } else if (start=="!") {
+            throw new Error('Special entries not supported in this Version of ConfigTransfer!');
+        } else if (paramValuePair.length >= 2) {
             var paramPart = paramValuePair[0].split(":");
             var paramKey = paramPart[0];
             /* TODO check format */
