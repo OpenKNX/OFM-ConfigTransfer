@@ -392,9 +392,11 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* use values from import */
     var importContent = importLines.slice(1, -1);
     for (var i = 0; i < importContent.length; i++) {
-        var line = importContent[i].split("=");
-        if (line.length >= 2) {
-            var paramPart = line[0].split(":");
+        var entry = importContent[i];
+
+        var paramValuePair = entry.split("=");
+        if (paramValuePair.length >= 2) {
+            var paramPart = paramValuePair[0].split(":");
             var paramKey = paramPart[0];
             /* TODO check format */
             var paramRefSuffix = paramPart.length>1 ? parseInt(paramPart[1]) : 1;
@@ -412,15 +414,15 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             }
 
             if (paramIndex >=0) {
-                var paramValue = uctUnserializeParamValue(line.slice(1).join("="));
+                var paramValue = uctUnserializeParamValue(paramValuePair.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
             } else {
                 // TODO handling of invalid parameters!
-                throw new Error('Unknown Parameter: '+ paramKey + ' (line "'+importContent[i]+'")');
+                throw new Error('Unknown Parameter: '+ paramKey + ' ("'+entry+'")');
             }
         } else {
             // TODO error-handling; this is not a param=value pair
-            throw new Error('Invalid Entry: '+ importContent[i]);
+            throw new Error('Invalid Entry: '+ entry);
         }
     }
 
