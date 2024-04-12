@@ -345,6 +345,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         if (checkAppVersion && channel_params[module].version==undefined && header.modul.ver=='-') {
             // ok, for same app version
         } else if (header.modul.ver != channel_params[module].version) {
+            // TODO show versions in same format, to prevent mixed decimal/hex representation
             throw new Error('Module version '+channel_params[module].version+' expected, but found ' +header.modul.ver+'!');
         }
     }
