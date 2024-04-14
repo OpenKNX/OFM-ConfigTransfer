@@ -76,8 +76,6 @@ function uctUnserializeParamValue(encodedParamValue) {
 }
 
 function uctCreateHeader(module, channel) {
-    // OpenKNX,v1:0.1.0,0xAFA7:110:StateEngine/LOG:3.8.0/1
-
     var version = [uctFormatVer];
     /* TODO make optional */
     /*
@@ -349,15 +347,8 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             throw new Error('Module version '+channel_params[module].version+' expected, but found ' +header.modul.ver+'!');
         }
     }
-    /*
-    if (header.modul.ver != null && header.modul.ver != '*') {
-        if (header.modul.ver == '-') {
-            // no version defined - TODO check warning
-        } else if (isNaN(header.modul.ver)) {
-            throw new Error('Given Module Version '+header.modul.ver+' is NOT numeric!');
-        } else
-    }
-    */
+
+    // TODO implement handling of module version '*'
 
     /* check app */
     // if (header.app.id != '*' && (header.app.id != uctAppId)) {
