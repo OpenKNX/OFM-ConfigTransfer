@@ -179,18 +179,6 @@ function uctHexNumberStr(x) {
     return "0x"+x.toString(16).toUpperCase();
 }
 
-function uctParseVersion(v) {
-    var vParts = v.split('.');
-    if (vParts.length == 1) {
-        var vInt = parseInt(v);
-        return {major: (vInt-vInt%16)/16, minor:vInt%16};
-    } else if (vParts.length <= 3) {
-        return { major: parseInt(vParts[0]), minor: parseInt(vParts[1]), patch: parseInt(vParts[2]) }; 
-    } else {
-        throw new Error("Version Format Error: " + v);
-    }
-}
-
 function uctParseHeader(headerStr) {
     var header = {
         "prefix": undefined,
