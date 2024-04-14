@@ -71,7 +71,7 @@ Durch die ETS-Funktion **Standardparmeter** werden alle Parameter des Gerätes a
 | Module            | Version | Test | Ergänzende Bemerkungen zur Prüfung                                                                                                                          | ETS-Log       |
 |-------------------|---------|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | OFM-DFA           | 0.1     | OK   | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                     | -             |
-| OFM-LogicModule   | 3.1     | OK*  | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Diese ist bedingt durch die Einbindung als ETS-Modul. | WARN-Einträge |
+| OFM-LogicModule   | 3.1     | OK*  | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.  | WARN-Einträge |
 | OFM-SensorModule  |         | OK   |                                                                                                                                                             | ?             |
 
 
