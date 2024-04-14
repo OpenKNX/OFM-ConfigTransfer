@@ -83,7 +83,7 @@ function uctCreateHeader(module, channel) {
     version.push(uctGenVer);
     */
 
-    var pathApp = [hexNumberStr(uctAppId), hexNumberStr(uctAppVer)];
+    var pathApp = [uctHexNumberStr(uctAppId), uctHexNumberStr(uctAppVer)];
     if (uctAppName) {
         pathApp.push(uctAppName);
     }
@@ -91,7 +91,7 @@ function uctCreateHeader(module, channel) {
     var moduleVersion = channel_params[module].version;
     var pathModule = [
         module,
-        ((moduleVersion != undefined) ? hexNumberStr(moduleVersion) : '-')
+        ((moduleVersion != undefined) ? uctHexNumberStr(moduleVersion) : '-')
     ];
 
     var path =  [pathApp.join(":"), pathModule.join(":"), channel];
@@ -100,7 +100,7 @@ function uctCreateHeader(module, channel) {
     return header.join(",");
 }
 
-function getModuleParamsDef(module, channel) {
+function uctGetModuleParamsDef(module, channel) {
     var module_params = channel_params[module];
     if (channel>0 && (!module_params.channels || (channel > module_params.channels))) {
         throw new Error("Channel " + channel + " NOT available in module " + module + "!");
@@ -108,7 +108,7 @@ function getModuleParamsDef(module, channel) {
     return module_params[channel==0 ? "share" : "templ"];
 }
 
-function getDeviceParameter(device, paramFullName, paramRefIdSuffix) {
+function uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix) {
     var paramObj = device.getParameterByName(paramFullName);
     var paramObjRefId = paramObj.parameterRefId;
     if (paramObjRefId.length>2 && paramObjRefId.slice(-2)!=paramRefIdSuffix) {
@@ -127,7 +127,7 @@ function getDeviceParameter(device, paramFullName, paramRefIdSuffix) {
  * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
 function uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive) {
-    var params = getModuleParamsDef(module, channel);
+    var params = uctGetModuleParamsDef(module, channel);
     var exportAll = !!includeNonActive;
 
     var result = [];
@@ -141,7 +141,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, inc
             /* TODO extract to function! */
             var paramNameDef = params.names[i].split(":");
             var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
-            var paramObj = getDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
+            var paramObj = uctGetDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
 
             if (exportAll || paramObj.isActive) {
                 var paramValue = paramObj.value;
@@ -175,7 +175,7 @@ function uctExportModuleChannelToString(device, module, channel, keyFormat, mult
 }
 
 
-function hexNumberStr(x) {
+function uctHexNumberStr(x) {
     return "0x"+x.toString(16).toUpperCase();
 }
 
@@ -276,7 +276,7 @@ function uctParseHeader(headerStr) {
     return header;
 }
 
-function findIndexByParamName(params, paramKey, paramRefSuffix) {
+function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
     var paramName = paramKey;
 
     // TODO FIXME: replace with a implementation of better runtime!
@@ -372,7 +372,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     }
 
 
-    var params = getModuleParamsDef(module, channel);
+    var params = uctGetModuleParamsDef(module, channel);
     if (!params) {
         throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
     }
@@ -395,7 +395,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             var paramIndex = -1;
             if (isNaN(paramKey)) {
                 // param is given by name
-                paramIndex = findIndexByParamName(params, paramKey, paramRefSuffix);
+                paramIndex = uctFindIndexByParamName(params, paramKey, paramRefSuffix);
             } else if (paramKey < newValues.length) {
                 // valid index
                 // TODO FIXME: Ensure same version!
@@ -433,7 +433,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         try {
             /* TODO set paramValue to channel-specific value */
             if ((paramValue !=null) && !regexExcludeValue.test(paramValue)) {
-                var param = getDeviceParameter(device, paramFullName, paramRefIdSuffix);
+                var param = uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix);
                 if (typeof param.value == "number") {
                     // At least in German Localisation with ',' as decimal separator: 
                     // using string with '.' as decimal separator would remove decimal separtor a all
