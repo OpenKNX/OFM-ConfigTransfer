@@ -293,6 +293,7 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...")
 
     var checkModuleVersion = (importCheck >= 1);
     var checkAppId =  (importCheck >= 7);
@@ -365,14 +366,16 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
     }
 
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...")
     var importContent = importLines.slice(1, -1);
     var newValues = uctPrepareParamValues(params, importContent, result);
 
-
     /* write new values */
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
     uctWriteParams(device, module, channel, params, newValues, result);
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
     return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
 }
 
