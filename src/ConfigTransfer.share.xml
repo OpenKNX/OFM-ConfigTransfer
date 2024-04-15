@@ -37,7 +37,7 @@
               </ParameterType>
               <ParameterType Id="%AID%_PT-TransferString" Name="TransferString" ValidationErrorRef="%AID%_M-%TT%00001">
                 <!-- max len:        1048575 (no full byte!) -->
-                <TypeText SizeInBit="1048568" Pattern="^OpenKNX,.+§;OpenKNX$" />
+                <TypeText SizeInBit="1048568" Pattern="^$|^OpenKNX,.+§;OpenKNX$" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ImportTarget" Name="ImportTarget">
