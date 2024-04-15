@@ -406,7 +406,6 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     }
 
     /* write new values */
-    var regexExcludeValue = /^\%K\d+\%$/;
     for (var i = 0; i < params.names.length; i++) {
         var paramNameDef = params.names[i].split(":");
         var paramName = paramNameDef[0];
@@ -420,7 +419,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
         try {
             /* TODO set paramValue to channel-specific value */
-            if ((paramValue !=null) && !regexExcludeValue.test(paramValue)) {
+            if (paramValue !=null) {
                 var param = uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix);
                 if (typeof param.value == "number") {
                     // At least in German Localisation with ',' as decimal separator: 
