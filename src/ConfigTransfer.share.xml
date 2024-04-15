@@ -8,6 +8,8 @@
   <op:nowarn id="3" regex="uctExportModuleChannelToStrings" />
   <op:nowarn id="3" regex="uctExportModuleChannelToString" />
   <op:nowarn id="3" regex="uctImportModuleChannelFromString" />
+  <op:nowarn id="3" regex="uctPrepareParamValues" />
+  <op:nowarn id="3" regex="uctWriteParams" />
   <op:nowarn id="3" regex="uctCopyModuleChannel" />
   <op:nowarn id="3" regex="uctResetModuleChannel" />
   <op:nowarn id="3" regex="uctGetModuleParamsDef" />

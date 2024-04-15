@@ -365,11 +365,22 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
     }
 
+    var importContent = importLines.slice(1, -1);
+    var newValues = uctPrepareParamValues(params, importContent, result);
+
+
+    /* write new values */
+    uctWriteParams(device, module, channel, params, newValues, result);
+    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
+
+    return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
+}
+
+function uctPrepareParamValues(params, importContent, result) {
     /* use defaults for values not defined in import*/
     var newValues = params.defaults;
 
     /* use values from import */
-    var importContent = importLines.slice(1, -1);
     for (var i = 0; i < importContent.length; i++) {
         var entry = importContent[i];
 
@@ -405,7 +416,10 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         }
     }
 
-    /* write new values */
+    return newValues;
+}
+
+function uctWriteParams(device, module, channel, params, newValues, result) {
     for (var i = 0; i < params.names.length; i++) {
         var paramNameDef = params.names[i].split(":");
         var paramName = paramNameDef[0];
@@ -435,9 +449,6 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             result.push("[ERR@"+paramKey + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
         }
     }
-    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */    
-
-    return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
 }
 
 /**
