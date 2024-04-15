@@ -384,6 +384,8 @@ function uctPrepareParamValues(params, importContent, result) {
     // TODO FIXME: create a real copy!
     var newValues = params.defaults;
 
+    var prefix = '';
+
     /* use values from import */
     for (var i = 0; i < importContent.length; i++) {
         var entry = importContent[i];
@@ -396,9 +398,12 @@ function uctPrepareParamValues(params, importContent, result) {
             result.push(entry);
         } else if (start=="!") {
             throw new Error('Special entries not supported in this Version of ConfigTransfer!');
+        } else if (start=="^") {
+            // set prefix
+            prefix = entry.slice(1);
         } else if (paramValuePair.length >= 2) {
             var paramPart = paramValuePair[0].split(":");
-            var paramKey = paramPart[0];
+            var paramKey = prefix + paramPart[0];
             /* TODO check format */
             var paramRefSuffix = paramPart.length>1 ? parseInt(paramPart[1]) : 1;
 
