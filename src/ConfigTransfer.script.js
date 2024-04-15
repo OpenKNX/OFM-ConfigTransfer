@@ -378,6 +378,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
 function uctPrepareParamValues(params, importContent, result) {
     /* use defaults for values not defined in import*/
+    // TODO FIXME: create a real copy!
     var newValues = params.defaults;
 
     /* use values from import */
