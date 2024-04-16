@@ -89,5 +89,7 @@ An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden
 ```
   <op:define prefix="UCT"
              share="../lib/OFM-ConfigTransfer/src/ConfigTransfer.share.xml"
-             ModuleType="9" />
+             ModuleType="19">
+    <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="0.1" /> 
+  </op:define> />
 ```
