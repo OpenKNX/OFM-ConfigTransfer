@@ -509,18 +509,6 @@
 
               </ParameterBlock>
 
-                <!-- Module-Selection -->
-                <!-- Source-Channel-Number -->
-                <!-- Target-Channel-Number -->
-
-                <!-- Import-Text -->
-                <!-- Output-Text -->
-
-                <!-- Btn Export: $message,$output:=export($module, $source) -->
-                <!-- Btn Import: $message:=import($module, $exportStr $target) -->
-                <!-- Btn Copy: $message:=copy($module, $source, $target) -->
-                <!-- Btn Reset: $message:=copy($module, $target) -->
-
               <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="uct-import" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
 
