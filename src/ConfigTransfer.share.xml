@@ -489,11 +489,25 @@
             </Messages>            
           </Static>
           <Dynamic>
-            <ChannelIndependentBlock>
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer" Text="Konfigurationstransfer (Experimentell)" Icon="ofm-configtransfer"><!-- HelpContext="BASE-OpenKNX" -->
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Konfigurationstransfer" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG: Es wird dringend empfohlen regelmäßige Backups anzulegen!&#xD;&#xA;Die Rückgängig-Funktion der ETS reicht NICHT aus um alle Parameter-Änderungen einer Kanaltransfer-Operation abzudecken." UIHint="Information" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="HINWEIS: Der Konfigurationstransfer erfolgt unabhängig vom betroffenen Modul. Inkompatiblitäten/Funktionseinschränkungen sind möglich, vor allem falls Parameter genutzt werden deren Standardwert dynamisch je Kanal definiert ist." UIHint="Information" />
+            <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer"><!-- HelpContext="BASE-OpenKNX" -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-box-outline"><!-- HelpContext="BASE-OpenKNX" -->
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="OFM-ConfigTransfer (Version %ModuleVersion%)" UIHint="Headline" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweise" UIHint="Headline" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Es wird dringend empfohlen regelmäßige Backups anzulegen!&#xD;&#xA;Die Rückgängig-Funktion der ETS reicht NICHT aus um alle Parameter-Änderungen einer Kanaltransfer-Operation abzudecken." />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Die Ausführung der Operationen kann sehr lange dauern; in Extremfällen wird die Benutzeroberfläche mehrere Minuten lang nicht mehr auf Eingaben reagieren!" UIHint="Information" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Der Konfigurationstransfer erfolgt unabhängig vom betroffenen Modul. Der Modul-Dokumentation können ggf. Hinweise zur Kompatiblität bestimmter Module entnommen werden." />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Limitationen" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs werden ggf. ohne die übliche Rückfrage ausgeblendet unter Verlust der GA-Verknüpfungen." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter deren Standardwert dynamisch je Kanal definiert sind, können nicht können nicht zurückgesetzt werden." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang nicht untersetützt." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Innerhalb von Modulen veränderte Standard-Parameter-Werte können dazu führen, dass beim Import die Standardwerte der Zielumgebung verwendet werden." />
+
+              </ParameterBlock>
 
                 <!-- Module-Selection -->
                 <!-- Source-Channel-Number -->
@@ -507,89 +521,88 @@
                 <!-- Btn Copy: $message:=copy($module, $source, $target) -->
                 <!-- Btn Reset: $message:=copy($module, $target) -->
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="uct-import" >
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="uct-import" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
 
-                  <!-- 
-                  <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"   ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
-                  <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"  ParameterType="%AID%_PT-ImportTarget"   Text="Import-Ziel"           Value="255" />
-                  <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"   ParameterType="%AID%_PT-ImportCheck"    Text="Kompatiblitätsprüfung" Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
-                  -->
-    
-                  <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
-                  <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
-                    <when test="7">
-                    </when>
-                    <when test="1">
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
-                    </when>
-                    <when test="0">
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
-                    </when>
-                  </choose>
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"   ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
+                <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"  ParameterType="%AID%_PT-ImportTarget"   Text="Import-Ziel"           Value="255" />
+                <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"   ParameterType="%AID%_PT-ImportCheck"    Text="Kompatiblitätsprüfung" Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
+                -->
+  
+                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
+                <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
+                  <when test="7">
+                  </when>
+                  <when test="1">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
+                  </when>
+                  <when test="0">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                  </when>
+                </choose>
 
-                  <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
-                </ParameterBlock>
-
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="uct-export" >
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Export" UIHint="Headline" />
-                  <!-- 
-                  <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"  ParameterType="%AID%_PT-ExportSource"   Text="Inhalt/Kanal"          Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"  ParameterType="%AID%_PT-ExportFormat"   Text="Format"                Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
-                  <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
-                  -->
-                  <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" />
-                  <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
-                    <when test="1">
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen, durch Einstellungen die ausgeblendet sind und keine Wirkung entfalten.&#xD;&#xA;&#xD;&#xA;Kann die Kompatiblität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
-                    </when>
-                  </choose>                  
-                  <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
-                  <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="uct-export" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
-                  <!--
-                  <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
-                  -->
-                  <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" />
-                </ParameterBlock>
-
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="uct-copy" >
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
-                  <!-- 
-                  <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"    ParameterType="%AID%_PT-ModuleChannel"  Text="Quell-Kanal "          Value="1"   />
-                  <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"    ParameterType="%AID%_PT-ModuleChannel"  Text="Ziel-Kanal"            Value="1"   />
-                  <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"   ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
-                  -->
-                  <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" IndentLevel="1" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
-                  <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      Icon="uct-copy" EventHandler="btnChannelCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
-                </ParameterBlock>
-
-                <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="uct-reset" >
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
-                  <!-- 
-                  <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"    ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
-                  <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"  ParameterType="%AID%_PT-ModuleChannel"  Text="Kanal"                 Value="1"   />
-                  <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"  ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
-                  -->
-                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" />
-                  <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  Icon="uct-reset" EventHandler="btnChannelReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
-                </ParameterBlock>
-
+                <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
               </ParameterBlock>
-            </ChannelIndependentBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="uct-export" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Export" UIHint="Headline" />
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"  ParameterType="%AID%_PT-ExportSource"   Text="Inhalt/Kanal"          Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"  ParameterType="%AID%_PT-ExportFormat"   Text="Format"                Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
+                <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" />
+                <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
+                  <when test="1">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen, durch Einstellungen die ausgeblendet sind und keine Wirkung entfalten.&#xD;&#xA;&#xD;&#xA;Kann die Kompatiblität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
+                  </when>
+                </choose>                  
+                <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
+                <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="uct-export" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                <!--
+                <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" />
+              </ParameterBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="uct-copy" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"    ParameterType="%AID%_PT-ModuleChannel"  Text="Quell-Kanal "          Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"    ParameterType="%AID%_PT-ModuleChannel"  Text="Ziel-Kanal"            Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"   ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" IndentLevel="1" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
+                <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      Icon="uct-copy" EventHandler="btnChannelCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
+              </ParameterBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="uct-reset" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"    ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"  ParameterType="%AID%_PT-ModuleChannel"  Text="Kanal"                 Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"  ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" />
+                <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  Icon="uct-reset" EventHandler="btnChannelReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
+              </ParameterBlock>
+
+            </Channel>
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>
