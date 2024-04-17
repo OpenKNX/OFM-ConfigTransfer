@@ -521,7 +521,7 @@
 
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="uct-import" >
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="uct-import" HelpContext="UCT-Import" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
 
                 <!-- 
@@ -553,7 +553,7 @@
                 </choose>
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="uct-export" >
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="uct-export" HelpContext="UCT-Export" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Export" UIHint="Headline" />
                 <!-- 
                 <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
@@ -582,7 +582,7 @@
                 </choose>
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="uct-copy" >
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="uct-copy" HelpContext="UCT-Kanalkopie" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
                 <!-- 
                 <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
@@ -601,7 +601,7 @@
                 </choose>
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="uct-reset" >
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="uct-reset" HelpContext="UCT-Standardwerte" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
                 <!-- 
                 <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"    ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />

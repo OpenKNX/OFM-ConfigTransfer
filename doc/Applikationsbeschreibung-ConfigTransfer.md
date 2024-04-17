@@ -70,6 +70,7 @@ Auflistung von bekannter Einschränkungen bei der Nutzung vom Konfigurationstran
 
 
 
+<!-- DOC -->
 ## Import
 Erlaubt die Übernahme von Konfiguration ...
 * ... aus anderen OpenKNX-Geräten
@@ -182,6 +183,7 @@ Der Wert wird nicht weiterverarbeitet innerhalb der Applikation.
 
 
 
+<!-- DOC -->
 ## Export
 Erlaubt die Ausgabe von Konfiguration ...
 * ... zur Übertragung in andere OpenKNX-Geräte
@@ -266,6 +268,8 @@ wird der Export-String geleert um Widersprüche zu den gewählten Einstellungen 
 
 
 
+
+<!-- DOC -->
 ## Kanalkopie
 Erlaubt die Vervielfältigung von Kanal-Konfigurationen, bzw. kann unterstützen bei der Reorganisation von Kanälen innerhalb eines Moduls.
 
@@ -310,6 +314,9 @@ wird der die Ausgabe geleert um Widersprüche zu den gewählten Einstellungen zu
 Der Wert wird nicht weiterverarbeitet innerhalb der Applikation.
 
 
+
+
+<!-- DOC -->
 ## Standardwerte
 Erlaubt die Bereinigung von Kanal-Konfigurationen, bzw. kann unterstützen bei der Reorganisation von Kanälen innerhalb eines Moduls.
 
