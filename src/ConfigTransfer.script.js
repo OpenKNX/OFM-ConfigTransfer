@@ -42,6 +42,19 @@ function btnChannelImport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]")
 }
 
+function btnChannelImportDirect(device, online, progress, context) {
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Import Direct ...")
+    var module = context.module;
+    var channelTarget = context.channel;
+    var importLine = device.getParameterByName(context.p_importLine).value;
+    var importCheck = device.getParameterByName(context.p_importCheck).value;
+    
+    var param_messageOutput = device.getParameterByName(context.p_messageOutput);
+    param_messageOutput.value = "Importing Channel Direct ...";
+    param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Import Direct [DONE]")
+}
+
 function btnChannelCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
