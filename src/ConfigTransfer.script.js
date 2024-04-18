@@ -353,7 +353,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
 
     /* allow channel auto-selection from export-string */
-    if (channel == 255) {
+    if (channel == 100) {
         if (isNaN(header.channel)) {
             throw new Error('No explicit channel defined in export-string!');
         }

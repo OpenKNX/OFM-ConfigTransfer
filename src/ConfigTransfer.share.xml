@@ -44,7 +44,7 @@
 
               <ParameterType Id="%AID%_PT-ImportTarget" Name="ImportTarget">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Value="255" Id="%ENID%" Text="automatisch aus Export übernehmen"    />
+                  <Enumeration Value="100" Id="%ENID%" Text="automatisch aus Export übernehmen"    />
                   <Enumeration   Value="0" Id="%ENID%" Text="Basiseinstellungen (kanalunabhängig)" />
                   <Enumeration   Value="1" Id="%ENID%" Text="1" />
                   <Enumeration   Value="2" Id="%ENID%" Text="2" />
@@ -391,7 +391,7 @@
             <Parameters>
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Export-String"         Value=""    />
-              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
+              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="100" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
 
