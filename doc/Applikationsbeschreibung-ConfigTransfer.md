@@ -298,8 +298,7 @@ oder keinen Kanal mit der entsprechenden Nummer.
 Wählt den Kanal, der mit der Konfiguration des Quell-Kanals überschrieben werden soll.
 
 Die Kanalkopie wird scheitern, 
-falls das gewählte Modul keine Kanäle besitzt, 
-oder keinen Kanal mit der entsprechenden Nummer,
+falls das gewählte Modul keinen Kanal mit der entsprechenden Nummer besitzt,
 oder der Ziel-Kanal identisch zum Quell-Kanal ausgewählt wurde.
 
 ### Kopieren (Button)
