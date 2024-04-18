@@ -44,6 +44,7 @@
 
               <ParameterType Id="%AID%_PT-ImportTarget" Name="ImportTarget">
                 <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Value="255" Id="%ENID%" Text="Bitte wählen..."                      />
                   <Enumeration Value="100" Id="%ENID%" Text="automatisch aus Export übernehmen"    />
                   <Enumeration   Value="0" Id="%ENID%" Text="Basiseinstellungen (kanalunabhängig)" />
                   <Enumeration   Value="1" Id="%ENID%" Text="1" />
@@ -391,7 +392,7 @@
             <Parameters>
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Export-String"         Value=""    />
-              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="100" />
+              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
 
@@ -521,20 +522,24 @@
   
                 <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
-                <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
-                  <when test="7">
-                  </when>
-                  <when test="1">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
-                  </when>
-                  <when test="0">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
+                    <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
+                      <when test="7">
+                      </when>
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
+                      </when>
+                      <when test="0">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                      </when>
+                    </choose>
+    
+                    <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
                   </when>
                 </choose>
-
-                <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
               </ParameterBlock>
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="uct-export" >
