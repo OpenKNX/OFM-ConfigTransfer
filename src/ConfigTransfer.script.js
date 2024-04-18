@@ -5,14 +5,14 @@
 var uctFormatVer = "ck-dev0";
 var uctGenVer = "0.1.0";
 var uctGen = "uct";
-var uctAppId = version_information[0];
-var uctAppVer = version_information[1];
+var uctAppId = uctVersionInformation[0];
+var uctAppVer = uctVersionInformation[1];
 var uctAppName = null;
 
 
 function btnChannelExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")
-    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
+    var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
 
     var includeInactive = device.getParameterByName(context.p_exportParamSelectionSelection).value;
@@ -44,7 +44,7 @@ function btnChannelImport(device, online, progress, context) {
 
 function btnChannelCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...")
-    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
+    var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
@@ -55,7 +55,7 @@ function btnChannelCopy(device, online, progress, context) {
 
 function btnChannelReset(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...")
-    var module = module_order[device.getParameterByName(context.p_moduleSelection).value];
+    var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = "Resetting Channel ...";
@@ -88,7 +88,7 @@ function uctCreateHeader(module, channel) {
         pathApp.push(uctAppName);
     }
 
-    var moduleVersion = channel_params[module].version;
+    var moduleVersion = uctChannelParams[module].version;
     var pathModule = [
         module,
         ((moduleVersion != undefined) ? uctHexNumberStr(moduleVersion) : '-')
@@ -101,7 +101,7 @@ function uctCreateHeader(module, channel) {
 }
 
 function uctGetModuleParamsDef(module, channel) {
-    var module_params = channel_params[module];
+    var module_params = uctChannelParams[module];
     if (channel>0 && (!module_params.channels || (channel > module_params.channels))) {
         throw new Error("Channel " + channel + " NOT available in module " + module + "!");
     }
@@ -314,7 +314,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (module != null && header.modul.key != module) {
         throw new Error('Module "'+module+'" expected, but found "'+header.modul.key+'"');
     }
-    if (!channel_params[header.modul.key]) {
+    if (!uctChannelParams[header.modul.key]) {
         throw new Error('Module "'+header.modul.key+'" NOT part of application!');
     }
     module = header.modul.key;
@@ -322,18 +322,18 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* check module version */
     if (checkModuleVersion) {
         if (!checkAppVersion) {
-            if (channel_params[module].version==undefined) {
+            if (uctChannelParams[module].version==undefined) {
                 throw new Error('Can not ensure same version of unversioned module without app version check!');
             }
             if (header.modul.ver=='-') {
                 throw new Error('Found module version "-", can not ensure same without app version check!');
             }
         }
-        if (checkAppVersion && channel_params[module].version==undefined && header.modul.ver=='-') {
+        if (checkAppVersion && uctChannelParams[module].version==undefined && header.modul.ver=='-') {
             // ok, for same app version
-        } else if (header.modul.ver != channel_params[module].version) {
+        } else if (header.modul.ver != uctChannelParams[module].version) {
             // TODO show versions in same format, to prevent mixed decimal/hex representation
-            throw new Error('Module version '+channel_params[module].version+' expected, but found ' +header.modul.ver+'!');
+            throw new Error('Module version '+uctChannelParams[module].version+' expected, but found ' +header.modul.ver+'!');
         }
     }
 
