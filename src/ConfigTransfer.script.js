@@ -514,6 +514,12 @@ function uctParamResetResult(input, output, context) {
     output.result = '';
 }
 
+function uctParamResetSelection(input, output, context) {
+    Log.info("OpenKNX ConfigTransfer: uctParamResetSelection")
+    // reset `selection` parameter
+    output.selection = 255;
+}
+
 function uctParamResetNothing(input, output, context) {
     // do nothing
 } 

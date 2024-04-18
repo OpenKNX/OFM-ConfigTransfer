@@ -437,7 +437,9 @@
             <ParameterCalculations>
               <ParameterCalculation Id="%AID%_PC-%TT%00001" Language="JavaScript" Name="UctImportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
+                  <!-- 
                   <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" AliasName="ImportInput"           />
+                  -->
                   <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" AliasName="ImportTarget"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" AliasName="ImportCheck"           />
                 </LParameters>
@@ -445,6 +447,15 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" AliasName="result"                /><!-- ImportUserLog -->
                 </RParameters>
               </ParameterCalculation>
+              <ParameterCalculation Id="%AID%_PC-%TT%00005" Language="JavaScript" Name="UctImportParamReset2" LRTransformationFunc="uctParamResetSelection" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" AliasName="ImportInput"           />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" AliasName="selection"                /><!-- ImportTarget -->
+                </RParameters>
+              </ParameterCalculation>
+
               <ParameterCalculation Id="%AID%_PC-%TT%00002" Language="JavaScript" Name="UctExportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" AliasName="ExportModul"           />
