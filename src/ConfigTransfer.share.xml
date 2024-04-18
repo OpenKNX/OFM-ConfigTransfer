@@ -390,26 +390,26 @@
             </ParameterTypes>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"         Text="Export-String"         Value=""    />
-              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"           Text="Import-Ziel"           Value="255" />
-              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"            Text="Kompatiblitätsprüfung" Value="7"   />
-              <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"              Text="Import-Resultat"       Value=""    />
+              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Export-String"         Value=""    />
+              <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
+              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
+              <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
 
-              <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"           Text="Inhalt/Kanal"          Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"   Text="Exportierte Parameter" Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"           Text="Format"                Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"              Text="Export-Resultat"       Value=""    />
-              <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"             Text="Export-String"         Value=""    />
+              <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"                      Text="Modul"                 Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Inhalt/Kanal"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Exportierte Parameter" Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"                        Text="Format"                Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Export-Resultat"       Value=""    />
+              <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"                          Text="Export-String"         Value=""    />
 
-              <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"          Text="Quell-Kanal "          Value="1"   />
-              <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"          Text="Ziel-Kanal"            Value="1"   />
-              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"              Text="Kopier-Resultat"       Value=""    />
+              <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal "          Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text="Kopier-Resultat"       Value=""    />
 
-              <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelector"         Text="Modul"                 Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"          Text="Kanal"                 Value="1"   />
-              <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"              Text="Resultat"              Value=""    />
+              <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"                           Text="Resultat"              Value=""    />
 
             </Parameters>
             <ParameterRefs>
@@ -553,7 +553,7 @@
                   <when test="1">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen, durch Einstellungen die ausgeblendet sind und keine Wirkung entfalten.&#xD;&#xA;&#xD;&#xA;Kann die Kompatiblität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
                   </when>
-                </choose>                  
+                </choose>
                 <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
                 <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="uct-export" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                 <!--
