@@ -89,6 +89,7 @@ Auflistung von bekannter Einschränkungen bei der Nutzung vom Konfigurationstran
 ## Import
 
 Erlaubt die Übernahme von Konfiguration ...
+
 * ... aus anderen OpenKNX-Geräten
 * ... aus Konfigurationsbeispielen
 * ... von anderen OpenKNX-Nutzern
@@ -105,7 +106,7 @@ dass nur Eingaben angenommen werden die einen vollständigen ConfigTransfer-Stri
 Eine genaue Prüfung erfolgt jedoch erst nach dem Klick auf den Button *Importieren*.
 
 > Exporte aus anderen ConfigTransfer-Versionen werden unterstützt, solange keine Änderung des Formats erfolgt.
-> Abweichende Formatversionen werden hier noch nicht erkannt. 
+  Abweichende Formatversionen werden hier noch nicht erkannt. 
 
 
 
@@ -116,7 +117,7 @@ Legt fest, wohin innerhalb des Moduls importiert werden soll.
 
 #### automatisch aus Export übernehmen
 
-Sorgt dafür, dass in denselben Kanal exportiert wird, aus dem zuvor exportiert wurde. 
+Sorgt dafür, dass in denselben Kanal importiert wird, aus dem zuvor exportiert wurde. 
 Voraussetzung dafür ist eine im Export-String enthaltene Kanal-Nummer.
 
 Der Import mit dieser Einstellung wird scheitern, 
@@ -159,6 +160,7 @@ Abgesehen von allgemeinen technischen Limitationen, bietet diese Einstellung die
 bei Abweichungen in referenzierten Kanälen sind jedoch auch hier Einschränkungen möglich.
 
 > Anwendungsszenarien:
+> 
 > * Verschiebung von einzelnen Funktionalitäten zwischen (von Applikationsseite) identischen OpenKNX-Geräten
 > * Aktualisierung von einzelnen Funktionalitäten die identisch auf mehreren Geräten umgesetzt wurde (z.B. selbe Funktion in je einem Gerät pro Raum)
 
@@ -172,6 +174,7 @@ Erwartbare Einschränkungen sind z.B. Verknüpfungen zu internen KOs, die nicht 
 wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
 
 > Anwendungsszenarien:
+> 
 > * Verschiebung von einzelnen Funktionalitäten (oder Migration) zwischen verschiedenen OpenKNX-Applikationen derselben Generation (z.B. zwischen TP und IP, von OAM-LogicModule auf OAM-DFA oder OAM-PresenceModule)
 > * Weitergabe von Konfigurationsbeispielen einer aktuellen Modul-Version
 
@@ -182,7 +185,7 @@ Versucht den Import durchzuführen,
 solange keine Parameternamen enthalten sind, die im Modul in dieser Applikation unbekannt sind.
 
 Das wird in vielen Fällen immer noch zum gewünschten Ergebnis führen, 
-wobei die in den anderen Stufen genannten Einschränkungen weiterhi gelten. 
+wobei die in den anderen Stufen genannten Einschränkungen weiterhin gelten. 
 Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. 
 Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko.
 
@@ -219,6 +222,7 @@ Der Wert wird nicht weiterverarbeitet innerhalb der Applikation.
 ## Export
 
 Erlaubt die Ausgabe von Konfiguration ...
+
 * ... zur Übertragung in andere OpenKNX-Geräte
 * ... zur Weitergabe an andere OpenKNX-Nutzer
 * ... zur Sicherung/Dokumentation
@@ -231,15 +235,13 @@ Wählt das Modul, aus dem die Konfiguration exportiert werden soll.
 Die Modulbezeichnungen entsprechen der Beschriftung der Konfigurationsseiten innerhalb der ETS-Applikation.
 
 Einzelne Module können vom Ersteller der Applikation von der Nutzung im Konfigurationstransfer ausgeschlossen worden sein.
-Diese stehen dann nicht zur Auswahl.
-
-Dieses Modul (Konfigurationstransfer / OFM-ConfigTransfer) wird nicht zum Export angeboten.
+Diese stehen dann nicht zur Auswahl. Das Modul Konfigurationstransfer selbst wird ebenfalls nicht zum Export angeboten.
 
 
 
 ### Inhalt/Kanal
 
-Entscheidet welcher Teil der Modul-Konfiguration exportiert werden soll.
+Entscheidet welcher Teil der Modul-Konfiguration exportiert werden soll:
 
 
 #### Basiseinstellungen (kanalunabhängig)
@@ -339,8 +341,7 @@ Wählt das Modul, zwischen dessen Kanälen die Konfiguration kopiert werden soll
 Die Modulbezeichnungen entsprechen der Beschriftung der Konfigurationsseiten innerhalb der ETS-Applikation.
 
 Einzelne Module können vom Ersteller der Applikation von der Nutzung im Konfigurationstransfer ausgeschlossen worden sein.
-Diese stehen dann nicht zur Auswahl.
-Dieses Modul (Konfigurationstransfer / OFM-ConfigTransfer) wird nicht zum Export angeboten.
+Diese und auch Module ohne enthaltene Kanäle stehen nicht zur Auswahl.
 
 
 
@@ -386,7 +387,7 @@ Der Wert wird nicht weiterverarbeitet innerhalb der Applikation.
 <!-- DOC -->
 ## Standardwerte
 
-Erlaubt die Bereinigung von Kanal-Konfigurationen, bzw. kann unterstützen bei der Reorganisation von Kanälen innerhalb eines Moduls.
+Erlaubt die Bereinigung von Kanal-Konfigurationen.
 
 
 
@@ -397,8 +398,7 @@ Wählt das Modul, dessen Kanal auf Standardwerte zurückgesetzt werden.
 Die Modulbezeichnungen entsprechen der Beschriftung der Konfigurationsseiten innerhalb der ETS-Applikation.
 
 Einzelne Module können vom Ersteller der Applikation von der Nutzung im Konfigurationstransfer ausgeschlossen worden sein.
-Diese stehen dann nicht zur Auswahl.
-Dieses Modul (Konfigurationstransfer / OFM-ConfigTransfer) wird nicht zum Export angeboten.
+Diese und auch Module ohne enthaltene Kanäle stehen nicht zur Auswahl.
 
 
 
