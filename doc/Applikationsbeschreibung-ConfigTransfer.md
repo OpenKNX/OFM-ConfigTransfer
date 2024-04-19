@@ -6,7 +6,7 @@
 # Inhaltsverzeichnis
 * [Konzepte](#konzepte)
 * ETS-Konfiguration:
-  [**Konfigurationstransfer**](#ets-applikationsteilbr-konfigurationstransfer)
+  [**Konfigurationstransfer**](#ets-applikationsteilkonfigurationstransfer)
     * [**Hinweise &amp; Limitationen**](#hinweise--limitationen)
     * [**Import**](#import)
         * [Kompatibilitätsprüfung](#kompatibilitätsprüfung)
