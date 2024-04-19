@@ -622,4 +622,38 @@ function uctParamResetNothing(input, output, context) {
     // do nothing
 } 
 
+function uctParamCopyCheck(input, output, context) {
+    Log.info("OpenKNX ConfigTransfer: Param Copy check ...")
+
+    if (input.CopyModul < uctModuleOrder.length) {
+        // 1. get module prefix
+        var module = uctModuleOrder[input.CopyModul];
+        Log.info("OpenKNX ConfigTransfer: module > " + module);
+
+        // 2. get module channel count
+        var channels = uctChannelParams[module].channels;
+        Log.info("OpenKNX ConfigTransfer: channel count > " + channels);
+        output.CopyModulChannelCount = channels;
+
+        Log.info("OpenKNX ConfigTransfer: source error > " + ((input.CopySource > channels) ? 1 : 0));
+        output.CopySourceError = (input.CopySource > channels) ? 1 : 0;
+
+        Log.info("OpenKNX ConfigTransfer: > " + ((input.CopyTarget > channels) ? 1 : 0))
+        output.CopyTargetError = (input.CopyTarget > channels) ? 1 : 0;
+
+
+        Log.info("OpenKNX ConfigTransfer: same error > " + ((input.CopySource == input.CopyTarget) ? 1 : 0));
+        output.CopySameError = (input.CopySource == input.CopyTarget) ? 1 : 0;
+
+        output.CopyError = (output.CopySourceError + output.CopyTargetError + output.CopySameError > 0) ? 1 : 0;
+    } else {
+        Log.info("OpenKNX ConfigTransfer: No Module")
+        output.CopyModulChannelCount = 1;
+        output.CopySourceError = 0;
+        output.CopyTargetError = 0;
+        output.CopySameError = 0;
+        output.CopyError = 0;
+    }
+}
+
 // -- OFM-ConfigTransfer //
