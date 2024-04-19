@@ -404,7 +404,7 @@
               <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"                          Text="Export-String"         Value=""    />
 
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
-              <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal "          Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
               <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
               <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text="Kopier-Resultat"       Value=""    />
 
