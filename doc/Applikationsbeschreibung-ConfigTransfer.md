@@ -95,7 +95,17 @@ Erlaubt die Übernahme von Konfiguration ...
 * ... von anderen OpenKNX-Nutzern
 * ... aus externen Konfigurationstools
 
+<!-- DOCCONTENT
+### Importieren (Button)
 
+Startet den Import mit den aktuellen Eingaben/Einstellungen.
+Dieser Prozess kann u.U. mehrere Minuten in Anspruch nehmen und kann weder unterbrochen noch rückgängig gemacht werden!
+
+> **ACHTUNG**: Vor dem Import sollte sichergestellt werden, dass durch Überschreiben des Zielkanals keine Konfigurationsdaten verloren gehen! 
+DOCCONTENT -->
+
+
+<!-- DOC -->
 ### Export-String
 
 Hier muss die Zeichenkette mit der (serialisierten) Konfiguration in einem unterstützten Format eingegeben werden.
@@ -110,6 +120,7 @@ Eine genaue Prüfung erfolgt jedoch erst nach dem Klick auf den Button *Importie
 
 
 
+<!-- DOC -->
 ### Import-Ziel
 
 Legt fest, wohin innerhalb des Moduls importiert werden soll. 
@@ -144,6 +155,7 @@ oder eine Kanal-Nummer angegeben ist die in dieser Applikation nicht für das Mo
 
 
 
+<!-- DOC -->
 ### Kompatibilitätsprüfung
 
 Ein Konfigurationstransfer zwischen unterschiedlichen Applikationen birgt ein gewisses Risiko von unerwarteten Ergebnissen,
@@ -159,10 +171,12 @@ Akzeptiert nur Importe, die aus exakt derselben Applikation mit exakt derselben 
 Abgesehen von allgemeinen technischen Limitationen, bietet diese Einstellung die höchste Sicherheit einer unveränderten Konfigurationsübernahme,
 bei Abweichungen in referenzierten Kanälen sind jedoch auch hier Einschränkungen möglich.
 
+<!-- DOC Skip="4" -->
 > Anwendungsszenarien:
 > 
 > * Verschiebung von einzelnen Funktionalitäten zwischen (von Applikationsseite) identischen OpenKNX-Geräten
 > * Aktualisierung von einzelnen Funktionalitäten die identisch auf mehreren Geräten umgesetzt wurde (z.B. selbe Funktion in je einem Gerät pro Raum)
+
 
 #### moderat   (selbe Modul-Version)
 
@@ -173,6 +187,7 @@ solange die Kanal-Konfiguration keinen Bezug nach außen hat.
 Erwartbare Einschränkungen sind z.B. Verknüpfungen zu internen KOs, die nicht mehr auf das erwarte Ziel zeigen, 
 wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
 
+<!-- DOC Skip="4" -->
 > Anwendungsszenarien:
 > 
 > * Verschiebung von einzelnen Funktionalitäten (oder Migration) zwischen verschiedenen OpenKNX-Applikationen derselben Generation (z.B. zwischen TP und IP, von OAM-LogicModule auf OAM-DFA oder OAM-PresenceModule)
@@ -191,13 +206,14 @@ Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risi
 
 Unter individueller Beachtung der Versionsunterschiede erlaubt diese Option eine sehr hohe Flexibilität.
 
+<!-- DOC Skip="3" -->
 > Anwendungsszenarien:
 > * Verschiebung von einzelnen Funktionalitäten (oder Migration) zwischen sehr unterschiedlichen OpenKNX-Applikationen
 > * Weitergabe von Versions-unabhängigen Konfigurationsbeispielen mit Bezug zu stabilen Konfigurationsoptionen
 
 
 
-
+<!-- DOC -->
 ### Importieren (Button)
 
 Startet den Import mit den aktuellen Eingaben/Einstellungen.
@@ -206,6 +222,8 @@ Dieser Prozess kann u.U. mehrere Minuten in Anspruch nehmen und kann weder unter
 > **ACHTUNG**: Vor dem Import sollte sichergestellt werden, dass durch Überschreiben des Zielkanals keine Konfigurationsdaten verloren gehen! 
 
 
+
+<!-- DOC -->
 ### Import-Resultat
 
 Hier erfolgt eine Rückmeldung aus dem Import-Prozess. 

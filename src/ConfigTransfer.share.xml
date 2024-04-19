@@ -531,11 +531,11 @@
                 <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
                 -->
   
-                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Export-String" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" HelpContext="UCT-Import-Ziel" />
                 <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
                   <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" HelpContext="UCT-Kompatibilitaetspruefung" />
                     <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
                       <when test="7">
                       </when>
@@ -548,7 +548,7 @@
                     </choose>
     
                     <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
                   </when>
                 </choose>
               </ParameterBlock>
