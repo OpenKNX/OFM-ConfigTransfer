@@ -454,7 +454,7 @@
                       </when>
                     </choose>
     
-                    <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="uct-import" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
+                    <Button Id="%AID%_B-%TT%00100" Text="Importieren"   Icon="timer-sand" EventHandler="btnChannelImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
                   </when>
                 </choose>
@@ -480,7 +480,7 @@
                       </when>
                     </choose>
                     <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
-                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="uct-export" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="timer-sand" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <!--
                     <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
                     -->
@@ -502,7 +502,7 @@
                   <when test="!=255">
                     <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" IndentLevel="1" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
-                    <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      Icon="uct-copy" EventHandler="btnChannelCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
+                    <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      Icon="timer-sand" EventHandler="btnChannelCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
                   </when>
                 </choose>
@@ -519,7 +519,7 @@
                 <choose ParamRefId="%AID%_P-%TT%00400_R-%TT%0040001">
                   <when test="!=255">
                     <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" />
-                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  Icon="uct-reset" EventHandler="btnChannelReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  Icon="timer-sand" EventHandler="btnChannelReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
                   </when>
                 </choose>
