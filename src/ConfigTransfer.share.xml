@@ -391,7 +391,7 @@
             </ParameterTypes>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Export-String"         Value=""    />
+              <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
@@ -541,7 +541,7 @@
                 <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
                 -->
   
-                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Export-String" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Transfer-String" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" HelpContext="UCT-Import-Ziel" />
                 <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
                   <when test="!=255">

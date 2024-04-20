@@ -106,7 +106,7 @@ DOCCONTENT -->
 
 
 <!-- DOC -->
-### Export-String
+### Transfer-String
 
 Hier muss die Zeichenkette mit der (serialisierten) Konfiguration in einem unterstützten Format eingegeben werden.
 Diese Zeichenkette enthält u.A. auch eine Referenz auf das OpenKNX-Modul, in das die Konfiguration importiert wird.
