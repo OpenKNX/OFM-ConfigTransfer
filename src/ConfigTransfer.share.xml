@@ -562,22 +562,22 @@
                 <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
                 <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
                 -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" HelpContext="UCT-Modul" />
                 <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
                   <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
                     <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
                       <when test="1">
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen, durch Einstellungen die ausgeblendet sind und keine Wirkung entfalten.&#xD;&#xA;&#xD;&#xA;Kann die Kompatiblität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
                       </when>
                     </choose>
-                    <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
                     <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   Icon="uct-export" EventHandler="btnChannelExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <!--
                     <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
                     -->
-                    <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
                   </when>
                 </choose>
               </ParameterBlock>

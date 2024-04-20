@@ -246,7 +246,15 @@ Erlaubt die Ausgabe von Konfiguration ...
 * ... zur Sicherung/Dokumentation
 * ... zur Nutzung in externen Tools
 
+<!-- DOCCONTENT
+### Exportieren (Button)
 
+Startet den Export mit den aktuellen Einstellungen.
+Dieser Prozess kann u.U. mehrere Minuten in Anspruch nehmen!
+DOCCONTENT -->
+
+
+<!-- DOC -->
 ### Modul
 
 Wählt das Modul, aus dem die Konfiguration exportiert werden soll.
@@ -257,6 +265,7 @@ Diese stehen dann nicht zur Auswahl. Das Modul Konfigurationstransfer selbst wir
 
 
 
+<!-- DOC -->
 ### Inhalt/Kanal
 
 Entscheidet welcher Teil der Modul-Konfiguration exportiert werden soll:
@@ -279,6 +288,7 @@ falls das gewählte Modul keine Kanäle besitzt, oder keinen Kanal mit der entsp
 
 
 
+<!-- DOC -->
 ### Exportierte Parameter
 
 Legt fest in welchem Umfang Parameter in den Export aufgenommen werden sollen, 
@@ -306,6 +316,7 @@ bietet jedoch auch die Möglichkeit um z.B. Konfigurationen für unterschiedlich
 
 
 
+<!-- DOC -->
 ### Format
 
 Wählt die Form in der die Ausgabe erfolgt.
@@ -329,12 +340,14 @@ insbesondere dann wenn innerhalb der Modul-Definition sprechende Parameternamen 
 Diese Darstellungsform kann z.B. in der Kommunikation mit Modul-Entwicklern genutzt werden
 
 
+<!-- DOC -->
 ### Exportieren (Button)
 
 Startet den Export mit den aktuellen Einstellungen.
 Dieser Prozess kann u.U. mehrere Minuten in Anspruch nehmen!
 
 
+<!-- DOC -->
 ### Export-String
 
 Hier erfolgt die Ausgabe der serialisierten Konfigurationsdaten im gewählten Format.
