@@ -10,7 +10,7 @@ var uctAppVer = uctVersionInformation[1];
 var uctAppName = null;
 
 
-function btnChannelExport(device, online, progress, context) {
+function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
@@ -29,7 +29,7 @@ function btnChannelExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
 }
 
-function btnChannelImport(device, online, progress, context) {
+function uctBtnImport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import ...")
     var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
@@ -42,7 +42,7 @@ function btnChannelImport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]")
 }
 
-function btnChannelImportDirect(device, online, progress, context) {
+function uctBtnImportDirect(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import Direct ...")
     var module = context.module;
     var channelTarget = context.channel;
@@ -55,7 +55,7 @@ function btnChannelImportDirect(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import Direct [DONE]")
 }
 
-function btnChannelCopy(device, online, progress, context) {
+function uctBtnCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
@@ -66,7 +66,7 @@ function btnChannelCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]")
 }
 
-function btnChannelReset(device, online, progress, context) {
+function uctBtnReset(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
