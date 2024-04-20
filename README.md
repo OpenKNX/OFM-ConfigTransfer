@@ -82,7 +82,8 @@ Zur Integration des Konfigurationstransfers muss nur die OpenKNX ETS Applikation
 An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies kann sich mit zukünftigen Funktionserweiterungen jedoch noch ändern.
 
 ### Voraussetzungen
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version <span style="color:red;">ab 3.0.15 (TODO Update)</span> benötigt um die Modulinformationen zur integrieren.
+
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 benötigt um die Modulinformationen zur integrieren.
 
 ### ApplikationName.xml
 An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden
