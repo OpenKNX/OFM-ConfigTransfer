@@ -295,7 +295,7 @@ Legt fest in welchem Umfang Parameter in den Export aufgenommen werden sollen,
 die keinen aktuellen Einfluss auf die Konfiguration besitzen.
 
 
-#### nur aktive/sichtbare (Standard)
+#### Standard
 
 Exportiert nur solche Parameter, die aktuell in der ETS angezeigt werden und (soweit einem Speicherbereich zugeordnet) Einfluss auf das Speicherabbild des Gerätes haben.
 Frühere vorgenommene Einstellungen, die durch Änderung anderer Parameter ausgeblendet wurden, werden vom Export ausgeschlossen.

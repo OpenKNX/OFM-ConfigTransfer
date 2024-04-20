@@ -382,7 +382,7 @@
               
               <ParameterType Id="%AID%_PT-ExportParamSelection" Name="ExportParamSelection">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration   Value="0" Id="%ENID%" Text="nur aktive/sichtbare (Standard)"                     />
+                  <Enumeration   Value="0" Id="%ENID%" Text="Standard (nur aktive/sichtbare)"                     />
                   <Enumeration   Value="1" Id="%ENID%" Text="alle Parameter (auch inaktive/unsichtbare)"          />
                 </TypeRestriction>
               </ParameterType>
