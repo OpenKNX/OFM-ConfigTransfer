@@ -57,7 +57,7 @@ Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls
 ### Standardwerte
 Partielles zurücksetzen auf Standardparameter eines einzelnen Modul-Kanals.
 
-Durch die ETS-Funktion **Standardparmeter** werden alle Parameter des Gerätes auf Standardwerte zurückgesetzt.
+Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes auf Standardwerte zurückgesetzt.
 **Zurücksetzen** simuliert diesen Vorgang lokal beschränkt auf einen einzelnen Kanal eines Moduls.
 
 #### Bekannte Limitationen
