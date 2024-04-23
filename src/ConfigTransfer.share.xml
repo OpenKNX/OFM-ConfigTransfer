@@ -416,6 +416,7 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  Fehlende Unterstützung von KOs" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Die KO-Konfiguration (GA-Zuordnungen oder KO-Flags) kann NICHT transferiert werden." />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs werden beim Schreiben von Konfiguration ohne die übliche Rückfrage ausgeblendet unter Verlust der GA-Verknüpfungen." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs die durch einen Import wieder sichtbar werden, können ggf. noch frühere GA-Verknüpfungen enthalten." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  ETS-Module (z.B. Mehrzeilige Kommentare)" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang nicht untersetützt." />
