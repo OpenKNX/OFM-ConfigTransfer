@@ -139,6 +139,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, inc
     var exportAll = !!includeNonActive;
 
     var result = [];
+    var errors = [];
     for (var i = 0; i < params.names.length; i++) {
         
         /* compact or human readable output */
@@ -158,9 +159,14 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, inc
                     result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
                 }
             }
-        } catch (e) { 
-            throw new Error("[ERR@"+paramKey + "]=" + e + ";" + e.message);
+        } catch (e) {
+            var errMsg = "[ERR@"+paramKey + "]=" + e + ";" + e.message;
+            Log.error(errMsg);
+            errors.push(errMsg);
         }
+    }
+    if (errors.length > 0) {
+        throw new Error("ERRs:" + errors.length + " see ETS log /first:"+errors[0]);
     }
     return result;
 }
