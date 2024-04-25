@@ -68,12 +68,24 @@ Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes 
 
 
 ## Geprüfte OpenKNX-Module
-| Module            | Version | Test | Ergänzende Bemerkungen zur Prüfung                                                                                                                          | ETS-Log       |
-|-------------------|---------|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| OFM-DFA           | 0.1     | OK   | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                     | -             |
-| OFM-Generic       | 0.1     | OK   |                                                                                                                                                             | -             |
-| OFM-LogicModule   | 3.1     | OK*  | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.  | WARN-Einträge |
-| OFM-SensorModule  |         | OK   |                                                                                                                                                             | ?             |
+
+Die Implementation des Konfigurationstransfers unterstützt grundsätzlich jedes OpenKNX-Modul, 
+das über den OpenKNXproducer in eine ETS-Applikation eingebunden werden kann, 
+ohne dass dazu besondere Anpassungen vorgesehen sind.
+
+Nutzung von nicht durch den Konfigurationstansfer unterstützten Konstrukten oder Limitationen der ETS können zu Einschränkungen führen.
+Im Rahmen der Neuentwicklung von Applikationen mit integrierten Konfigurationstransfer, wurde die Funktion mit verschiedenen OpenKNX-Modulen getestet. 
+Die Ergebnisse dieser Prüfungen sind soweit bekannt in der nachfolgenden tabellarischen Auflistung dokumentiert, 
+im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eingeplant.
+
+| Module            | Version | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                | ETS-Log       |
+|-------------------|---------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| OFM-DFA           | 0.1     | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
+| OFM-Generic       | 0.1     | OK     |                                                                                                                                                                                   | -             |
+| OFM-LogicModule   | 3.1     | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                        | WARN-Einträge |
+| OFM-SensorModule  |         | OK     |                                                                                                                                                                                   | ?             |
+| OFM-VirtualButton | bis 0.4 | FEHLER | Nicht nutzbar in ETS5.7 durch Parameternamen, die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind. | -             |
+| OFM-VirtualButton | 0.5     | OK     |                                                                                                                                                                                   | ?             |
 
 
 
