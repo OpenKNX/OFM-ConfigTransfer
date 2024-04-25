@@ -15,6 +15,7 @@ Von Cornelius Köpp 2024
 
 
 ## Inhaltsverzeichnis
+
 * [Funktionen](#funktionen)
   * [Export](#export)
   * [Import](#import)
@@ -39,6 +40,7 @@ Dieses enthält neben der individuellen Konfiguration auch folgende Informatione
 
 
 ### Import
+
 Importieren eines Modul-Kanals (oder der Modul-Basiskonfiguration) aus einer Zeichenkette.
 
 Der Import erfolgt aus einer einzeiligen Zeichenkette, die einem definierten Format entsprechen muss. 
@@ -50,17 +52,24 @@ Eine abweichende Applikations-Version, Applikations-ID, oder Modul-Version kann 
 Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auch abweichend - gewählt werden. 
 
 
+
 ### Kanaltransfer
+
 Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
 
 
+
 ### Standardwerte
+
 Partielles zurücksetzen auf Standardparameter eines einzelnen Modul-Kanals.
 
 Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes auf Standardwerte zurückgesetzt.
 **Zurücksetzen** simuliert diesen Vorgang lokal beschränkt auf einen einzelnen Kanal eines Moduls.
 
+
+
 #### Bekannte Limitationen
+
 * Parameter mit Kanal-Spezifischen Werten können (bislang) nicht zurückgesetzt werden
 * Es erfolgt kein (direkter) Schreibzugriff auf Parameter anderer Kanäle oder Module um deren Konfiguration nicht zu verändern. 
   Bei kanalübergreifenden Abhängigkeiten können Nebeneffekte jedoch nicht ausgeschlossen werden. 
@@ -94,11 +103,14 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 Zur Integration des Konfigurationstransfers muss nur die OpenKNX ETS Applikation erweitert werden. 
 An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies kann sich mit zukünftigen Funktionserweiterungen jedoch noch ändern.
 
+
 ### Voraussetzungen
 
 * Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 benötigt um die Modulinformationen zur integrieren.
 
+
 ### ApplikationName.xml
+
 An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden
 ```
   <op:define prefix="UCT"
