@@ -49,6 +49,10 @@ function uctBtnImportDirect(device, online, progress, context) {
     
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
+
+    // hide direct import an the end
+    device.getParameterByName(context.p_directImportShow).value = 0;
+
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import Direct [DONE]")
 }
 
