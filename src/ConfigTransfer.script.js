@@ -386,7 +386,12 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...")
     var importContent = importLines.slice(1, -1);
-    var newValues = uctPrepareParamValues(params, importContent, result, false);
+    var merge = false;
+    if (importContent.length > 0 && importContent[0]=="!merge") {
+        merge = true;
+        importContent = importContent.slice(1);
+    }
+    var newValues = uctPrepareParamValues(params, importContent, result, merge);
 
     /* write new values */
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
