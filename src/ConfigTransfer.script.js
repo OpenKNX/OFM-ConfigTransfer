@@ -459,15 +459,11 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
         var paramName = paramNameDef[0];
         var paramRefIdSuffix = (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1;
 
-        var paramFullNameTempl = module + "_" + paramName;
-        var paramFullName      = module + "_" + paramName.replace('~', channel);
-
-        var paramKey = i;
         var paramValue = newValues[i];
-
         try {
             /* TODO set paramValue to channel-specific value */
             if (paramValue !=null) {
+                var paramFullName = module + "_" + paramName.replace('~', channel);
                 var param = uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix);
                 if (typeof param.value == "number") {
                     // At least in German Localisation with ',' as decimal separator: 
@@ -480,7 +476,8 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
             }
 
         } catch (e) {
-            result.push("[ERR@"+paramKey + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            var paramFullNameTempl = module + "_" + paramName;
+            result.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
         }
     }
 }
