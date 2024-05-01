@@ -15,7 +15,9 @@ function uctBtnExport(device, online, progress, context) {
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
 
-    var includeInactive = device.getParameterByName(context.p_exportParamSelectionSelection).value;
+    var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
+    var includeHidden = (includeSelection == 1);
+    var includeDefault = (includeSelection == 2);
 
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
@@ -24,7 +26,7 @@ function uctBtnExport(device, online, progress, context) {
     // TODO add p_messageOutput again?
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeInactive);
+    param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeHidden, includeDefault);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
 }
 
@@ -135,12 +137,12 @@ function uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} keyFormat - ''=defindex,'name'
- * @param {boolean} includeNonActive - export all values, not only the actives
+ * @param {boolean} includeHidden - export inactive/invisible parameters
+ * @param {boolean} includeDefault - export parameters with default-value
  * @returns {string[]} - string representations of channel-configuration, different from default value each of format "{$index}={$value}"
  */
-function uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive) {
+function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exportHidden, exportDefault) {
     var params = uctGetModuleParamsDef(module, channel);
-    var exportAll = !!includeNonActive;
 
     var result = [];
     var errors = [];
@@ -156,10 +158,9 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, inc
             var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
             var paramObj = uctGetDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
 
-            if (exportAll || paramObj.isActive) {
+            if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
-                if (paramValue != params.defaults[i]) {
-                    /* non-default values only */
+                if (exportDefault || paramValue != params.defaults[i]) {
                     result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
                 }
             }
@@ -182,11 +183,12 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, inc
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} keyFormat - ''=defindex,'name'
  * @param {boolean} multiLine - defines the separator between header and param-values and end ('\n' for multiline, '§' else)
- * @param {boolean} includeNonActive - export all values, not only the actives
+ * @param {boolean} includeHidden - export inactive/invisible parameters
+ * @param {boolean} includeDefault - export parameters with default-value
  * @returns {string} - a string representation of channel-configuration, different from default value "{$index}={$value}§..§{$index}={$value}"
  */
-function uctExportModuleChannelToString(device, module, channel, keyFormat, multiLine, includeNonActive) {
-    var lines = uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeNonActive);
+function uctExportModuleChannelToString(device, module, channel, keyFormat, multiLine, includeHidden, includeDefault) {
+    var lines = uctExportModuleChannelToStrings(device, module, channel, keyFormat, includeHidden, includeDefault);
     lines.push(";OpenKNX");
     var separator = multiLine ? '\n' : '§';
     return uctCreateHeader(module, channel) + separator + lines.join(separator);
