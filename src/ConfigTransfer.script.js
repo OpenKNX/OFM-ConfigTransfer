@@ -386,7 +386,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...")
     var importContent = importLines.slice(1, -1);
-    var newValues = uctPrepareParamValues(params, importContent, result);
+    var newValues = uctPrepareParamValues(params, importContent, result, false);
 
     /* write new values */
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
@@ -397,10 +397,27 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
 }
 
-function uctPrepareParamValues(params, importContent, result) {
-    /* use defaults for values not defined in import*/
-    // TODO FIXME: create a real copy!
-    var newValues = params.defaults;
+/**
+ * Define new values for all paramters of a module channel
+ * @param {object} params - module-channel's parameter definition
+ * @param {array} importContent - the entries from ConfigTransfer-string; typical case is the format 'key[:ref]=value', other possibilities are '#comment', '>msg', '!cmd'
+ * @param {array} result - (output) collection of ouput-messages
+ * @param {boolean} merge - `false` = overwrite and use default for all missing params, `true` = keep values of all missing params
+ * @returns {array} - new param values, or `null` to keep current, by index of param-definition
+ */
+function uctPrepareParamValues(params, importContent, result, merge) {
+    var newValues = [];
+    if (merge) {
+        // use empty values - to ignore in writing
+        for (var i = 0; i < params.defaults.length; i++) {
+            newValues[i] = null;
+        }
+    } else {
+        // use defaults for values not defined in import
+        for (var i = 0; i < params.defaults.length; i++) {
+            newValues[i] = params.defaults[i];
+        }
+    }
 
     var prefix = '';
 
