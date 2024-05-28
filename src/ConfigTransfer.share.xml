@@ -424,7 +424,7 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs die durch einen Import wieder sichtbar werden, können ggf. noch frühere GA-Verknüpfungen enthalten." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  ETS-Module (z.B. Mehrzeilige Kommentare)" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang nicht untersetützt." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang nicht unterstüzt." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  Abweichungen zwischen Kanälen" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter deren Standardwert abhängig vom Kanal definiert ist, können nicht zurückgesetzt werden." />
