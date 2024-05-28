@@ -30,9 +30,11 @@
                 <TypeText SizeInBit="262144" />
               </ParameterType>
               <!-- Text with nearly 64KiB (maximum length by 16bit) -->
+              <!-- 
               <ParameterType Id="%AID%_PT-TextLengthBy16Bit" Name="TextLengthBy16Bit">
                 <TypeText SizeInBit="524280" />
               </ParameterType>
+              -->
               <ParameterType Id="%AID%_PT-TextMaxLen" Name="TextMaxLen">
                 <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="1048568" />
