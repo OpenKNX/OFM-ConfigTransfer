@@ -406,7 +406,7 @@
           </Static>
           <Dynamic>
             <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer"><!-- HelpContext="BASE-OpenKNX" -->
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-box-outline"><!-- HelpContext="BASE-OpenKNX" -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-outline"><!-- HelpContext="BASE-OpenKNX" -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="OFM-ConfigTransfer (Version %ModuleVersion%)" UIHint="Headline" />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweise zur Nutzung" UIHint="Headline" />
