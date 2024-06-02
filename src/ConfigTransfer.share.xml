@@ -29,12 +29,6 @@
               <ParameterType Id="%AID%_PT-Text32KiB" Name="Text32KiB">
                 <TypeText SizeInBit="262144" />
               </ParameterType>
-              <!-- Text with nearly 64KiB (maximum length by 16bit) -->
-              <!-- 
-              <ParameterType Id="%AID%_PT-TextLengthBy16Bit" Name="TextLengthBy16Bit">
-                <TypeText SizeInBit="524280" />
-              </ParameterType>
-              -->
               <ParameterType Id="%AID%_PT-TextMaxLen" Name="TextMaxLen">
                 <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="1048568" />
@@ -289,7 +283,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-              
             </ParameterTypes>
             <Parameters>
 
@@ -341,9 +334,6 @@
             <ParameterCalculations>
               <ParameterCalculation Id="%AID%_PC-%TT%00001" Language="JavaScript" Name="UctImportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
-                  <!-- 
-                  <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" AliasName="ImportInput"           />
-                  -->
                   <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" AliasName="ImportTarget"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" AliasName="ImportCheck"           />
                 </LParameters>
@@ -405,8 +395,8 @@
             </Messages>            
           </Static>
           <Dynamic>
-            <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer"><!-- HelpContext="BASE-OpenKNX" -->
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-outline"><!-- HelpContext="BASE-OpenKNX" -->
+            <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-outline">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="OFM-ConfigTransfer (Version %ModuleVersion%)" UIHint="Headline" />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweise zur Nutzung" UIHint="Headline" />
