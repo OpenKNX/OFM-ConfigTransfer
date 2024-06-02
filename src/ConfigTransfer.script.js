@@ -1,8 +1,7 @@
 // OFM-ConfigTransfer --
 // SPDX-License-Identifier: AGPL-3.0-only
 
-// TODO update format to v1 when stable
-var uctFormatVer = "ck-dev0";
+var uctFormatVer = "cv1";
 var uctGenVer = "0.1.0";
 var uctGen = "uct";
 var uctAppId = uctVersionInformation[0];
