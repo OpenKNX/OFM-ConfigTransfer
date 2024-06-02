@@ -400,7 +400,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
-    return result.length>0 ? result.join('\n') : "[Import "+module+":"+channel+" OK]";
+    return result.length>0 ? result.join('\n') : module + "/" + channel + " Import [OK]";
 }
 
 /**
@@ -519,7 +519,7 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     /* TODO copy without serialize/deserialize */
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
     uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
-    return "[Copied Channel "+channelSource+" of Module "+module+" to Channel "+channelTarget+": OK]";
+    return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
 }
 
 /**
@@ -531,7 +531,7 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
  */
 function uctResetModuleChannel(device, module, channel) {
     uctImportModuleChannelFromString(device, module, channel, uctCreateHeader(module, channel) + '§' + ";OpenKNX", 7);
-    return "[Channel "+channel+" of Module "+module+" Reset: OK]";
+    return module + "/" + channel+" Reset [OK]";
 }
 
 function uctParamResetResult(input, output, context) {
