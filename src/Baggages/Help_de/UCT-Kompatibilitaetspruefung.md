@@ -6,7 +6,7 @@ bedingt durch z.B. unterschiedliche KO-Nummern, veränderte Parameter, Parameter
 Durch das Level der Kompatibilitätsprüfung kann dieses Risiko, zu Lasten eines flexibleren Konfiguratrionstransfers, beschränkt werden.
 
 
-#### streng       (selbe Modul- &amp; ETS-App-Version)
+#### streng       (selbe Modul- & ETS-App-Version)
 
 Akzeptiert nur Importe, die aus exakt derselben Applikation mit exakt derselben Version stammen (und damit auch gleichzeitig dieselbe Modul-Version aufweisen).
 
