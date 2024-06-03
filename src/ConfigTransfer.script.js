@@ -100,7 +100,7 @@ function uctCreateHeader(module, channel) {
 function uctGetModuleParamsDef(module, channel) {
     var module_params = uctChannelParams[module];
     if (channel>0 && (!module_params.channels || (channel > module_params.channels))) {
-        throw new Error("Channel " + channel + " NOT available in module " + module + "!");
+        throw new Error("Kanal " + channel + " NICHT verfügbar im Modul " + module + "!");
     }
     return module_params[channel==0 ? "share" : "templ"];
 }
@@ -154,7 +154,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
         }
     }
     if (errors.length > 0) {
-        throw new Error("ERRs:" + errors.length + " see ETS log /first:"+errors[0]);
+        throw new Error(errors.length + " FEHLER beim Export! Details siehe ETS-Log; erster Fehler:" + errors[0]);
     }
     return result;
 }
@@ -208,23 +208,23 @@ function uctParseHeader(headerStr) {
 
     /* 1. check prefix */
     if (headerParts[0] != "OpenKNX") {
-        throw new Error('Format Prefix does NOT match! Expected "OpenKNX" but found "' + headerParts[0] + '"!');
+        throw new Error('Format-Prefix ungültig! "OpenKNX" erwartet, aber "' + headerParts[0] + '" gefunden!');
     }
     header.prefix = headerParts[0];
 
     /* 2. check format version */
     if (headerParts.length < 2) {
-        throw new Error("Format Version NOT defined !");
+        throw new Error('Format-Version NICHT definiert!');
     }
     var versionParts = headerParts[1].split(":");
     if (versionParts[0] != uctFormatVer) {
-        throw new Error('Format Version does NOT match! Expected "'+uctFormatVer+'" but found "' + versionParts[0] + '"!');
+        throw new Error('Format-Version NICHT unterstützt! Version "'+uctFormatVer+'" erwartet, aber "' + versionParts[0] + '" gefunden!');
     }
     header.format = versionParts[0];
 
     /* ensure header completeness */
     if (headerParts.length < 3) {
-        throw new Error("Header is incomplete! Expected 3 parts (separated by ',') but has only " + headerParts.length);
+        throw new Error('Kopf-Bereich unvollständig! Erwarte 3 Teile (getrennt durch ","), aber nur ' + headerParts.length + ' gefunden!');
     }
 
     /* TODO include generator, but can be ignored first */
@@ -235,7 +235,7 @@ function uctParseHeader(headerStr) {
 
     var path = headerParts[2].split("/");
     if (path.length != 3) {
-        throw new Error("Path is expected to have 3 parts (separated by '/') but has only " + path.length);
+        throw new Error('Pfad-Angabe "'+headerParts[2]+'" ungültig! Erwarte 3 Teile (getrennt durch "/"), aber ' + path.length + ' gefunden!');
     }
 
     /* check app */
@@ -260,7 +260,7 @@ function uctParseHeader(headerStr) {
     var headerChannel = path[2];
     /* TODO validate format! */
     if (headerChannel!="*" && (headerChannel <0 || headerChannel >99)) {
-        throw new Error("Invalid Channel-Definition! Allowed Formar 0|1-99|*, but found " + headerChannel);
+        throw new Error('Ungültige Kanal-Definition! Erlaubtes Format 0|1-99|*, aber "' + headerChannel + '" gefunden!');
     }
     header.channel = headerChannel;
 
@@ -310,15 +310,15 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* check for completeness */
     var importEnd = importLines[importLines.length-1];
     if (importEnd != ";OpenKNX") {
-        throw new Error('Incomplete Import, MISSING End-Marker ";OpenKNX"!');
+        throw new Error('Unvollständiger Transfer-String: Fehlender End-Marker ";OpenKNX"!');
     }
 
     /* check module */
     if (module != null && header.modul.key != module) {
-        throw new Error('Module "'+module+'" expected, but found "'+header.modul.key+'"');
+        throw new Error('Modul "'+module+'" erwartet, aber "'+header.modul.key+'" gefunden!');
     }
     if (!uctChannelParams[header.modul.key]) {
-        throw new Error('Module "'+header.modul.key+'" NOT part of application!');
+        throw new Error('Modul "'+header.modul.key+'" ist NICHT Teil dieser ETS-Applikation!');
     }
     module = header.modul.key;
 
@@ -326,17 +326,17 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (checkModuleVersion) {
         if (!checkAppVersion) {
             if (uctChannelParams[module].version==undefined) {
-                throw new Error('Can not ensure same version of unversioned module without app version check!');
+                throw new Error('Für Modul ohne Versionsangabe kann Gleichheit nicht ohne Prüfung der Applikations-Version sichergestellt werden!');
             }
             if (header.modul.ver=='-') {
-                throw new Error('Found module version "-", can not ensure same without app version check!');
+                throw new Error('Für Modul-Version "-" kann die Gleichheit nicht ohne Prüfung der Applikations-Version sichergestellt werden!');
             }
         }
         if (checkAppVersion && uctChannelParams[module].version==undefined && header.modul.ver=='-') {
             // ok, for same app version
         } else if (header.modul.ver != uctChannelParams[module].version) {
             // TODO show versions in same format, to prevent mixed decimal/hex representation
-            throw new Error('Module version '+uctChannelParams[module].version+' expected, but found ' +header.modul.ver+'!');
+            throw new Error('Modul-Version '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
         }
     }
 
@@ -346,11 +346,11 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     // if (header.app.id != '*' && (header.app.id != uctAppId)) {
     if (checkAppId) {
         if ((header.app.id != uctAppId)) {
-            throw new Error('Application '+uctAppId+' expected, but found '+header.app.id+'!');
+            throw new Error('Applikation '+uctAppId+' erwartet, aber '+header.app.id+' gefunden!');
         }
         /* TODO check version */
         if (checkAppVersion && header.app.ver != uctAppVer) {
-            throw new Error('Application version '+uctAppVer+' expected, but found '+header.app.ver+'!');
+            throw new Error('Applikations-Version '+uctAppVer+' erwartet, aber '+header.app.ver+' gefunden!');
         }
     }
 
@@ -358,7 +358,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* allow channel auto-selection from export-string */
     if (channel == 100) {
         if (isNaN(header.channel)) {
-            throw new Error('No explicit channel defined in export-string!');
+            throw new Error('Keine explizite Kanal-Definition im Transfer-String!');
         }
         channel = header.channel;
     }
@@ -366,7 +366,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     var params = uctGetModuleParamsDef(module, channel);
     if (!params) {
-        throw new Error('No Params defined for Module "'+module+'" and channel "'+channel+'"!');
+        throw new Error('Keine Parameter definiert für Modul "'+module+'" und Kanal "'+channel+'"!');
     }
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...")
@@ -422,7 +422,7 @@ function uctPrepareParamValues(params, importContent, result, merge) {
             // output-message for user
             result.push(entry);
         } else if (start=="!") {
-            throw new Error('Special entries not supported in this Version of ConfigTransfer!');
+            throw new Error('Spezial-Einträge nicht unterstützt in dieser Version von ConfigTransfer!');
         } else if (start=="^") {
             // set prefix
             prefix = entry.slice(1);
@@ -449,11 +449,11 @@ function uctPrepareParamValues(params, importContent, result, merge) {
                 newValues[paramIndex] = paramValue;
             } else {
                 // TODO handling of invalid parameters!
-                throw new Error('Unknown Parameter: '+ paramKey + ' ("'+entry+'")');
+                throw new Error('Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
             }
         } else {
             // TODO error-handling; this is not a param=value pair
-            throw new Error('Invalid Entry: '+ entry);
+            throw new Error('Ungültiger Eintrag: '+ entry);
         }
     }
 
@@ -498,7 +498,7 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
  */
 function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     if (channelTarget == channelSource) {
-        throw new Error('Source and target of copy must NOT be the same!');
+        throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
     }
     /* TODO copy without serialize/deserialize */
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
