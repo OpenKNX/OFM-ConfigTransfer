@@ -217,7 +217,8 @@ function uctParseHeader(headerStr) {
         throw new Error('Format-Version NICHT definiert!');
     }
     var versionParts = headerParts[1].split(":");
-    if (versionParts[0] != uctFormatVer) {
+    var uctFormatVerDev = "ck-dev0"; // legacy support for version id used in development and internal testing; never use in new transfer-strings; can be removed in later versions without notice!
+    if (versionParts[0] != uctFormatVer && versionParts[0] != uctFormatVerDev) {
         throw new Error('Format-Version NICHT unterstützt! Version "'+uctFormatVer+'" erwartet, aber "' + versionParts[0] + '" gefunden!');
     }
     header.format = versionParts[0];
