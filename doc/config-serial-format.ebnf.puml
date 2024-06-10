@@ -11,7 +11,8 @@ VERSION_DEF = "cv1", [ ":", GENERATOR];
 CONFIG_PATH = APP_DEF, "/", MODULE_DEF, "/", CHANNEL_DEF;
 
 
-APP_DEF = ( "*" | APP_ID, [":", [VERSION] , [ ":" , APP_NAME ](* Not yet included *)] );
+' APP_DEF = ( "*" | APP_ID, [":", [VERSION] , [ ":" , APP_NAME ](* Not yet included *)] );
+APP_DEF = ( "*" | APP_ID, [":", VERSION] );
 
 MODULE_DEF = MODULE_KEY, [":", VERSION];
 
