@@ -6,8 +6,7 @@ UCT_STRING = UCT_HEADER, ("§" (*Single-Line:\nRequired for Import *), {CONFIG_V
 
 UCT_HEADER = "OpenKNX", ",", VERSION_DEF, ",", CONFIG_PATH;
 
-' VERSION_DEF = "v0", [ ":", SEMVER, [":", GENERATOR]];
-VERSION_DEF = "cv0" (* May change in first release! *), [ ":", GENERATOR];
+VERSION_DEF = "cv1", [ ":", GENERATOR];
 
 CONFIG_PATH = APP_DEF, "/", MODULE_DEF, "/", CHANNEL_DEF;
 
