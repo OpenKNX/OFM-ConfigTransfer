@@ -16,6 +16,8 @@ Von Cornelius Köpp 2024
 
 ## Inhaltsverzeichnis
 
+> Eine [**Beschreibung des ETS-Applikationsteils** erfolgt in einem separaten Dokument](doc/Applikationsbeschreibung-ConfigTransfer.md)!
+
 * [Funktionen](#funktionen)
   * [Export](#export)
   * [Import](#import)
