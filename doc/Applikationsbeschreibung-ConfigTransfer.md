@@ -39,7 +39,7 @@ Beispiele:
 * Grundlegende Gerätekonfiguration (BASE aus OGM-Common) die in allen OpenKNX-Applikationen enthalten ist
 * Logiken (LOG aus OFM-LogicModule) die in sehr vielen OpenKNX-Geräten enthalten sind
 
-> ***ACHTUNG***: Dieser Modul-Begriff weicht Konzept der ETS-XML-Module ab! 
+> ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab! 
 
 
 ### Kanal
