@@ -16,7 +16,7 @@ APP_DEF = ( "*" | APP_ID, [":", VERSION] );
 
 MODULE_DEF = MODULE_KEY, [":", VERSION];
 
-CHANNEL_DEF = ("0" (* Base-Config outside of Channel *) | "*" | ?1-99?);
+CHANNEL_DEF = ("0" (* Base-Config outside of Channel *) | "*" (* Unspecified Channel *) | ?1-99?);
 
 APP_ID  = HEXNUM;
 
@@ -26,9 +26,7 @@ VERSION = ( SEMVER | DECVER | HEXNUM);
 
 HEXNUM = "0x" , {(?0-9? | ?A-F?)}-;
 
-CONFIG_VALUE = PARAM_KEY, "=", PARAM_VALUE;
-
-PARAM_KEY = PARAM_NAME, [":", PARAM_REF_ID];
+CONFIG_VALUE = PARAM_NAME, [":", PARAM_REF_ID], "=", PARAM_VALUE;
 
 UCT_END = ";OpenKNX";
 
