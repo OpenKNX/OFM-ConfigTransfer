@@ -89,15 +89,16 @@ Im Rahmen der Neuentwicklung von Applikationen mit integrierten Konfigurationstr
 Die Ergebnisse dieser Prüfungen sind soweit bekannt in der nachfolgenden tabellarischen Auflistung dokumentiert, 
 im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eingeplant.
 
-| Module            | Version | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                | ETS-Log       |
-|-------------------|---------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| OFM-DFA           | 0.1     | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
-| OFM-Generic       | 0.1     | OK     |                                                                                                                                                                                   | -             |
-| OFM-LogicModule   | 3.1     | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                        | WARN-Einträge |
-| OFM-SensorModule  |         | OK     |                                                                                                                                                                                   | ?             |
-| OFM-VirtualButton | bis 0.4 | FEHLER | Nicht nutzbar in ETS5.7, durch Parameternamen die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind. | -             |
-| OFM-VirtualButton | 0.5     | OK     |                                                                                                                                                                                   | ?             |
-| OFM-Meter         | 0.2     | OK     |                                                                                                                                                                                   | ?             |
+| Modul              | Versionen  | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                | ETS-Log       |
+|--------------------|------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| OFM-DFA            | 0.1        | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
+| OFM-Generic        | 0.1        | OK     |                                                                                                                                                                                   | -             |
+| OFM-LogicModule    | 3.1<br>3.2 | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                        | WARN-Einträge |
+| OFM-PresenceModule | 3.0        | OK     |                                                                                                                                                                                   | ?             |
+| OFM-SensorModule   |            | OK     |                                                                                                                                                                                   | ?             |
+| OFM-VirtualButton  | bis 0.4    | FEHLER | Nicht nutzbar in ETS5.7, durch Parameternamen die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind. | -             |
+| OFM-VirtualButton  | 0.5        | OK     |                                                                                                                                                                                   | ?             |
+| OFM-Meter          | 0.2        | OK     |                                                                                                                                                                                   | ?             |
 
 
 
