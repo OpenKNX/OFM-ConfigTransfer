@@ -46,10 +46,10 @@ Dieses enthält neben der individuellen Konfiguration auch folgende Informatione
 Importieren eines Modul-Kanals (oder der Modul-Basiskonfiguration) aus einer Zeichenkette.
 
 Der Import erfolgt aus einer einzeiligen Zeichenkette, die einem definierten Format entsprechen muss. 
-Dieses ist erkennbar an der Struktur `OpenKNX, ... ;OpenKNX`
+Dieses ist erkennbar an der Struktur `OpenKNX,cv1 ... ;OpenKNX`
 Daten in einer abweichenden, nicht unterstützten, Format-Version werden abgelehnt.
 
-Zwingende Voraussetzung für einen Import ist ein übereinstimmender Modul-Schlüssel.
+Zwingende Voraussetzung für einen Import ist ein übereinstimmender Modul-Schlüssel (Siehe Prefix in [Liste der OpenKNX Module](https://github.com/OpenKNX/OpenKNX/wiki/OpenKNX-Modules#liste-der-openknx-module)).
 Eine abweichende Applikations-Version, Applikations-ID, oder Modul-Version kann ggf. ignoriert werden (unter Inkaufnahme von je nach Konstellation möglichen Ungenauigkeiten).
 Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auch abweichend - gewählt werden. 
 
@@ -104,18 +104,18 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 
 ## Integration in ETS-Applikation
 
-Zur Integration des Konfigurationstransfers muss nur die OpenKNX ETS Applikation erweitert werden. 
+Zur Integration des Konfigurationstransfers muss nur die (mit dem [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) erzeugte) OpenKNX ETS Applikation erweitert werden. 
 An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies kann sich mit zukünftigen Funktionserweiterungen jedoch noch ändern.
 
 
 ### Voraussetzungen
 
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 benötigt um die Modulinformationen zur integrieren.
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 (Release ab 3.3.4 empfohlen) benötigt um die Modulinformationen zur integrieren.
 
 
 ### ApplikationName.xml
 
-An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden
+An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden:
 ```
   <op:define prefix="UCT"
              share="../lib/OFM-ConfigTransfer/src/ConfigTransfer.share.xml"
