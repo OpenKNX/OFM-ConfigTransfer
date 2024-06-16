@@ -405,24 +405,24 @@
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Die Ausführung der Operationen kann sehr lange dauern; in Extremfällen wird die Benutzeroberfläche mehrere Minuten lang nicht mehr auf Eingaben reagieren!" UIHint="Information" />
 
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Der Konfigurationstransfer erfolgt unabhängig vom betroffenen Modul. Der Modul-Dokumentation können ggf. Hinweise zur Kompatiblität bestimmter Module entnommen werden." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Der Konfigurationstransfer erfolgt unabhängig vom betroffenen OpenKNX-Modul. Der technischen Dokumentation (siehe &quot;OFM-ConfigTransfer&quot;) können ggf. Hinweise zur Kompatiblität mit bestimmten OpenKNX-Modulen und Modul-Versionen entnommen werden." />
 
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Bekannte Limitationen" UIHint="Headline" />
                 
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="  Fehlende Unterstützung von KOs" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="  Fehlende Unterstützung von KOs (Kommunikationsobjekten)" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Die KO-Konfiguration (GA-Zuordnungen oder KO-Flags) kann NICHT transferiert werden." />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs werden beim Schreiben von Konfiguration ohne die übliche Rückfrage ausgeblendet unter Verlust der GA-Verknüpfungen." />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs die durch einen Import wieder sichtbar werden, können ggf. noch frühere GA-Verknüpfungen enthalten." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  ETS-Module (z.B. Mehrzeilige Kommentare)" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang nicht unterstüzt." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter in ETS-Modulen werden bislang NICHT unterstützt." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  Abweichungen zwischen Kanälen" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Parameter deren Standardwert abhängig vom Kanal definiert ist, können nicht zurückgesetzt werden." />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  Abweichungen bei Modul-Integration/-Version" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Innerhalb von Modulen veränderte Standard-Parameter-Werte können dazu führen, dass beim Import die Standardwerte der Zielumgebung verwendet werden." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Innerhalb von OpenKNX-Modulen veränderte Standard-Parameter-Werte können dazu führen, dass beim Import die Standardwerte der Zielumgebung verwendet werden." />
 
               </ParameterBlock>
 
