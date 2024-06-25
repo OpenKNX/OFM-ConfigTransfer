@@ -1,6 +1,6 @@
 @startebnf
 
-title OpenKNX Universal Config Transfer Serialization Format
+title OpenKNX Universal Config Transfer Serialization Format (Version 1)
 
 UCT_STRING = UCT_HEADER, ("§" (*Single-Line:\nRequired for Import *), {CONFIG_VALUE, "§"} | "\n" (*Multi-Line:\nFor Humans *), {CONFIG_VALUE, "\n"}), UCT_END;
 
@@ -20,7 +20,8 @@ CHANNEL_DEF = ("0" (* Base-Config outside of Channel *) | "*" (* Unspecified Cha
 
 APP_ID  = HEXNUM;
 
-VERSION = ( SEMVER | DECVER | HEXNUM);
+' VERSION = ( SEMVER | DECVER | HEXNUM);
+VERSION = HEXNUM;
 
 
 
