@@ -55,7 +55,8 @@ Beispiele:
 
 
 ## Konfigurationstransfer per Zeichenkette
-### ConfigTransfer-Format
+
+![config-serial-format.ebnf.png](config-serial-format.ebnf.png)
 
 
 
