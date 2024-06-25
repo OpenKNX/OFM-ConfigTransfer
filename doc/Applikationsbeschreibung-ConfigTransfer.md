@@ -30,27 +30,27 @@ Die ETS-Applikationen für OpenKNX-Geräte bestehen aus mehreren Teil-Applikatio
 
 ### Modul
 
-<!-- Ein OpenKNX-Modul ist eine Funktional abgeschlossene Einheit -->
-Ein OpenKNX-Modul stellt eine bestimmte abgrenzbare und Funktionalität bereit, 
+> ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab!
+
+Ein OpenKNX-Modul stellt eine bestimmte abgrenzbare Funktionalität bereit, 
 die in vielen Fällen (aber nicht immer) in mehreren Applikationen eingesetzt werden kann.
 
 Beispiele:
 
 * Grundlegende Gerätekonfiguration (BASE aus OGM-Common) die in allen OpenKNX-Applikationen enthalten ist
 * Logiken (LOG aus OFM-LogicModule) die in sehr vielen OpenKNX-Geräten enthalten sind
-
-> ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab! 
+* Konfigurationstransfer (UCT aus OFM-ConfigTransfer, also dieses Modul selbst)
 
 
 ### Kanal
 
-Ein OpenKNX-Modul kann mehrere Instanzen (bis zu 99) der enthaltenen Funktionalität bereitstellen, 
+Ein OpenKNX-Modul kann mehrere Instanzen (bis zu 999) der enthaltenen Funktionalität bereitstellen, 
 die unabhängig voneinander konfigurierbar sind.
 
 Beispiele:
 
-* Die grundlegende Gerätekonfiguration enthält keine Kanäle.
-* Logikkanäle innerhalb des Logik-Moduls, sie jeweils z.B. eine UND-Verknüpfung oder Zeitschaltuhren  
+* Logikkanäle innerhalb des Logik-Moduls, die jeweils z.B. eine UND-Verknüpfung oder Zeitschaltuhr abbilden.  
+* Die grundlegende Gerätekonfiguration und der Konfigurationstransfer enthalten keine Kanäle.
 
 
 
