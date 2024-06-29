@@ -56,7 +56,9 @@ Beispiele:
 
 ## Konfigurationstransfer per Zeichenkette
 
-![config-serial-format.ebnf.png](config-serial-format.ebnf.png)
+Die Übertragung der Konfigurationsdaten erfolgt serialisiert:
+
+![EBNF Format-Spezifikation](config-serial-format.ebnf.png)
 
 
 
