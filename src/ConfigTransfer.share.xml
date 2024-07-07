@@ -148,6 +148,7 @@
 
               <ParameterType Id="%AID%_PT-ExportSource" Name="ExportSource">
                 <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Value="253" Id="%ENID%" Text="Mehrfachauswahl"                       />
                   <Enumeration   Value="0" Id="%ENID%" Text="Basiseinstellungen (kanalunabhängig)"  />
                   <Enumeration   Value="1" Id="%ENID%" Text="1" />
                   <Enumeration   Value="2" Id="%ENID%" Text="2" />
@@ -250,6 +251,10 @@
                   <Enumeration  Value="99" Id="%ENID%" Text="99" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="%AID%_PT-ExportSourcesString" Name="ExportSourcesString" ValidationErrorRef="%AID%_M-%TT%00002">
+                <!-- max len:        1048575 (no full byte!) -->
+                <TypeText SizeInBit="2400" Pattern="^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$" />
+              </ParameterType>
 
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
@@ -295,6 +300,7 @@
 
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"                      Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Inhalt/Kanal"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ExportSourcesString"                 Text="Kanalauswahl"          Value=""    />
               <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Parameterauswahl"      Value="0"   />
               <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"                        Text="Format"                Value="0"   />
               <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Export-Resultat"       Value=""    />
@@ -323,6 +329,7 @@
               <ParameterRef Id="%AID%_P-%TT%00203_R-%TT%0020301" RefId="%AID%_P-%TT%00203" />
               <ParameterRef Id="%AID%_P-%TT%00204_R-%TT%0020401" RefId="%AID%_P-%TT%00204" />
               <ParameterRef Id="%AID%_P-%TT%00205_R-%TT%0020501" RefId="%AID%_P-%TT%00205" />
+              <ParameterRef Id="%AID%_P-%TT%00206_R-%TT%0020601" RefId="%AID%_P-%TT%00206" />
               <ParameterRef Id="%AID%_P-%TT%00300_R-%TT%0030001" RefId="%AID%_P-%TT%00300" />
               <ParameterRef Id="%AID%_P-%TT%00301_R-%TT%0030101" RefId="%AID%_P-%TT%00301" />
               <ParameterRef Id="%AID%_P-%TT%00302_R-%TT%0030201" RefId="%AID%_P-%TT%00302" />
@@ -393,7 +400,8 @@
             </Script>
             <Messages>
               <Message Id="%AID%_M-%TT%00001" Name="InvalidTransferString" Text="Kein gültiger/vollständiger OpenKNX-ConfigTransfer-String. Erwarte mindestens Beginn &quot;OpenKNX,&quot; und Ende &quot;§;OpenKNX&quot;." />
-            </Messages>            
+              <Message Id="%AID%_M-%TT%00002" Name="InvalidExportSourcesString" Text="Leere Eingabe oder Kanal-Nummer(n) oder Intervall(e) mit '-'; mehrere getrennt durch Komma. Regex: /^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$/" />
+            </Messages>
           </Static>
           <Dynamic>
             <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
@@ -469,6 +477,7 @@
                 <!-- 
                 <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
                 <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"  ParameterType="%AID%_PT-ExportSource"   Text="Inhalt/Kanal"          Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ExportSourcesString"                 Text="Kanalauswahl"          Value=""    />
                 <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"  ParameterType="%AID%_PT-ExportFormat"   Text="Format"                Value="0"   />
                 <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
                 <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
@@ -477,6 +486,11 @@
                 <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
                   <when test="!=255">
                     <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
+                      <when test="253">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="2" /><!--  HelpContext="UCT-InhaltKanal" for Multi-Section -->
+                      </when>
+                    </choose>
                     <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
                     <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
                       <when test="1">
@@ -486,8 +500,15 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen!&#xD;&#xA;Kann beim Import in Modul-Versionen mit veränderten Standardwerten helfen." UIHint="Information" />
                       </when>
                     </choose>
-                    <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
-                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
+                      <when test="253">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Format:  Je eine Zeile pro Kanal im Standardformat (Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)" />
+                      </when>
+                      <when default="true">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
+                      </when>
+                    </choose>
+                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <!--
                     <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
                     -->

@@ -39,6 +39,13 @@ function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
+    var channels = [channelSource];
+    if (channelSource == 253) {
+        channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+    }
+    if (channels.length > 1) {
+        Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
+    }
 
     var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
     var includeHidden = (includeSelection == 1);
@@ -46,12 +53,20 @@ function uctBtnExport(device, online, progress, context) {
 
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
-    var multiLine = (exportFormatSelection==1);
+    // multi-channel export is restricted to single line
+    var multiLine = (exportFormatSelection == 1) && (channelSource != 253);
 
     // TODO add p_messageOutput again?
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeHidden, includeDefault);
+    var channelExportResult = [];
+    for (var i = 0; i < channels.length; i++) {
+        var channelNumber = channels[i];
+        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber);
+        channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, exportFormat, multiLine, includeHidden, includeDefault));
+        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
+    }
+    param_exportOutput.value = channelExportResult.join("\n");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
 }
 
