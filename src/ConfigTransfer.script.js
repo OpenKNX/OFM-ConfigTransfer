@@ -8,6 +8,30 @@ var uctAppId = uctVersionInformation[0];
 var uctAppVer = uctVersionInformation[1];
 // var uctAppName = null;
 
+function uctParseRangesString(channelsString) {
+    var channels = [];
+    var ranges = channelsString.split(",");
+    var cs = {};
+    for (var i = 0; i < ranges.length; i++) {
+        var limits = ranges[i].split("-");
+        if (limits.length == 1) {
+            var cn = limits[0];
+            cs[cn] = true;
+        } else if (limits.length == 2) {
+            for (var cn = limits[0]; cn <= limits[1]; cn++) {                
+                cs[cn] = true;
+            }
+        } else {
+            // TODO exception
+        }
+    }
+    for (var i = 0; i <= 99; i++) {
+        if (cs[i]) {
+            channels.push(i);
+        }
+    }
+    return channels;
+}
 
 function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")

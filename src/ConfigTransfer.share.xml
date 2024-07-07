@@ -16,6 +16,7 @@
   <op:nowarn id="3" regex="uctGetDeviceParameter" />
   <op:nowarn id="3" regex="uctHexNumberStr" />
   <op:nowarn id="3" regex="uctFindIndexByParamName" />
+  <op:nowarn id="3" regex="uctParseRangesString" />
   <!--
   <op:nowarn id="3" regex="uctParseVersion" />
   -->
