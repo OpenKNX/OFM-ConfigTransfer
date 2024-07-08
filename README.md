@@ -18,6 +18,9 @@ Von Cornelius Köpp 2024
 
 > Eine [**Beschreibung des ETS-Applikationsteils** erfolgt in einem separaten Dokument](doc/Applikationsbeschreibung-ConfigTransfer.md)!
 
+* [Konzepte](#konzepte)
+  * [OpenKNX-Module und -Module-Kanäle](#openknx-module-und--module-kanäle)
+  * [Serialisierung der Konfigurationsdaten als Zeichenkette](#serialisierung-der-konfigurationsdaten-als-zeichenkette)
 * [Funktionen](#funktionen)
   * [Export](#export)
   * [Import](#import)
@@ -27,6 +30,101 @@ Von Cornelius Köpp 2024
 * [Integration in ETS-Applikation](#integration-in-ets-applikation)
   * [Voraussetzungen](#voraussetzungen)
   * [ApplikationName.xml](#applikationnamexml)
+* (geplant) Beispiele
+* [Formatspezifikation (Entwurf)](#formatspezifikation-entwurf)
+
+
+
+# Konzepte
+
+
+## OpenKNX-Module und -Module-Kanäle
+
+Die ETS-Applikationen für OpenKNX-Geräte bestehen aus mehreren Teil-Applikationen die von den genutzten OpenKNX-Modulen bereitgestellt werden.
+In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur einer Applikation sichtbar:
+
+````
++----------------------------+  
+| - # OpenKNX                +   \
++----------------------------+    |
+|     # Allgemein            |    |  Modul "OpenKNX"
++----------------------------+     > nur Basiseinstellungen (kanalunabhängig)
+|     = Erweitert            |    |  
++----------------------------+    |
+|     ? Hilfe                |   /
++----------------------------+
+| + # Konfigurationstransfer +   <-  dieses Modul (nur Basiseinstellungen, von Kanaltransfer ausgeschlossen )
++----------------------------+
+| + # Beispie-Modul A        |
++----------------------------+
+|   ...                      |
++----------------------------+
+| - # Beispie-Modul I        |                                                    \  
++----------------------------+                                                     |
+|     # Allgemein            |   \                                                 |
++----------------------------+     > Basiseinstellungen                            |
+|       ...                  |   /                                                 |
++----------------------------+                                                     |
+|     # Modul-Kanal 1        |   \                                                 |
++----------------------------+    |                                                |
+|       ...                  |    |  kanalspezifische Einstellungen                |
++----------------------------+    |  (Anzahl Kanäle abhängig von Applikation)      |
+|     # Modul-Kanal n        |   /                                                / 
++----------------------------+
+|   ...                      |
++----------------------------+
+| + # Beispie-Modul N        |
++----------------------------+
+````
+
+### Modul
+
+> ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab!
+
+Ein OpenKNX-Modul stellt eine bestimmte abgrenzbare Funktionalität bereit,
+die in vielen Fällen (aber nicht immer) in mehreren Applikationen eingesetzt werden kann.
+
+Beispiele:
+
+* Grundlegende Gerätekonfiguration (BASE aus OGM-Common) die in allen OpenKNX-Applikationen enthalten ist
+* Logiken (LOG aus OFM-LogicModule) die in sehr vielen OpenKNX-Geräten enthalten sind
+* Konfigurationstransfer (UCT aus OFM-ConfigTransfer, also dieses Modul selbst)
+
+
+### Kanal
+
+Ein OpenKNX-Modul kann mehrere Instanzen (von ConficTransfer werden bislang 99 unterstützt) der enthaltenen Funktionalität bereitstellen,
+die unabhängig voneinander konfigurierbar sind. 
+Darüber hinaus besitzen OpenKNX-Module eine "zentrale" Konfiguration die lost gelöst von einem einzelnen Kanal existiert.
+Beim Konfigurationstransfer wird diese Basiskonfiguration als "Kanal 0" abgebildet. 
+
+Beispiele:
+
+* Logikkanäle innerhalb des Logik-Moduls, die jeweils z.B. eine UND-Verknüpfung oder Zeitschaltuhr abbilden.
+* Die grundlegende Gerätekonfiguration und der Konfigurationstransfer enthalten keine Kanäle.
+
+
+## Serialisierung der Konfigurationsdaten als Zeichenkette
+
+Die Übertragung der Konfigurationsdaten erfolgt serialisiert als Zeichenkette.
+Diese kann über die Zwischenablage mit der ETS-Applikation ausgetauscht werden. 
+Zeichenvorrat und Codierungsverfahren erlauben eine unkomplizierte Übertagung über gängige Kommunikations-Kanäle, 
+auch für Nicht-Entwickler.
+
+ConfigTransfer-Strings haben eine leicht erkennbare Struktur:
+```
+OpenKNX,cv1,{R}§{E}§;OpenKNX
+```
+
+Durch Beginn einschließlich Format-Version und End-Markierung ist eine Erkennung und Prüfung auf Vollständigkeit möglich.
+Der Referenz-Pfad (`{R}`) enthält Informationen über die ETS-Applikation, das Modul und den Modul-Kanal. 
+Dadurch ist eine Zuordnung der Konfigurationsdaten möglich, sowie auch eine Kompatibilitätsprüfung zwischen Quell und Zielumgebung.
+Die Konfigurationseinträge (`{E}`) enthalten Schlüssel-Werte-Paare basierend auf der Modul-internen repräsentation der Konfigurationsdaten.  
+
+Details zum Format siehe Abschnitt [Formatspezifikation (Entwurf)](#formatspezifikation-entwurf).
+
+
+
 
 ## Funktionen
 
@@ -123,3 +221,6 @@ An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden:
     <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="0.1" /> 
   </op:define> />
 ```
+
+# Formatspezifikation (Entwurf)
+![EBNF Format-Spezifikation](doc/config-serial-format.ebnf.png)

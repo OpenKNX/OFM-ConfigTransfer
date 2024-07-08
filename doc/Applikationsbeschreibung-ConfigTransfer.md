@@ -6,7 +6,6 @@
 
 # Inhaltsverzeichnis
 
-* [Konzepte](#konzepte)
 * ETS-Konfiguration:
   [**Konfigurationstransfer**](#ets-applikationsteilkonfigurationstransfer)
     * [**Hinweise &amp; Limitationen**](#hinweise--limitationen)
@@ -17,51 +16,6 @@
     * [**Standardwerte**](#standardwerte)
 
 * [Kommunikationsobjekte](#kommunikationsobjekte)
-
-
-
-# Konzepte
-
-
-## OpenKNX: Module und Kanäle
-
-Die ETS-Applikationen für OpenKNX-Geräte bestehen aus mehreren Teil-Applikationen die von den genutzten OpenKNX-Modulen bereitgestellt werden.
-
-
-### Modul
-
-> ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab!
-
-Ein OpenKNX-Modul stellt eine bestimmte abgrenzbare Funktionalität bereit, 
-die in vielen Fällen (aber nicht immer) in mehreren Applikationen eingesetzt werden kann.
-
-Beispiele:
-
-* Grundlegende Gerätekonfiguration (BASE aus OGM-Common) die in allen OpenKNX-Applikationen enthalten ist
-* Logiken (LOG aus OFM-LogicModule) die in sehr vielen OpenKNX-Geräten enthalten sind
-* Konfigurationstransfer (UCT aus OFM-ConfigTransfer, also dieses Modul selbst)
-
-
-### Kanal
-
-Ein OpenKNX-Modul kann mehrere Instanzen (bis zu 999) der enthaltenen Funktionalität bereitstellen, 
-die unabhängig voneinander konfigurierbar sind.
-
-Beispiele:
-
-* Logikkanäle innerhalb des Logik-Moduls, die jeweils z.B. eine UND-Verknüpfung oder Zeitschaltuhr abbilden.  
-* Die grundlegende Gerätekonfiguration und der Konfigurationstransfer enthalten keine Kanäle.
-
-
-
-## Konfigurationstransfer per Zeichenkette
-
-Die Übertragung der Konfigurationsdaten erfolgt serialisiert:
-
-![EBNF Format-Spezifikation](config-serial-format.ebnf.png)
-
-
-
 
 
 
