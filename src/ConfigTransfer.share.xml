@@ -397,7 +397,11 @@
           <Dynamic>
             <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
               <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Intro" Text="Hinweise &amp; Limitationen" Icon="alert-outline">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Konfigurationstransfer (Version %ModuleVersion%)" UIHint="Headline" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Konfigurationstransfer" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%"  />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweise zur Nutzung" UIHint="Headline" />
 
@@ -407,6 +411,7 @@
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Der Konfigurationstransfer erfolgt unabhängig vom betroffenen OpenKNX-Modul. Der technischen Dokumentation (siehe &quot;OFM-ConfigTransfer&quot;) können ggf. Hinweise zur Kompatiblität mit bestimmten OpenKNX-Modulen und Modul-Versionen entnommen werden." />
 
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Bekannte Limitationen" UIHint="Headline" />
                 
