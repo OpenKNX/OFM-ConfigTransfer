@@ -413,7 +413,7 @@
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="  Bekannte Limitationen" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Bekannte Limitationen" UIHint="Headline" />
                 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Fehlende Unterstützung von KOs (Kommunikationsobjekten)" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Die KO-Konfiguration (GA-Zuordnungen oder KO-Flags) kann NICHT transferiert werden." />
