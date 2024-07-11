@@ -259,9 +259,8 @@ function uctParseHeader(headerStr) {
 
     /* check channel */
     var headerChannel = path[2];
-    /* TODO validate format! */
-    if (headerChannel!="*" && (headerChannel <0 || headerChannel >99)) {
-        throw new Error('Ungültige Kanal-Definition! Erlaubtes Format 0|1-99|*, aber "' + headerChannel + '" gefunden!');
+    if (headerChannel!="*" && (isNaN(headerChannel) || headerChannel <0 || headerChannel >99)) {
+        throw new Error('Ungültige Kanal-Definition! Erlaubte Werte 0 bis 99 oder *, aber "' + headerChannel + '" gefunden!');
     }
     header.channel = headerChannel;
 
