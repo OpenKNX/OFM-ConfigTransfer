@@ -1,0 +1,50 @@
+
+var uctVersionInformation = [0xAF42, 0x23];
+
+var uctModuleOrder = ["UCTD", "NVEM", "TXS", "CHN"];
+var uctChannelParams = {
+    // UCT Demo
+    "UCTD": {
+        "share":{
+            "names": ["ModuleIndex", "Channel", "ChannelSource", "ChannelTarget", "Opt1", "Opt2", "Output", "Import", "ImportCheck"],
+            "defaults": [3, 3, 6, 5, 0, 0, "", "", 0],
+        },
+    },
+    // no version module
+    "NVEM": {
+        "share":{
+            "names": ["P1", "P2"],
+            "defaults": ["", "Name"],
+        },
+    },
+    // test module
+    "TXS": {
+        "version": 0x17,
+        "share":{
+            "names": ["X"],
+            "defaults": [0],
+        },
+    },
+    // channel defs
+    "CHN": {
+        "version": 0x18,
+        "channels": 7,
+        "share":{
+            "names": ["A", "B"],
+            "defaults": [5, 385],
+        },
+        "templ":{
+            "names": ["Param~C", "Param~D"],
+            "defaults": [500, "XXXX"],
+        },
+    },
+};
+
+const Log = {
+    info: function(msg) {
+        // ignore
+    },
+    error: function(msg) {
+        // ignore
+    },
+};

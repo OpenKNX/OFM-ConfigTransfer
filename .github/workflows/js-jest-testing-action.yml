@@ -1,0 +1,14 @@
+name: js-test
+run-name: Testing of Script Part
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Combined JS File for Testing
+        run: cat test/js_prefix.txt test/ConfigTransfer.mock.js src/ConfigTransfer.script.js test/js_suffix.txt > test/testing.js && cat -n test/testing.js
+      - name: Install modules
+        run: yarn
+      - name: Run tests (with Coverage)
+        run: yarn test --coverage

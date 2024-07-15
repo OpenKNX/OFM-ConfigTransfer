@@ -1,0 +1,42 @@
+
+module.exports = {
+
+    // mock // TODO remove
+    device,
+
+    // constants
+    uctFormatVer,
+    uctGenVer,
+    uctGen,
+    uctAppId,
+    uctAppVer,
+    uctAppName,
+
+    // functions
+    uctSerializeParamValue, 
+    uctUnserializeParamValue, 
+    uctCreateHeader,
+    uctHexNumberStr,
+    uctParseHeader,  
+
+    uctBtnExport,
+    uctBtnImport,
+    uctBtnCopy,
+    uctBtnReset,
+
+    uctGetModuleParamsDef,
+    uctGetDeviceParameter,
+    uctExportModuleChannelToStrings,
+    uctExportModuleChannelToString,
+    uctFindIndexByParamName,
+    uctImportModuleChannelFromString,
+    uctPrepareParamValues,
+    uctWriteParams,
+    uctCopyModuleChannel,
+    uctResetModuleChannel,
+
+    // parameter calculations
+    uctParamResetResult,
+    uctParamResetSelection,
+    uctParamResetNothing,
+};
