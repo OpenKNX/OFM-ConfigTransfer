@@ -255,7 +255,7 @@ function uctParseHeader(headerStr) {
         /* TODO check need of handling */
     }
     header.modul.key = headerModule[0];
-    header.modul.ver = (headerModule.length>=2) ? headerModule[1] : null;
+    header.modul.ver = (headerModule.length>=2) ? parseInt(headerModule[1]) : null;
 
     /* check channel */
     var headerChannel = path[2];
