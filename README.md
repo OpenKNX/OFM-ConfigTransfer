@@ -189,6 +189,7 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 
 | Modul              | Versionen  | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                | ETS-Log       |
 |--------------------|------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| OGM-Common         | 1.2        | OK     |                                                                                                                                                                                   | -             |
 | OFM-DFA            | 0.1        | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
 | OFM-Generic        | 0.1        | OK     |                                                                                                                                                                                   | -             |
 | OFM-LogicModule    | 3.1<br>3.2 | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                        | WARN-Einträge |
