@@ -27,6 +27,7 @@ Von Cornelius Köpp 2024
   * [Kanaltransfer](#kanaltransfer)
   * [Standardwerte](#standardwerte)
 * [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
+* [OpenKNX-Applikation mit integriertem Konfigurationstransfer](#openknx-applikation-mit-integriertem-konfigurationstransfer)
 * [Integration in ETS-Applikation](#integration-in-ets-applikation)
   * [Voraussetzungen](#voraussetzungen)
   * [ApplikationName.xml](#applikationnamexml)
@@ -200,6 +201,24 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 | OFM-VirtualButton  | 0.5        | OK     |                                                                                                                                                                                   | ?             |
 | OFM-Meter          | 0.2        | OK     |                                                                                                                                                                                   | ?             |
 | SOM-UP             | 1.0        | OK     |                                                                                                                                                                                   | ?             |
+
+
+
+## OpenKNX-Applikation mit integriertem Konfigurationstransfer
+
+Der Konfigurationstransfer ist derzeit in den nachfolgend aufgelisteten Releases integriert.
+Ein Austausch von Einstellungen kann zwischen allen Applikationen mit demselben OpenKNX-Modul (siehe Spalten) erfolgen.
+Einschränkungen sind ggf. durch abweichenden Versionen, oder (sofern diese referenziert werden) durch unterschiedliche Nummerierung von KOs möglich.
+
+| OpenKNX-Applikation | Version | Release                                               | (UCT) | BASE | NET | LOG | PM   | BTN | BI  | SOM     | FIN | FINACT | SWA |
+|---------------------|---------|-------------------------------------------------------|-------|------|-----|-----|------|-----|-----|---------|-----|--------|-----|
+| OAM-LogicModule     | 3.3     | LogicModule-Release-3.3                               | 0.1   | 1.2  |     | 3.3 |      |     |     |         |     |        |     |
+| OAM-LogicModule     | 3.3     | LogicModule-**IP**-3.3                                | 0.1   | 1.2  | 0.3 | 3.3 |      |     |     |         |     |        |     |
+| OAM-PresenceModule  | 1.12.3  | *Nur zur Migration!*<br>PresenceModule-Release-1.12.3 | 0.1   | alt  |     | alt | alt  |     |     |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-Big-3.1                                | 0.1   | 1.2  |     | 3.3 | 3.1  | 0.5 |     |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-**IP**-3.1                             | 0.1   | 1.2  | 0.3 | 3.3 | 3.1  | 0.5 |     |         |     |        |     |
+| SOM-UP              | 1.0     | SoundModule-Release-1.0                               | 0.1   | 1.2  |     | 3.3 |      | 0.4 | 0.2 | - (App) |     |        |     |
+| OAM-Fingerprint     | 0.6     | FingerPrintModuleReleaseR503-0.6                      | 0.1   | 1.2  |     | 3.3 |      | 0.4 | 0.2 |         | 0.6 | - (?)  | 0.1 |
 
 
 
