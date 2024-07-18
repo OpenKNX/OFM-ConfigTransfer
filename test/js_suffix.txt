@@ -10,7 +10,7 @@ module.exports = {
     uctGen,
     uctAppId,
     uctAppVer,
-    uctAppName,
+    // uctAppName,
 
     // functions
     uctSerializeParamValue, 

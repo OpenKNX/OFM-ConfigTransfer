@@ -628,6 +628,14 @@ describe('Header', () => {
             expect(uctCreateHeader("TXS", 6)).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/6");
             expect(uctCreateHeader("TXS", 78)).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/78");
         });
+        /*
+        it.skip("[NOT used yet] could include application name", () => {
+            const SAVE_uctAppName = cts.uctAppName;
+            cts.uctAppName = "OAM-Example";
+            expect(uctCreateHeader("TXS", 42)).toBe("OpenKNX,cv1,0xAF42:0x23:OAM-Example/TXS:0x17/42");
+            cts.uctAppName = SAVE_uctAppName;
+        });
+        */
     });
 
     describe('uctParseHeader(headerStr)', () => {

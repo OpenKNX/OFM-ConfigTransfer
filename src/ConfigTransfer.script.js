@@ -6,7 +6,7 @@ var uctGenVer = "0.1.0";
 var uctGen = "uct";
 var uctAppId = uctVersionInformation[0];
 var uctAppVer = uctVersionInformation[1];
-var uctAppName = null;
+// var uctAppName = null;
 
 
 function uctBtnExport(device, online, progress, context) {
@@ -81,9 +81,11 @@ function uctCreateHeader(module, channel) {
     */
 
     var pathApp = [uctHexNumberStr(uctAppId), uctHexNumberStr(uctAppVer)];
+    /* TODO check inclusion of app name
     if (uctAppName) {
         pathApp.push(uctAppName);
     }
+    */
 
     var moduleVersion = uctChannelParams[module].version;
     var pathModule = [
