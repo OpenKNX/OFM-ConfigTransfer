@@ -25,17 +25,21 @@
 ## Hinweise &amp; Limitationen
 
 
-### Modul-Version
+### Konfigurationstransfer
 
-Zeigt die Version im Format `Major.Minor` an.
+#### Version
 
+Zeigt die Modul-Version im Format `Major.Minor` an.
 
-### Hinweise
+> Das Versions-Schema von OpenKNX-Modulen ist an die Versionierung von ETS-Applikationen angelehnt 
+> und weicht daher vom Konzept der semantischen Versionierung (SemVer) ab! 
+
+### Hinweise zur Nutzung
 
 Wichtige Bemerkungen zum Einsatz dieses Moduls 
 
 
-### Limitationen
+### Bekannte Limitationen
 
 Auflistung von bekannter Einschränkungen bei der Nutzung vom Konfigurationstransfer.
 
