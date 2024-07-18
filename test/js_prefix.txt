@@ -1,7 +1,7 @@
 
 var uctVersionInformation = [0xAF42, 0x23];
 
-var uctModuleOrder = ["UCTD", "NVEM", "TXS", "CHN"];
+var uctModuleOrder = ["UCTD", "NVEM", "TXS", "CHN", "MRP"];
 var uctChannelParams = {
     // UCT Demo
     "UCTD": {
@@ -36,6 +36,19 @@ var uctChannelParams = {
         "templ":{
             "names": ["Param~C", "Param~D"],
             "defaults": [500, "XXXX"],
+        },
+    },
+    // multi-ref-params
+    "MRP": {
+        "version": 0x24,
+        "channels": 2,
+        "share":{
+            "names": ["Single", "Multi:1", "Multi:2"],
+            "defaults": [1000, 1001, 1002],
+        },
+        "templ":{
+            "names": ["c~Single", "c~Multi:1", "c~Multi:2"],
+            "defaults": [2000, 2001, 2002],
         },
     },
 };

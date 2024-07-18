@@ -401,8 +401,21 @@ describe('Parameter Helper', () => {
             expect(uctGetDeviceParameter(device, "UCTD_ModuleIndex", 1).value).not.toBe(undefined);
             // TODO extend
         });
+        it("supports multi-ref parameters", () => {
+
+            // basic config
+            expect(uctGetDeviceParameter(device, "MRP_Single", 1).value).toBe(1000);
+            expect(uctGetDeviceParameter(device, "MRP_Multi", 1).value).toBe(1001);
+            expect(uctGetDeviceParameter(device, "MRP_Multi", 2).value).toBe(1002);
+
+            // channel
+            expect(uctGetDeviceParameter(device, "MRP_c2Single", 1).value).toBe(2000);
+            expect(uctGetDeviceParameter(device, "MRP_c2Multi", 1).value).toBe(2001);
+            expect(uctGetDeviceParameter(device, "MRP_c2Multi", 2).value).toBe(2002);
+        });
     });
-});
+    
+});  
 
 
 describe('Param Calculation', () => {
