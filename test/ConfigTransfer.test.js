@@ -3,6 +3,244 @@ const cts = require("../test/testing.js");
 
 
 
+describe("uctFindIndexByParamName", () => {
+    const uctFindIndexByParamName = cts.uctFindIndexByParamName;
+    var params = {
+        "names": ["A", "B", "C", "D:1", "D:2", "E:5", "E:6", "FF:99", "G"],
+    }
+    it("returns -1 for not found", () => {
+        expect(uctFindIndexByParamName(params, "NoParam", 1)).toBe(-1);
+    });
+    it("returns index for param without refId", () => {
+        expect(uctFindIndexByParamName(params, "A", 1)).toBe(0);
+        expect(uctFindIndexByParamName(params, "B", 1)).toBe(1);
+        expect(uctFindIndexByParamName(params, "C", 1)).toBe(2);
+        expect(uctFindIndexByParamName(params, "G", 1)).toBe(8); // params.name.length-1
+    });
+    it("returns index for param with refId", () => {
+        expect(uctFindIndexByParamName(params, "D", 1)).toBe(3);
+        expect(uctFindIndexByParamName(params, "D", 2)).toBe(4);
+        expect(uctFindIndexByParamName(params, "FF", 99)).toBe(7);
+        expect(uctFindIndexByParamName(params, "E", 6)).toBe(6);
+        expect(uctFindIndexByParamName(params, "E", 5)).toBe(5);
+    });
+    it("returns -1 for param not present with refId", () => {
+        expect(uctFindIndexByParamName(params, "E", 1)).toBe(-1);
+        expect(uctFindIndexByParamName(params, "E", 2)).toBe(-1);
+        expect(uctFindIndexByParamName(params, "FF", 1)).toBe(-1);
+    });
+});
+
+describe("uctImportModuleChannelFromString", () => {
+    const device = cts.device;
+    const uctImportModuleChannelFromString = cts.uctImportModuleChannelFromString;
+
+    /*
+    <Enumeration   Value="7" Id="%ENID%" Text="streng       (selbe Modul- &amp; ETS-App-Version)"     />
+    <Enumeration   Value="1" Id="%ENID%" Text="moderat   (selbe Modul-Version)"  />
+    <Enumeration   Value="0" Id="%ENID%" Text="locker       (gleiche Parameternamen)"          />
+    */
+
+    it("fails on not matching module", () => {
+        var importCheck = 7;
+        expect(() => uctImportModuleChannelFromString(device, "OTR", 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, "OTR", 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).toThrow(Error);
+
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, "CHN", 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, "CHN", 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+    });
+
+    it("fails when module is not in app", () => {
+        var module = null;
+        var importCheck = 7;
+        expect(() => uctImportModuleChannelFromString(device, module, 2, "OpenKNX,cv1,0xAF42:0x23/NIA:0x18/2§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, module, 2, "OpenKNX,cv1,0xAF42:0x23/NIA:0x18/2§Par=256§;OpenKNX", importCheck)).toThrow(Error);
+
+        expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+    });
+
+    describe("strict check", () => {
+        var module = null;
+        var importCheck = 7;
+        it("accept same app", () => {
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+        });
+        it("fails on different app", () => {
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).toThrow(Error);
+        });
+        it("fails on undefined app", () => {
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:*/CHN:0x18/0§A=400§;OpenKNX", importCheck)).toThrow(Error);
+        });
+    });
+
+    describe("moderate check", () => {
+        var module = null;
+        var importCheck = 1;
+        it("accept all apps and versions for same module", () => {
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:*/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+        });
+    });
+
+
+    describe("loose check", () => {
+        var module = null;
+        var importCheck = 0;
+        it("accept all apps and versions for same module", () => {
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:0x23/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF00:*/CHN:0x18/0§A=400§;OpenKNX", importCheck)).not.toThrow(Error);
+        });
+    });
+
+    describe("module version check", () => {
+        var module = null;
+        it("moderate: accept unversiond module on same app only", () => {
+            var importCheck = 1;
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/NVEM:-/0§P1=a§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x25/NVEM:-/0§P1=b2§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42/NVEM:-/0§P1=c3§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,*/NVEM:-/0§P1=d§;OpenKNX", importCheck)).toThrow(Error);
+        });
+            
+        it("strict: accept unversiond module on same app only", () => {
+            var importCheck = 7;
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/NVEM:-/0§P1=a§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x25/NVEM:-/0§P1=b§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42/NVEM:-/0§P1=c§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,*/NVEM:-/0§P1=d§;OpenKNX", importCheck)).toThrow(Error);
+        });
+    });
+
+    describe("app check", () => {
+        var module = null;
+        it("enforce same app and app version in strict check", () => {
+            var importCheck = 7;
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x24/TXS:0x17/0§X=5§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x22/TXS:0x17/0§X=5§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42/TXS:0x17/0§X=5§;OpenKNX", importCheck)).toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,*/TXS:0x17/0§X=5§;OpenKNX", importCheck)).toThrow(Error);
+        });
+            
+        it("allow other app and app version in moderate check", () => {
+            var importCheck = 1;
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x24/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x22/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+            expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,*/TXS:0x17/0§X=5§;OpenKNX", importCheck)).not.toThrow(Error);
+        });
+    });
+
+});
+
+
+describe("uctPrepareParamValues", () => {
+    const uctPrepareParamValues = cts.uctPrepareParamValues;
+    const params = {
+        names: ["First", "Second", "Third", "Four"],
+        defaults: [22, "Wert", 0, 999],
+    };
+
+    it("fails on unknown parameter", () => {
+        var importContent = ["NonExisting=7"];
+        var result = [];
+        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+    });
+
+    it("fails on unknown commands", () => {
+        var importContent = ["!undefcmd"];
+        var result = [];
+        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+    });
+
+    it("fails on unknown entry format", () => {
+        var importContent = ["unspecFormat"];
+        var result = [];
+        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+    });
+
+    it("fails on empty entry", () => {
+        var importContent = [""];
+        var result = [];
+        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+    });
+
+    it("ignores comments", () => {
+        // TODO extend
+        var importContent = ["#Kommentar", "# noch ein Kommentar"];
+        var result = [];
+        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(params.defaults);
+        expect(result).toStrictEqual([]);
+    });
+
+    it("include messages in result", () => {
+        // TODO extend
+        var importContent = [">output1", ">output2"];
+        var result = [];
+        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(params.defaults);
+        expect(result).toStrictEqual([">output1", ">output2"]);
+    });
+
+    it("without merge uses default for undefined values", () => {
+        var importContent = ["Second=neuer Wert"];
+        var result = [];
+        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(
+            [22, "neuer Wert", 0, 999]
+        );
+        expect(result).toStrictEqual([]);
+    });
+
+    it("without merge uses default for undefined values + use string only", () => {
+        var importContent = ["First=25", "Second=neuer Wert"];
+        var result = [];
+        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(
+            // TODO check or FIXME?
+            ["25", "neuer Wert", 0, 999]
+        );
+        expect(result).toStrictEqual([]);
+    });
+
+    it("with merge uses null for undefined values", () => {
+        var result = [];
+        expect(uctPrepareParamValues(params, ["Second=alleine"], result, true)).toStrictEqual(
+            [null, "alleine", null, null]
+        );
+        expect(result).toStrictEqual([]);
+    });
+
+    it("allows definition of key prefixes", () => {
+        const params = {
+            names: ["Erster", "Anderer", "WertX1", "Keep", "WertY1", "WertZ1"],
+            defaults: ["nr1", "A!", "", "k!", "", ""],
+        };
+    
+        var result = [];
+        var input = ["Erster=DieEins", "^Wert", "Z1=dz", "Y1=dy", "X1=dx", "^", "Anderer="];
+        expect(uctPrepareParamValues(params, input, result, false)).toStrictEqual(
+            ["DieEins", "", "dx", "k!", "dy", "dz"]
+        );
+        expect(result).toStrictEqual([]);
+
+        // works with comments and echo
+        var input = ["Erster=DieEins", "^Wert", ">out1", "Z1=dz", "# ignore ign", "Y1=dy", "X1=dx", "^", "Anderer="];
+        expect(uctPrepareParamValues(params, input, result, false)).toStrictEqual(
+            ["DieEins", "", "dx", "k!", "dy", "dz"]
+        );
+        expect(result).toStrictEqual([">out1"]);
+    });
+
+    it.skip("handle numeric keys", () => {
+        // TODO implement
+    });
+
+});
+
 test("UCT constants", () => {
     expect(cts.uctFormatVer).toBe("cv1");
     expect(cts.uctGenVer).toBe("0.1.0");
@@ -120,6 +358,20 @@ describe('Button Handler', () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§Param~D=NEU§;OpenKN"
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);                
         });
+    
+        it("fails on same channel selection for undefined channel", () => {
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/*§Param~D=NEU§;OpenKNX";
+            device.getParameterByName("UCTD_Channel").value = 100;
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+            device.getParameterByName("UCTD_Channel").value = 3;
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§Param~D=NEU§;OpenKNX";
+            device.getParameterByName("UCTD_Channel").value = 3;
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+            device.getParameterByName("UCTD_Channel").value = 100;
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+        });        
     });
 
     describe('Copy', () => {
