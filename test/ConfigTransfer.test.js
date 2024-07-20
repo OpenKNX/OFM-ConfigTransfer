@@ -67,6 +67,8 @@ describe("uctImportModuleChannelFromString", () => {
     it("fails on import for non-existing parameter definition for chennal", () => {
         var importCheck = 7;
         expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§;OpenKNX", importCheck)).not.toThrow(Error);
+
+        // TODO check: fail before, as channel-number out of range?
         expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/1§;OpenKNX", importCheck)).toThrow(Error);
     });
 
