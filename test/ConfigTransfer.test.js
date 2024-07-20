@@ -41,6 +41,51 @@ describe("uctImportModuleChannelFromString", () => {
     <Enumeration   Value="0" Id="%ENID%" Text="locker       (gleiche Parameternamen)"          />
     */
 
+    it("collect errors while wrting parameters", () => {
+        var importCheck = 7;
+        expect(uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toBe("CHN/0 Import [OK]");
+        const failingParamGet = {
+            getParameterByName: function (name) {
+                // fail on non UCT fields
+                return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
+            },
+        };
+        const result = uctImportModuleChannelFromString(failingParamGet, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck);
+        expect(result.split("\n").length).toBe(2);
+        expect(result.split("\n")[0].split("]")[0]).toBe("[ERR@0;CHN_A=5");
+        expect(result.split("\n")[1].split("]")[0]).toBe("[ERR@1;CHN_B=385");
+    });
+
+    it("checks target-chanel for import definition of channel 0", () => {
+        var importCheck = 7;
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 1, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 90, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toThrow(Error);
+    });
+
+    it("fails on import for non-existing parameter definition for chennal", () => {
+        var importCheck = 7;
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/1§;OpenKNX", importCheck)).toThrow(Error);
+    });
+
+    it("checks the module version for strict and moderate compatiblity", () => {
+        var importCheck;
+
+        importCheck = 7;
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x10/1§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:-/1§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS/1§;OpenKNX", importCheck)).toThrow(Error);
+
+        importCheck = 1;
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x10/1§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:-/1§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS/1§;OpenKNX", importCheck)).toThrow(Error);
+    });
+
     it("fails on not matching module", () => {
         var importCheck = 7;
         expect(() => uctImportModuleChannelFromString(device, "OTR", 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toThrow(Error);
@@ -293,6 +338,7 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
 
             // TODO split: move to separate testcase
+            // TODO extract mock for device::getParameterByName fail
             const failingParamGet = {
                 getParameterByName: function (name) {
                     // fail on non UCT fields
