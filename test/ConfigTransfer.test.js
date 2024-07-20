@@ -182,6 +182,25 @@ describe("uctImportModuleChannelFromString", () => {
         });
     });
 
+    it("allow partial import with !merge", () => {
+        var importCheck = 0;
+
+        device.getParameterByName("MGR_Aaa").value = 3000;
+        device.getParameterByName("MGR_Bbb").value = 3001;
+        device.getParameterByName("MGR_Ccccc").value = 3003;
+        device.getParameterByName("MGR_DDdd").value = 3003;
+        uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0/MGR/0§!merge§Ccccc=3500§DDdd=3600§;OpenKNX", importCheck);
+        expect(device.getParameterByName("MGR_Aaa").value).toBe(3000); // previous
+        expect(device.getParameterByName("MGR_Bbb").value).toBe(3001);
+        expect(device.getParameterByName("MGR_Ccccc").value).toBe(3500);
+        expect(device.getParameterByName("MGR_DDdd").value).toBe(3600); // previous
+
+        uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0/MGR/0§Ccccc=4500§DDdd=4600§;OpenKNX", importCheck);
+        expect(device.getParameterByName("MGR_Aaa").value).toBe(4000); // default
+        expect(device.getParameterByName("MGR_Bbb").value).toBe(4001);
+        expect(device.getParameterByName("MGR_Ccccc").value).toBe(4500);
+        expect(device.getParameterByName("MGR_DDdd").value).toBe(4600); // default
+    });    
 });
 
 

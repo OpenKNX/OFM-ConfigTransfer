@@ -1,7 +1,7 @@
 
 var uctVersionInformation = [0xAF42, 0x23];
 
-var uctModuleOrder = ["UCTD", "NVEM", "TXS", "CHN", "MRP"];
+var uctModuleOrder = ["UCTD", "NVEM", "TXS", "CHN", "MRP", "MGR"];
 var uctChannelParams = {
     // UCT Demo
     "UCTD": {
@@ -51,6 +51,19 @@ var uctChannelParams = {
             "defaults": [2000, 2001, 2002],
         },
     },
+    // merge
+    "MGR": {
+        "version": 0x01,
+        "channels": 12,
+        "share":{
+            "names": ["Aaa", "Bbb", "Ccccc", "DDdd"],
+            "defaults": [4000, 4001, 4002, 4003],
+        },
+        "templ":{
+            "names": ["Name"],
+            "defaults": [""],
+        },
+    },    
 };
 
 const Log = {
