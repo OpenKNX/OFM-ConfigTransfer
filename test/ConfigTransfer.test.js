@@ -145,6 +145,7 @@ describe("uctImportModuleChannelFromString", () => {
     describe("module version check", () => {
         var module = null;
         it("moderate: accept unversiond module on same app only", () => {
+            // TODO FIXME check expectable behaviour and need of fix/redefinition
             var importCheck = 1;
             expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/NVEM:-/0§P1=a§;OpenKNX", importCheck)).not.toThrow(Error);
             expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x25/NVEM:-/0§P1=b2§;OpenKNX", importCheck)).toThrow(Error);
@@ -153,6 +154,7 @@ describe("uctImportModuleChannelFromString", () => {
         });
             
         it("strict: accept unversiond module on same app only", () => {
+            // TODO FIXME check expectable behaviour and need of fix/redefinition
             var importCheck = 7;
             expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x23/NVEM:-/0§P1=a§;OpenKNX", importCheck)).not.toThrow(Error);
             expect(() => uctImportModuleChannelFromString(device, module, 0, "OpenKNX,cv1,0xAF42:0x25/NVEM:-/0§P1=b§;OpenKNX", importCheck)).toThrow(Error);
