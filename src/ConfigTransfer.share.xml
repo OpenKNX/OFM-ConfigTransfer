@@ -257,6 +257,22 @@
                 <TypeText SizeInBit="2400" Pattern="^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
+                <!-- max len:        1048575 (no full byte!) -->
+                <TypeText SizeInBit="2400" Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-ChannelNot0SelectionString" Name="ChannelNot0SelectionString" ValidationErrorRef="%AID%_M-%TT%00004">
+                <!-- max len:        1048575 (no full byte!) -->
+                <TypeText SizeInBit="2400" Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ChannelSelectionType" Name="ChannelSelectionType">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration   Value="0" Id="%ENID%" Text="Einzelner Kanal"  />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Mehrfachauswahl"  />
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
               </ParameterType>
@@ -313,7 +329,9 @@
 
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00304" Name="CopyTargetType"        ParameterType="%AID%_PT-ChannelSelectionType"                Text="Ziel-Auswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00305" Name="CopyTargetString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Ziel-Kanäle"           Value=""    />
               <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text="Kopier-Resultat"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00390" Name="CopyModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                  Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
               <!-- TODO check inverse coding with "OK" -->
@@ -347,6 +365,8 @@
               <ParameterRef Id="%AID%_P-%TT%00301_R-%TT%0030101" RefId="%AID%_P-%TT%00301" />
               <ParameterRef Id="%AID%_P-%TT%00302_R-%TT%0030201" RefId="%AID%_P-%TT%00302" />
               <ParameterRef Id="%AID%_P-%TT%00303_R-%TT%0030301" RefId="%AID%_P-%TT%00303" />
+              <ParameterRef Id="%AID%_P-%TT%00304_R-%TT%0030401" RefId="%AID%_P-%TT%00304" />
+              <ParameterRef Id="%AID%_P-%TT%00305_R-%TT%0030501" RefId="%AID%_P-%TT%00305" />
 
               <ParameterRef Id="%AID%_P-%TT%00390_R-%TT%0039001" RefId="%AID%_P-%TT%00390" />
               <ParameterRef Id="%AID%_P-%TT%00391_R-%TT%0039101" RefId="%AID%_P-%TT%00391" />
@@ -393,7 +413,9 @@
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
                   <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" AliasName="CopySource"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" AliasName="CopyTargetType"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" AliasName="CopyTarget"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" AliasName="CopyTargetString"        />
                 </LParameters>
                 <RParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  /><!-- CopyUserLog -->
@@ -403,7 +425,9 @@
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
                   <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" AliasName="CopySource"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" AliasName="CopyTargetType"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" AliasName="CopyTarget"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" AliasName="CopyTargetString"        />
                 </LParameters>
                 <RParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00390_R-%TT%0039001" AliasName="CopyModulChannelCount"   />
@@ -435,6 +459,8 @@
             <Messages>
               <Message Id="%AID%_M-%TT%00001" Name="InvalidTransferString" Text="Kein gültiger/vollständiger OpenKNX-ConfigTransfer-String. Erwarte mindestens Beginn &quot;OpenKNX,&quot; und Ende &quot;§;OpenKNX&quot;." />
               <Message Id="%AID%_M-%TT%00002" Name="InvalidExportSourcesString" Text="Leere Eingabe oder Kanal-Nummer(n) oder Intervall(e) mit '-'; mehrere getrennt durch Komma. Regex: /^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$/" />
+              <Message Id="%AID%_M-%TT%00003" Name="InvalidChannelSelectionString" Text="Kanal-Nummer(n) oder Intervall(e) mit '-'; mehrere getrennt durch Komma. Regex: /^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$/" />
+              <Message Id="%AID%_M-%TT%00004" Name="InvalidChannelNot0SelectionString" Text="Kanal-Nummer(n) oder Intervall(e) mit '-'; ohne Kanal 0; mehrere getrennt durch Komma. Regex: /^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$/" />
             </Messages>
           </Static>
           <Dynamic>
@@ -569,7 +595,21 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal nicht im Modul enthalten!" UIHint="Error" />
                       </when>
                     </choose>
-                    <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
+
+                    <!-- Copy Target Type -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_P-%TT%00304_R-%TT%0030401">
+                      <when test="0">
+                        <!-- Copy Single Target -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="2" />
+                      </when>
+                      <when test="1">
+                        <!-- Copy Target String -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" IndentLevel="2" />
+                      </when>
+                    </choose>
+
+                    <!-- Error of Copy Target Selection -->
                     <choose ParamRefId="%AID%_P-%TT%00392_R-%TT%0039201">
                       <when test="!=0">
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal nicht im Modul enthalten!" UIHint="Error" />
@@ -585,7 +625,7 @@
 
                     <choose ParamRefId="%AID%_P-%TT%00394_R-%TT%0039401">
                       <when test="0">
-                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
+                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTargetType&quot;:&quot;%PREFIX%_CopyTargetType&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
                         <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
                       </when>
                     </choose>

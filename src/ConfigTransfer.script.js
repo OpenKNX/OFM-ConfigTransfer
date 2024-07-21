@@ -97,9 +97,22 @@ function uctBtnCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var channelSource = device.getParameterByName(context.p_channelSource).value;
-    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+    var channels = [];
+    var channelTargetType = device.getParameterByName(context.p_channelTargetType).value;
+    if (channelTargetType) {
+        var channelTargetString = device.getParameterByName(context.p_channelTargetString).value;
+        // TODO exclude channel==0
+        channels = uctParseRangesString(channelTargetString);
+    } else {
+        var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+        channels.push(channelTarget);
+    }
+    var result = [];
+    for (var i = 0; i < channels.length; i++) {
+        result.push(uctCopyModuleChannel(device, module, channelSource, channels[i]));
+    }
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    param_messageOutput.value = uctCopyModuleChannel(device, module, channelSource, channelTarget);
+    param_messageOutput.value = result.join("\n");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]")
 }
 
@@ -639,22 +652,52 @@ function uctParamCopyCheck(input, output, context) {
     if (input.CopyModul < uctModuleOrder.length) {
         // 1. get module prefix
         var module = uctModuleOrder[input.CopyModul];
-        Log.info("OpenKNX ConfigTransfer: module > " + module);
+        Log.info("OpenKNX ConfigTransfer: module=" + module);
 
         // 2. get module channel count
-        var channels = uctChannelParams[module].channels;
-        Log.info("OpenKNX ConfigTransfer: channel count > " + channels);
-        output.CopyModulChannelCount = channels;
+        var channelCount = uctChannelParams[module].channels;
+        Log.info("OpenKNX ConfigTransfer: channelCount=" + channelCount);
+        output.CopyModulChannelCount = channelCount;
 
-        Log.info("OpenKNX ConfigTransfer: source error > " + ((input.CopySource > channels) ? 1 : 0));
-        output.CopySourceError = (input.CopySource > channels) ? 1 : 0;
+        var sourceError = (input.CopySource > channelCount) ? 1 : 0;
+        Log.info("OpenKNX ConfigTransfer: sourceError=" + sourceError);
+        output.CopySourceError = sourceError;
 
-        Log.info("OpenKNX ConfigTransfer: > " + ((input.CopyTarget > channels) ? 1 : 0))
-        output.CopyTargetError = (input.CopyTarget > channels) ? 1 : 0;
+        Log.info("OpenKNX ConfigTransfer: targetType=" + (input.CopyTargetType ? "single" : "multi"));
+        if (input.CopyTargetType == 0) {
+            var targetError = ((input.CopyTarget > channelCount) ? 1 : 0);
+            Log.info("OpenKNX ConfigTransfer: targetError=" + targetError);
+            output.CopyTargetError = targetError;
+
+            var sameChannel = (input.CopySource == input.CopyTarget) ? 1 : 0;
+            Log.info("OpenKNX ConfigTransfer: sameError=" + sameChannel);
+            output.CopySameError = sameChannel;
+    
+        } else {
+            Log.info("OpenKNX ConfigTransfer: targetString=" + input.CopyTargetString);
+
+            var channels = uctParseRangesString(input.CopyTargetString);
+            Log.info("OpenKNX ConfigTransfer: targetChannels=" + channels.join(','));
+
+            // TODO additional error for empty selection
+            // check largest channel only
+            var targetError = channels.length==0 || (channels.slice(-1)[0] > channelCount);
+            Log.info("OpenKNX ConfigTransfer: targetError=" + targetError);
+            output.CopyTargetError = targetError;
+
+            var sameChannel = false;
+            for (var i = 0; i < channels.length; i++) {
+                if (channels[i] == input.CopySource) {
+                    sameChannel = true;
+                    // TODO break; is not available?
+                }
+            }
+            Log.info("OpenKNX ConfigTransfer: sameError=" + (sameChannel ? 1 : 0));
+            output.CopySameError = sameChannel ? 1 : 0;
+
+        }
 
 
-        Log.info("OpenKNX ConfigTransfer: same error > " + ((input.CopySource == input.CopyTarget) ? 1 : 0));
-        output.CopySameError = (input.CopySource == input.CopyTarget) ? 1 : 0;
 
         output.CopyError = (output.CopySourceError + output.CopyTargetError + output.CopySameError > 0) ? 1 : 0;
     } else {
