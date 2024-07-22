@@ -13,6 +13,7 @@ module.exports = {
     // uctAppName,
 
     // functions
+    uctParseRangesString,
     uctSerializeParamValue, 
     uctUnserializeParamValue, 
     uctCreateHeader,

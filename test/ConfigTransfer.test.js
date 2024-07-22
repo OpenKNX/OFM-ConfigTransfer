@@ -661,7 +661,59 @@ describe('Helper', () => {
         expect(uctHexNumberStr(128)).toBe("0x80");
         expect(uctHexNumberStr(255)).toBe("0xFF");
     });
-    
+
+    describe("uctParseRangesString", () => {
+        const uctParseRangesString = cts.uctParseRangesString;
+        it("accepts empty string", () => {
+            expect(uctParseRangesString("")).toStrictEqual([]);
+        });
+        it("accepts single value", () => {
+            expect(uctParseRangesString("0")).toStrictEqual([0]);
+            expect(uctParseRangesString("1")).toStrictEqual([1]);
+            expect(uctParseRangesString("9")).toStrictEqual([9]);
+            expect(uctParseRangesString("10")).toStrictEqual([10]);
+            expect(uctParseRangesString("45")).toStrictEqual([45]);
+            expect(uctParseRangesString("90")).toStrictEqual([90]);
+            expect(uctParseRangesString("99")).toStrictEqual([99]);
+        });
+        it("accepts list of value", () => {
+            expect(uctParseRangesString("1,2,3,55,80")).toStrictEqual([1,2,3,55,80]);
+        });
+        it("brings values in order", () => {
+            expect(uctParseRangesString("99,80")).toStrictEqual([80,99]);
+            expect(uctParseRangesString("9,8,3,5,4,12")).toStrictEqual([3,4,5,8,9,12]);
+        });
+        it("accepts ranges", () => {
+            expect(uctParseRangesString("42-46")).toStrictEqual([42,43,44,45,46]);
+            expect(uctParseRangesString("96-99")).toStrictEqual([96,97,98,99]);
+            expect(uctParseRangesString("0-9")).toStrictEqual([0,1,2,3,4,5,6,7,8,9]);
+        });
+        it("accepts list of ranges", () => {
+            expect(uctParseRangesString("8-9,3-5,12")).toStrictEqual([3,4,5,8,9,12]);
+        });
+        it("ignores values out out of 0..99", () => {
+            expect(uctParseRangesString("100")).toStrictEqual([]);
+            expect(uctParseRangesString("999")).toStrictEqual([]);
+            expect(uctParseRangesString("1000")).toStrictEqual([]);
+        });
+        it("ignores ranges out out of 0..99", () => {
+            expect(uctParseRangesString("96-150")).toStrictEqual([96,97,98,99]);
+        });
+        it("ignores reversed ranges", () => {
+            expect(uctParseRangesString("5-3")).toStrictEqual([]);
+            expect(uctParseRangesString("5-3,3-5")).toStrictEqual([3,4,5]);
+        });
+        it("ignores duplicates ", () => {
+            // in list
+            expect(uctParseRangesString("2,2,55,55,80")).toStrictEqual([2,55,80]);
+            // in ranges with subsets
+            expect(uctParseRangesString("2-8,4,5,6-7")).toStrictEqual([2,3,4,5,6,7,8]);
+            // in ranges with overlap
+            expect(uctParseRangesString("3-7,4-9")).toStrictEqual([3,4,5,6,7,8,9]);
+        });
+        // TODO handling of non-strings?
+    });
+
 });
 
 

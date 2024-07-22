@@ -18,7 +18,9 @@ function uctParseRangesString(channelsString) {
             var cn = limits[0];
             cs[cn] = true;
         } else if (limits.length == 2) {
-            for (var cn = limits[0]; cn <= limits[1]; cn++) {                
+            var lower = parseInt(limits[0]);
+            var upper = parseInt(limits[1]);
+            for (var cn = lower; cn <= upper; cn++) {
                 cs[cn] = true;
             }
         } else {
