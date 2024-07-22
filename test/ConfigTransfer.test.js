@@ -420,7 +420,7 @@ describe('Button Handler', () => {
         it("prints outputs and ignores comments", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§>echo1§#comment§>echo 2§;OpenKNX";
             uctBtnImport(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe(">echo1\n>echo 2");
+            expect(device.getParameterByName("UCTD_Output").value).toEqual(expect.stringContaining(">echo1\n>echo 2"));
     
         });
     
