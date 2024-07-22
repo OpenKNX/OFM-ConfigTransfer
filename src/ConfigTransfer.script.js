@@ -391,11 +391,15 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     /* write new values */
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
-    uctWriteParams(device, module, channel, params, newValues, result);
+    var writeClean = uctWriteParams(device, module, channel, params, newValues, result);
+    if (!writeClean) {
+        Log.error("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params produced Errors!")
+    }
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
-    return result.length>0 ? result.join('\n') : module + "/" + channel + " Import [OK]";
+    var msgOk = module + "/" + channel + " Import [OK]";
+    return result.length>0 ? ((writeClean ? (msgOk + '\nTransfer-String enthält Hinweise:\n'):'') + result.join('\n')) : msgOk;
 }
 
 /**
@@ -472,6 +476,7 @@ function uctPrepareParamValues(params, importContent, result, merge) {
 }
 
 function uctWriteParams(device, module, channel, params, newValues, result) {
+    var clean = true;
     for (var i = 0; i < params.names.length; i++) {
         var paramNameDef = params.names[i].split(":");
         var paramName = paramNameDef[0];
@@ -496,8 +501,10 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
         } catch (e) {
             var paramFullNameTempl = module + "_" + paramName;
             result.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            clean = false;
         }
     }
+    return clean;
 }
 
 /**
