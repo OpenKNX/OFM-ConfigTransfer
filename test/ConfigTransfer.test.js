@@ -1,3 +1,12 @@
+// First collection of automated testcases, with good coverage, but still room for improvements:
+// TODO check for missing test-cases and review current testcase quality
+// TODO get rid of single device instance, this is not expected to be stable and will result in side-effects
+// TODO better usage of JEST features
+// TODO check for missing test-branches (branch coverage is 93% only, all other coverages are >99%)
+// TODO check splitting of current test-cases
+// TODO add non-fail case for failing cases
+// TODO check testing extension for "inner" functions 
+// TODO check order and possible improvements of structure
 
 const cts = require("../test/testing.js");
 
