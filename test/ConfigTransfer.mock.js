@@ -1,3 +1,5 @@
+// TODO check using mock-features of JEST...
+// TODO do NOT use single instance to prevent unexpected side effects on testing...
 
 // mock implementation for accessing parameters only
 const device = {
@@ -22,12 +24,12 @@ const device = {
 
             var paramNameSplit = paramNameWithOptionalRef.split(":");
 
-            var paramName = paramNameSplit[0];
-            var name = module + "_" + paramName.replace('~', channel);
-
-            // var paramNameIndex = paramNameSplit.length>1 ? parseInt(paramNameSplit[1]) : 1;
+            var name = module + "_" + paramNameSplit[0].replace('~', channel);
             var paramNameIndex = paramNameSplit.length>1 ? paramNameSplit[1] : 1;
 
+            // The reference id structure is not the same as in OpenKNX-Applications, 
+            // but has the characteristics relevant for (current) testing:
+            //   unique with difference in last two characters only for same parameter name
             const refId = "REF_"+name+"99" + ((paramNameIndex<10?"0":0) + "" + paramNameIndex);
             const p = {
                 'value': x.defaults[index],
