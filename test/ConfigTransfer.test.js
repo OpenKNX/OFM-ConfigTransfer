@@ -407,9 +407,23 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/3 Import [OK]");
         });
     
-        it("fails on not existing parameter", () => {
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§NOT_EXISTING=EGAL§;OpenKNX";
+        it("fails on not existing parameter for strict and moderate check", () => {
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§NOT_EXISTING=EGAL§;OpenKNX";
+            device.getParameterByName("UCTD_Channel").value = 4;
+
+            device.getParameterByName("UCTD_ImportCheck").value = 7;
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+
+            device.getParameterByName("UCTD_ImportCheck").value = 1;
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+
+            device.getParameterByName("UCTD_ImportCheck").value = 0;
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+            // check warning and success:
+            const result = device.getParameterByName("UCTD_Output").value;
+            expect(result).toEqual(expect.stringContaining("CHN/4 Import [OK]"));
+            expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: NOT_EXISTING"));
+
         });
     
         it("fails on unsupported format version", () => {
@@ -419,6 +433,7 @@ describe('Button Handler', () => {
     
         it("prints outputs and ignores comments", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§>echo1§#comment§>echo 2§;OpenKNX";
+            device.getParameterByName("UCTD_Channel").value = 3;
             uctBtnImport(device, online, progress, context);
             const result = device.getParameterByName("UCTD_Output").value;
             expect(result).toEqual(expect.stringContaining("CHN/3 Import [OK]"));
