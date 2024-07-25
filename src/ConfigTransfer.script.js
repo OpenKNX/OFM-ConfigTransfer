@@ -300,6 +300,9 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...")
 
+    // TODO FIXME do NOT use the loose compatibility check option
+    var allowMissing = (importCheck == 0);
+
     var checkModuleVersion = (importCheck >= 1);
     var checkAppId =  (importCheck >= 7);
     var checkAppVersion = (importCheck >= 7);
@@ -387,7 +390,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (merge) {
         importContent = importContent.slice(1);
     }
-    var newValues = uctPrepareParamValues(params, importContent, result, merge);
+    var newValues = uctPrepareParamValues(params, importContent, result, merge, allowMissing);
 
     /* write new values */
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
@@ -408,9 +411,10 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
  * @param {array} importContent - the entries from ConfigTransfer-string; typical case is the format 'key[:ref]=value', other possibilities are '#comment', '>msg', '!cmd'
  * @param {array} result - (output) collection of ouput-messages
  * @param {boolean} merge - `false` = overwrite and use default for all missing params, `true` = keep values of all missing params
+ * @param {boolean} allowMissing - ... TODO document ...
  * @returns {array} - new param values, or `null` to keep current, by index of param-definition
  */
-function uctPrepareParamValues(params, importContent, result, merge) {
+function uctPrepareParamValues(params, importContent, result, merge, allowMissing) {
     var newValues = [];
     if (merge) {
         // use empty values - to ignore in writing
@@ -462,6 +466,9 @@ function uctPrepareParamValues(params, importContent, result, merge) {
             if (paramIndex >=0) {
                 var paramValue = uctUnserializeParamValue(paramValuePair.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
+            } else if (allowMissing) {
+                // TODO handling of invalid parameters!
+                result.push('[WARN] Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
             } else {
                 // TODO handling of invalid parameters!
                 throw new Error('Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
