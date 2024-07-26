@@ -437,7 +437,7 @@ function uctPrepareParamValues(params, importContent, result, merge) {
             // output-message for user
             result.push(entry);
         } else if (start=="!") {
-            throw new Error('Spezial-Einträge nicht unterstützt in dieser Version von ConfigTransfer!');
+            throw new Error('Spezial-Eintrag "'+entry+'" hier nicht unterstützt in dieser Version von ConfigTransfer!');
         } else if (start=="^") {
             // set prefix
             prefix = entry.slice(1);
