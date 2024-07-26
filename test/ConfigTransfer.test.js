@@ -73,6 +73,16 @@ describe("uctImportModuleChannelFromString", () => {
         expect(() => uctImportModuleChannelFromString(device, null, 90, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toThrow(Error);
     });
 
+    it("prevents importing any other channel into 0", () => {
+        var importCheck = 7;
+        // 0 into 0 is ok
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).not.toThrow(Error);
+        // other into 0 not allowed
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/1§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/5§;OpenKNX", importCheck)).toThrow(Error);
+        expect(() => uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/*§;OpenKNX", importCheck)).toThrow(Error);
+    });
+
     it("fails on import for non-existing parameter definition for channel", () => {
         var importCheck = 7;
         expect(() => uctImportModuleChannelFromString(device, null, 100, "OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§;OpenKNX", importCheck)).not.toThrow(Error);

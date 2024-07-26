@@ -376,7 +376,9 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (header.channel == 0 && channel != 0) {
         throw new Error('Basiseinstellungen können nicht in einen Kanal importiert werden!');
     }
-
+    if (header.channel != 0 && channel == 0) {
+        throw new Error('Kanaleinstellungen können nicht in Basiseinstellungen importiert werden!');
+    }
 
     var params = uctGetModuleParamsDef(module, channel);
     if (!params) {
