@@ -60,9 +60,12 @@ describe("uctImportModuleChannelFromString", () => {
             },
         };
         const result = uctImportModuleChannelFromString(failingParamGet, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck);
-        expect(result.split("\n").length).toBe(2);
-        expect(result.split("\n")[0].split("]")[0]).toBe("[ERR@0;CHN_A=5");
-        expect(result.split("\n")[1].split("]")[0]).toBe("[ERR@1;CHN_B=385");
+        const resultLines = result.split("\n");
+        expect(resultLines.length).toBeGreaterThanOrEqual(1+2);
+        expect(resultLines[0]).toBe("CHN/0 Import [ >>> FEHLER! <<< ]");
+        // TODO check using regex...
+        expect(resultLines[2].split("]")[0]).toBe("[ERR@0;CHN_A=5");
+        expect(resultLines[3].split("]")[0]).toBe("[ERR@1;CHN_B=385");
     });
 
     it("checks target-chanel for import definition of channel 0", () => {
@@ -444,7 +447,9 @@ describe('Button Handler', () => {
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
             // check warning and success:
             const result = device.getParameterByName("UCTD_Output").value;
-            expect(result).toEqual(expect.stringContaining("CHN/4 Import [OK]"));
+            expect(result.split("\n")[0]).toEqual(expect.stringContaining("CHN/4 Import "));
+            expect(result.split("\n")[0]).not.toEqual(expect.stringContaining("[OK]"));
+            expect(result.split("\n")[0]).toEqual(expect.stringContaining("Warnungen"));
             expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: Param~NOT_EXISTING"));
             expect(result).toEqual(expect.not.stringContaining("Param~D"));
             expect(device.getParameterByName("CHN_Param4D").value).toBe("existing");

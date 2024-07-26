@@ -407,8 +407,21 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
-    var msgOk = module + "/" + channel + " Import [OK]";
-    return result.lines.length>0 ? ((writeClean ? (msgOk + '\nTransfer-String enthält Hinweise:\n'):'') + result.lines.join('\n')) : msgOk;
+    var msg = module + "/" + channel + " Import ";
+    if (result.errors) {
+        msg = msg + "[ >>> FEHLER! <<< ]\n";
+    } else if (result.warnings) {
+        msg = msg + "[ >>> Warnungen beachten! <<< ]\n";
+    } else {
+        msg = msg + "[OK]";
+    }
+    if (result.messages) {
+        msg = msg + '\nTransfer-String enthält Hinweise:\n';
+    }
+    if (result.lines.length) {
+        msg = msg + '\n' + result.lines.join('\n');
+    }
+    return msg;
 }
 
 /**
