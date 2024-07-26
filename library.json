@@ -1,6 +1,6 @@
 {
     "name": "OFM-ConfigTransfer",
-    "version": "0.2.0-dev",
+    "version": "0.2.0",
     "description": "Universal Configuration Transfer for OpenKNX Modules in ETS-Applications",
     "keywords": [
         "knx",
