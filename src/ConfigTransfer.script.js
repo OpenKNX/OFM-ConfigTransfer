@@ -306,7 +306,6 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var checkAppId =  (importCheck >= 7);
     var checkAppVersion = (importCheck >= 7);
 
-    var result = [];
     var importLines = exportStr.split("§");
 
     var header = uctParseHeader(importLines[0]);
@@ -391,6 +390,12 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (merge) {
         importContent = importContent.slice(1);
     }
+    var result = {
+        'lines':[],
+        'messages': 0,
+        'warnings': 0,
+        'errors': 0,
+    };
     var newValues = uctPrepareParamValues(params, importContent, result, merge, allowMissing);
 
     /* write new values */
@@ -403,7 +408,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
     var msgOk = module + "/" + channel + " Import [OK]";
-    return result.length>0 ? ((writeClean ? (msgOk + '\nTransfer-String enthält Hinweise:\n'):'') + result.join('\n')) : msgOk;
+    return result.lines.length>0 ? ((writeClean ? (msgOk + '\nTransfer-String enthält Hinweise:\n'):'') + result.lines.join('\n')) : msgOk;
 }
 
 /**
@@ -440,7 +445,8 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
             // ignore comments
         } else if (start==">") {
             // output-message for user
-            result.push(entry);
+            result.lines.push(entry);
+            result.messages++;
         } else if (start=="!") {
             throw new Error('Spezial-Eintrag "'+entry+'" hier nicht unterstützt in dieser Version von ConfigTransfer!');
         } else if (start=="^") {
@@ -469,7 +475,8 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
                 newValues[paramIndex] = paramValue;
             } else if (allowMissing) {
                 // TODO handling of invalid parameters!
-                result.push('[WARN] Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
+                result.lines.push('[WARN] Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
+                result.warnings++;
             } else {
                 // TODO handling of invalid parameters!
                 throw new Error('Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
@@ -509,7 +516,8 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
         } catch (e) {
             var paramFullNameTempl = module + "_" + paramName;
             Log.error("Failed writing "+paramFullNameTempl+" in channel "+channel+": "+e)
-            result.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            result.lines.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            result.errors++;
             clean = false;
         }
     }
