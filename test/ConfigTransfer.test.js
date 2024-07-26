@@ -408,7 +408,7 @@ describe('Button Handler', () => {
         });
     
         it("fails on not existing parameter for strict and moderate check", () => {
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§NOT_EXISTING=EGAL§;OpenKNX";
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~NOT_EXISTING=EGAL§Param~D=existing§;OpenKNX";
             device.getParameterByName("UCTD_Channel").value = 4;
 
             device.getParameterByName("UCTD_ImportCheck").value = 7;
@@ -418,11 +418,14 @@ describe('Button Handler', () => {
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
 
             device.getParameterByName("UCTD_ImportCheck").value = 0;
+            expect(device.getParameterByName("CHN_Param4D").value).not.toBe("existing");
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
             // check warning and success:
             const result = device.getParameterByName("UCTD_Output").value;
             expect(result).toEqual(expect.stringContaining("CHN/4 Import [OK]"));
-            expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: NOT_EXISTING"));
+            expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: Param~NOT_EXISTING"));
+            expect(result).toEqual(expect.not.stringContaining("Param~D"));
+            expect(device.getParameterByName("CHN_Param4D").value).toBe("existing");
 
         });
     
