@@ -506,6 +506,7 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
 
         } catch (e) {
             var paramFullNameTempl = module + "_" + paramName;
+            Log.error("Failed writing "+paramFullNameTempl+" in channel "+channel+": "+e)
             result.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
             clean = false;
         }
