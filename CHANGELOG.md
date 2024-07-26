@@ -8,6 +8,7 @@
 * Quality: Integration automatisierter Testfälle für JS in ETS-Applikation
 * Fix/Rework: Auswertung der Modul-Version in Prüfung vor Import, speziell Fälle ohne Versionsangabe am Modul
 * Fix/Improvement: Anzeige von Erfolgsmeldung auch bei Ausgabe von Nachrichten aus Transfer-String
+* Fix/Improvement: Genauere Fehleranzeige für Spezial-Einträge
 
 # v0.1.0 (2024-07-08, 82f2335a74ffd44254c57ebe58bafb062574f1d2)
 
