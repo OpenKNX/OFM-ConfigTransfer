@@ -300,7 +300,6 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...")
 
-    // TODO FIXME do NOT use the loose compatibility check option
     var allowMissing = (importCheck == 0);
 
     var checkModuleVersion = (importCheck >= 1);
@@ -411,7 +410,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
  * @param {array} importContent - the entries from ConfigTransfer-string; typical case is the format 'key[:ref]=value', other possibilities are '#comment', '>msg', '!cmd'
  * @param {array} result - (output) collection of ouput-messages
  * @param {boolean} merge - `false` = overwrite and use default for all missing params, `true` = keep values of all missing params
- * @param {boolean} allowMissing - ... TODO document ...
+ * @param {boolean} allowMissing - defines behaviour when unkown paramter is found: `false` = throw Error, `true` = add warning-message to result
  * @returns {array} - new param values, or `null` to keep current, by index of param-definition
  */
 function uctPrepareParamValues(params, importContent, result, merge, allowMissing) {

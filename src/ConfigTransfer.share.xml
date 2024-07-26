@@ -258,7 +258,7 @@
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration   Value="7" Id="%ENID%" Text="streng       (selbe Modul- &amp; ETS-App-Version)"     />
                   <Enumeration   Value="1" Id="%ENID%" Text="moderat   (selbe Modul-Version)"  />
-                  <Enumeration   Value="0" Id="%ENID%" Text="locker       (gleiche Parameternamen)"          />
+                  <Enumeration   Value="0" Id="%ENID%" Text="lockerer (ignoriert unbekannte Parameter)"/>
                 </TypeRestriction>
               </ParameterType>
 
