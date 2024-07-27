@@ -453,7 +453,7 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
                       </when>
                       <when test="0">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede und Release-Notes beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
                       </when>
                     </choose>
     
