@@ -394,7 +394,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         'lines':[],
         'messages': 0,
         'warnings': 0,
-        'errors': 0,
+        'errors': 0
     };
     var newValues = uctPrepareParamValues(params, importContent, result, merge, allowMissing);
 
