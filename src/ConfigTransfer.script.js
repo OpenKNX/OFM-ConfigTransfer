@@ -496,7 +496,7 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
             }
         } else {
             // TODO error-handling; this is not a param=value pair
-            throw new Error('Ungültiger Eintrag: '+ entry);
+            throw new Error('Ungültiger Eintrag: "'+entry+'"');
         }
     }
 
