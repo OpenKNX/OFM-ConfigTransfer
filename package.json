@@ -3,9 +3,12 @@
   "version": "0.3.0-dev",
     "description": "Universal Configuration Transfer for OpenKNX Modules in ETS-Applications",
     "scripts": {
-      "test": "jest"
+      "test": "jest",
+      "lint": "eslint src/*.js"
     },
     "devDependencies": {
-      "jest": "^29.7.0"
+      "jest": "^29.7.0",
+      "eslint": "^9.8.0",
+      "@stylistic/eslint-plugin": "^2.4.0"
     }
   }
