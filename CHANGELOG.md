@@ -1,10 +1,10 @@
-# v0.2.0
+# v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
   Exporte aus älteren Versionen von PM konnten nicht importiert werden, weil Parameter entfallen sind.
   Mit Kompatibilität **lockerer** wird der Import nun nicht mehr abgebrochen, wenn unbekannte Parameter-Namen auftreten,
   sondern nur noch Warn-Meldungen im Import-Resultat ausgegeben. 
   Dies betraf vor allem den Migrationspfad zum Wechsel auf eine andere Applikations-Variante.
-* Verbesserungen bei der Fehlerbehandlung und Rückmeldung
+* **Import** - Verbesserungen bei der Fehlerbehandlung und Rückmeldung:
   * Fix #9: 
     Der Versuch eine Basiskonfiguration in einen anderen Zielkanal zu importieren (oder umgekehrt) wurde nicht explizit abgefangen 
     und resultierte in einer unpassenden Fehlermeldung. 
