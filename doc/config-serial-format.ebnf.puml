@@ -27,7 +27,7 @@ VERSION = HEXNUM;
 
 HEXNUM = "0x" , {(?0-9? | ?A-F?)}-;
 
-CONFIG_ENTRY = ( '#', COMMENT_TEXT | '>', MESSAGE_TEXT | PARAM_NAME, [":", PARAM_REF_ID], "=", PARAM_VALUE );
+CONFIG_ENTRY = ( '#', COMMENT_TEXT | '>', MESSAGE_TEXT | '!', 'merge' (*Allowed as first entry only!*) | PARAM_NAME, [":", PARAM_REF_ID], "=", PARAM_VALUE );
 
 UCT_END = ";OpenKNX";
 
