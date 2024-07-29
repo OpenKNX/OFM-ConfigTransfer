@@ -2,7 +2,7 @@
 
 title OpenKNX Universal Config Transfer Serialization Format (Version 1)
 
-UCT_STRING = UCT_HEADER, ("§" (*Single-Line:\nRequired for Import *), {CONFIG_VALUE, "§"} | "\n" (*Multi-Line:\nFor Humans *), {CONFIG_VALUE, "\n"}), UCT_END;
+UCT_STRING = UCT_HEADER, ("§" (*Single-Line:\nRequired for Import *), {CONFIG_ENTRY, "§"} | "\n" (*Multi-Line:\nFor Humans *), {CONFIG_ENTRY, "\n"}), UCT_END;
 
 UCT_HEADER = "OpenKNX", ",", VERSION_DEF, ",", CONFIG_PATH;
 
@@ -27,7 +27,7 @@ VERSION = HEXNUM;
 
 HEXNUM = "0x" , {(?0-9? | ?A-F?)}-;
 
-CONFIG_VALUE = PARAM_NAME, [":", PARAM_REF_ID], "=", PARAM_VALUE;
+CONFIG_ENTRY = ( '#', COMMENT_TEXT | '>', MESSAGE_TEXT | PARAM_NAME, [":", PARAM_REF_ID], "=", PARAM_VALUE );
 
 UCT_END = ";OpenKNX";
 
