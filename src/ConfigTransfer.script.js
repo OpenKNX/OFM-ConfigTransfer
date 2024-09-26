@@ -8,6 +8,17 @@ var uctAppId = uctVersionInformation[0];
 var uctAppVer = uctVersionInformation[1];
 // var uctAppName = null;
 
+function uctIsDisjoint(a, b) {
+    for (var i = 0; i < a.length; i++) {
+        for (var j = 0; j < b.length; j++) {
+            if (a[i] == b[j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function uctParseRangesString(channelsString) {
     var channels = [];
     var ranges = channelsString.split(",");

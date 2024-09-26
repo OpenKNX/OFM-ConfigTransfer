@@ -12,6 +12,9 @@ module.exports = {
     uctAppVer,
     // uctAppName,
 
+    // helper functions
+    uctIsDisjoint,
+
     // functions
     uctParseRangesString,
     uctSerializeParamValue, 
