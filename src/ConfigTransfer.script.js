@@ -691,14 +691,18 @@ function uctParamCopyCheck(input, output, context) {
         */
 
         var sameError = false;
+        var copyType = 0;
         if (sourceChCount == 0 || targetChCount == 0) {
             Log.info("OpenKNX ConfigTransfer: Source or target channel definition is empty!");
         } else if (sourceChCount == 1) {
+            copyType = targetChCount == 1 ? 1 : 2;
             Log.info("OpenKNX ConfigTransfer: Single channel source " + sourceChannels[0]);
             sameError = !uctIsDisjoint(sourceChannels, targetChannels);
         } else if (targetChCount > 1) {
+            copyType = 4;
             Log.error("OpenKNX ConfigTransfer: N to N copy not supported!");
         } else /* if (sourceChCount > 1 && targetChCount == 1) */ {
+            copyType = 3;
             Log.info("OpenKNX ConfigTransfer: Multi channel source " + sourceChannels.join(","));
             var targetChannelsList = [];
             var offset = targetChannels[0] - sourceChannels[0];
@@ -714,6 +718,7 @@ function uctParamCopyCheck(input, output, context) {
         output.CopySameError = sameError ? 1 : 0;
 
         output.CopyError = (output.CopySourceError + output.CopyTargetError + output.CopySameError) > 0 ? 1 : 0;
+        output.CopyType = copyType;
     } else {
         Log.info("OpenKNX ConfigTransfer: No Module")
         output.CopyModulChannelCount = 1;
@@ -721,6 +726,7 @@ function uctParamCopyCheck(input, output, context) {
         output.CopyTargetError = 0;
         output.CopySameError = 0;
         output.CopyError = 0;
+        output.CopyType = 0;
     }
 }
 

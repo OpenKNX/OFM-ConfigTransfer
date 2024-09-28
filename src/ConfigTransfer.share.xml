@@ -315,8 +315,16 @@
                   <Enumeration   Value="0" Id="%ENID%" Text="kein Fehler"                                         />
                   <Enumeration   Value="1" Id="%ENID%" Text="Kanalauswahl erforderlich"                           />
                   <Enumeration   Value="2" Id="%ENID%" Text="Kanal außerhalb Modul"                               />
-                  <!-- 
-                  <Enumeration   Value="3" Id="%ENID%" Text="alle Parameter"                                      />--><!-- 0b11 -->
+                </TypeRestriction>
+              </ParameterType>
+              
+              <ParameterType Id="%AID%_PT-CopyType" Name="CopyType">
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Einfache Kopie (1 Kanal auf 1 Kanal)"                                  />
+                  <Enumeration   Value="2" Id="%ENID%" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)"                                />
+                  <Enumeration   Value="3" Id="%ENID%" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)"             />
+                  <Enumeration   Value="4" Id="%ENID%" Text="N auf N - Nicht unterstützt!"                                          />
                 </TypeRestriction>
               </ParameterType>
 
@@ -347,6 +355,7 @@
               <Parameter Id="%AID%_P-%TT%00392" Name="CopyTargetError"       ParameterType="%AID%_PT-ChannelSelectionError"               Text="Fehler: Ziel-Kanal"    Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00393" Name="CopySameError"         ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Kanäle"        Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00394" Name="CopyError"             ParameterType="%AID%_PT-CheckBox"                            Text="Fehler"                Value="0"   Access="None" />
+              <Parameter Id="%AID%_P-%TT%00395" Name="CopyType"              ParameterType="%AID%_PT-CopyType"                            Text="Kopier-Typ"            Value="0"   Access="None" />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
@@ -383,6 +392,7 @@
               <ParameterRef Id="%AID%_P-%TT%00392_R-%TT%0039201" RefId="%AID%_P-%TT%00392" />
               <ParameterRef Id="%AID%_P-%TT%00393_R-%TT%0039301" RefId="%AID%_P-%TT%00393" />
               <ParameterRef Id="%AID%_P-%TT%00394_R-%TT%0039401" RefId="%AID%_P-%TT%00394" />
+              <ParameterRef Id="%AID%_P-%TT%00395_R-%TT%0039501" RefId="%AID%_P-%TT%00395" />
 
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
@@ -446,6 +456,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" AliasName="CopyTargetError"         />
                   <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" AliasName="CopySameError"           />
                   <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" AliasName="CopyError"               />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" AliasName="CopyType"                />
                 </RParameters>
               </ParameterCalculation>
               <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamReset"  LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
@@ -627,6 +638,31 @@
                       </when>
                     </choose>
 
+                    <!--
+                    <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
+                    <Enumeration   Value="1" Id="%ENID%" Text="Einfache Kopie (1 Kanal auf 1 Kanal)"                                  />
+                    <Enumeration   Value="2" Id="%ENID%" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)"                                />
+                    <Enumeration   Value="3" Id="%ENID%" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)"             />
+                    <Enumeration   Value="2" Id="%ENID%" Text="N auf N - Nicht unterstützt!"                                          />                    
+                    -->
+                    <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
+                      <when test="0">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Keine Kopie!" UIHint="Information" />
+                      </when>
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Einfache Kopie (1 Kanal auf 1 Kanal)" UIHint="Information" />
+                      </when>
+                      <when test="2">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)" UIHint="Information" />
+                      </when>
+                      <when test="3">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)" UIHint="Information" />
+                      </when>
+                      <when test="4">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="N auf M - Nicht unterstützt!" UIHint="Error" />
+                      </when>
+                    </choose>
+
                     <choose ParamRefId="%AID%_P-%TT%00394_R-%TT%0039401">
                       <when test="0">
                         <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
@@ -647,6 +683,7 @@
                 <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" />
 
               </ParameterBlock>
 
