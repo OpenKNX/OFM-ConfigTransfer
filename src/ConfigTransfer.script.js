@@ -707,6 +707,7 @@ function uctParamCopyCheck(input, output, context) {
             copyType = 4;
             Log.error("OpenKNX ConfigTransfer: N to N copy not supported!");
             overview = "(NICHT unterstützt: N auf M)";
+            error = true;
         } else /* if (sourceChCount > 1 && targetChCount == 1) */ {
             copyType = 3;
             Log.info("OpenKNX ConfigTransfer: Multi channel source " + sourceChannels.join(","));
