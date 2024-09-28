@@ -348,7 +348,7 @@
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00304" Name="CopySourceString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Quell-Kanal/Kanäle"    Value=""    />
               <Parameter Id="%AID%_P-%TT%00305" Name="CopyTargetString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Ziel-Kanal/Kanäle"     Value=""    />
-              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text="Kopier-Resultat"       Value=""    />
+              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text=""                      Value=""    /><!-- Kopier-Resultat -->
               <Parameter Id="%AID%_P-%TT%00390" Name="CopyModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                  Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
               <!-- TODO check inverse coding with "OK" -->
               <Parameter Id="%AID%_P-%TT%00391" Name="CopySourceError"       ParameterType="%AID%_PT-ChannelSelectionError"               Text="Fehler: Quell-Kanal"   Value="0"   Access="None" />
