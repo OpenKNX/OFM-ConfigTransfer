@@ -617,6 +617,9 @@
                     <!-- TODO check integration with test=0/1? -->
                     <choose ParamRefId="%AID%_P-%TT%00391_R-%TT%0039101">
                       <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal fehlt!" UIHint="Error" />
+                      </when>
+                      <when test="2">
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal nicht im Modul enthalten!" UIHint="Error" />
                       </when>
                     </choose>
@@ -627,6 +630,9 @@
                     <!-- Error of Copy Target Selection -->
                     <choose ParamRefId="%AID%_P-%TT%00392_R-%TT%0039201">
                       <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal fehlt!" UIHint="Error" />
+                      </when>
+                      <when test="2">
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal nicht im Modul enthalten!" UIHint="Error" />
                       </when>
                       <when test="0">
