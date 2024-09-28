@@ -638,7 +638,14 @@
                       <when test="0">
                         <choose ParamRefId="%AID%_P-%TT%00393_R-%TT%0039301">
                           <when test="!=0">
-                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal muss vom Quell-Kanal abweichen!" UIHint="Error" />
+                            <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
+                              <when test="3">
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG: Zielkanäle überlappten Quellekanäle!" UIHint="Information" />
+                              </when>
+                              <when default="true">
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal muss vom Quell-Kanal abweichen!" UIHint="Error" />
+                              </when>
+                            </choose>
                           </when>
                         </choose>
                       </when>

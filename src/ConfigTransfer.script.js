@@ -690,6 +690,8 @@ function uctParamCopyCheck(input, output, context) {
                 n _ G -
         */
 
+        var error = (output.CopySourceError + output.CopyTargetError) > 0;
+
         var sameError = false;
         var copyType = 0;
         if (sourceChCount == 0 || targetChCount == 0) {
@@ -698,6 +700,7 @@ function uctParamCopyCheck(input, output, context) {
             copyType = targetChCount == 1 ? 1 : 2;
             Log.info("OpenKNX ConfigTransfer: Single channel source " + sourceChannels[0]);
             sameError = !uctIsDisjoint(sourceChannels, targetChannels);
+            error = error || sameError;
         } else if (targetChCount > 1) {
             copyType = 4;
             Log.error("OpenKNX ConfigTransfer: N to N copy not supported!");
@@ -714,10 +717,8 @@ function uctParamCopyCheck(input, output, context) {
 
         }
 
-        // TODO calculate!
         output.CopySameError = sameError ? 1 : 0;
-
-        output.CopyError = (output.CopySourceError + output.CopyTargetError + output.CopySameError) > 0 ? 1 : 0;
+        output.CopyError = error ? 1 : 0;
         output.CopyType = copyType;
     } else {
         Log.info("OpenKNX ConfigTransfer: No Module")
