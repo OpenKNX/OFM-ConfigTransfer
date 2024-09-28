@@ -722,8 +722,16 @@ function uctParamCopyCheck(input, output, context) {
 
             var ovCh = [];
             for (var i = 0; i < sourceChCount; i++) {
-                ovCh.push("\t" + targetChannelsList[i] + (src[targetChannelsList[i]] ? "*" : " ") + "\t<- " + sourceChannels[i]);
+                ovCh.push((targetChannelsList[i] > channelCount ? "!" : " ") + "\t" + targetChannelsList[i] + (src[targetChannelsList[i]] ? "*" : " ") + "\t<- " + sourceChannels[i]);
             }
+
+            // TODO check cleanup of special handling for channel-group-copy-target
+            if (targetChannelsList[sourceChCount - 1] > channelCount) {
+                targetError = 2;
+                output.CopyTargetError = targetError;
+                error = true;
+            }
+
             overview = "Kopie von Kanalgruppe mit "+sourceChCount+" Kanälen:\n "+ovCh.join("\n")+" \n* Überlappung";
         }
 
