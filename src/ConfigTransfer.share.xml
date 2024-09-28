@@ -429,6 +429,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" AliasName="result"                /><!-- ExportOutput -->
                 </RParameters>
               </ParameterCalculation>
+              <!--
               <ParameterCalculation Id="%AID%_PC-%TT%00003" Language="JavaScript" Name="UctCopyParamReset"   LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
@@ -436,9 +437,10 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" AliasName="CopyTargetString"        />
                 </LParameters>
                 <RParameters>
-                  <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  /><!-- CopyUserLog -->
+                  <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  />< ! - - CopyUserLog - - >
                 </RParameters>
               </ParameterCalculation>
+              -->
               <ParameterCalculation Id="%AID%_PC-%TT%00006" Language="JavaScript" Name="UctCopyParamCheck"   LRTransformationFunc="uctParamCopyCheck" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
@@ -457,6 +459,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" AliasName="CopySameError"           />
                   <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" AliasName="CopyError"               />
                   <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" AliasName="CopyType"                />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  />
                 </RParameters>
               </ParameterCalculation>
               <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamReset"  LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">

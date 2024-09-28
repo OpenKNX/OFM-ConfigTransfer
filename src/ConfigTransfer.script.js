@@ -691,6 +691,7 @@ function uctParamCopyCheck(input, output, context) {
         */
 
         var error = (output.CopySourceError + output.CopyTargetError) > 0;
+        var overview = "";
 
         var sameError = false;
         var copyType = 0;
@@ -701,25 +702,35 @@ function uctParamCopyCheck(input, output, context) {
             Log.info("OpenKNX ConfigTransfer: Single channel source " + sourceChannels[0]);
             sameError = !uctIsDisjoint(sourceChannels, targetChannels);
             error = error || sameError;
+            overview = "Kopie von Einzelkanal:\n{"+targetChannels.join(",")+"} <- " + sourceChannels[0];
         } else if (targetChCount > 1) {
             copyType = 4;
             Log.error("OpenKNX ConfigTransfer: N to N copy not supported!");
+            overview = "(NICHT unterstützt: N auf M)";
         } else /* if (sourceChCount > 1 && targetChCount == 1) */ {
             copyType = 3;
             Log.info("OpenKNX ConfigTransfer: Multi channel source " + sourceChannels.join(","));
             var targetChannelsList = [];
             var offset = targetChannels[0] - sourceChannels[0];
+            var src = {};
             for (var i = 0; i < sourceChCount; i++) {
+                src[sourceChannels[i]] = true;
                 targetChannelsList.push(sourceChannels[i] + offset);
                 Log.info("OpenKNX ConfigTransfer: " + sourceChannels[i] + " -> " + (sourceChannels[i] + offset));
             }
             sameError = !uctIsDisjoint(sourceChannels, targetChannelsList);
 
+            var ovCh = [];
+            for (var i = 0; i < sourceChCount; i++) {
+                ovCh.push("\t" + targetChannelsList[i] + (src[targetChannelsList[i]] ? "*" : " ") + "\t<- " + sourceChannels[i]);
+            }
+            overview = "Kopie von Kanalgruppe mit "+sourceChCount+" Kanälen:\n "+ovCh.join("\n")+" \n* Überlappung";
         }
 
         output.CopySameError = sameError ? 1 : 0;
         output.CopyError = error ? 1 : 0;
         output.CopyType = copyType;
+        output.result = overview;
     } else {
         Log.info("OpenKNX ConfigTransfer: No Module")
         output.CopyModulChannelCount = 1;
@@ -728,6 +739,7 @@ function uctParamCopyCheck(input, output, context) {
         output.CopySameError = 0;
         output.CopyError = 0;
         output.CopyType = 0;
+        output.result = "";
     }
 }
 
