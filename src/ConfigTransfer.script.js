@@ -722,8 +722,11 @@ function uctParamCopyCheck(input, output, context) {
             sameError = !uctIsDisjoint(sourceChannels, targetChannelsList);
 
             var ovCh = [];
+            var hasOverlaps = false;
             for (var i = 0; i < sourceChCount; i++) {
-                ovCh.push((targetChannelsList[i] > channelCount ? "!" : " ") + "\t" + targetChannelsList[i] + (src[targetChannelsList[i]] ? "*" : " ") + "\t<- " + sourceChannels[i]);
+                var overlaps = src[targetChannelsList[i]];
+                ovCh.push((targetChannelsList[i] > channelCount ? "!" : " ") + "\t" + targetChannelsList[i] + (overlaps ? "*" : " ") + "\t<- " + sourceChannels[i]);
+                hasOverlaps = hasOverlaps || overlaps;
             }
 
             // TODO check cleanup of special handling for channel-group-copy-target
@@ -733,7 +736,7 @@ function uctParamCopyCheck(input, output, context) {
                 error = true;
             }
 
-            overview = "Kopie von Kanalgruppe mit "+sourceChCount+" Kanälen:\n "+ovCh.join("\n")+" \n* Überlappung";
+            overview = "Kopie von Kanalgruppe mit " + sourceChCount + " Kanälen:\n " + ovCh.join("\n") + (hasOverlaps ? " \n* Überlappung" : "");
         }
 
         output.CopySameError = sameError ? 1 : 0;
