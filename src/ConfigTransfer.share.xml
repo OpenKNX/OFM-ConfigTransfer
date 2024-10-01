@@ -309,7 +309,7 @@
                   <Enumeration   Value="3" Id="%ENID%" Text="alle Parameter"                                      />--><!-- 0b11 -->
                 </TypeRestriction>
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-ChannelSelectionError" Name="ChannelSelectionError">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration   Value="0" Id="%ENID%" Text="kein Fehler"                                         />
@@ -317,7 +317,14 @@
                   <Enumeration   Value="2" Id="%ENID%" Text="Kanal außerhalb Modul"                               />
                 </TypeRestriction>
               </ParameterType>
-              
+
+              <ParameterType Id="%AID%_PT-CopyMode" Name="CopyMode">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration   Value="0" Id="%ENID%" Text="Einzelkanal (mit optionaler Mehrfachkopie)"                            />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal-Kopie beginnend ab Startkanal"                             />
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-CopyType" Name="CopyType">
                 <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
@@ -346,16 +353,18 @@
               <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"                          Text="Export-String"         Value=""    />
 
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
-              <Parameter Id="%AID%_P-%TT%00304" Name="CopySourceString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Quell-Kanal/Kanäle"    Value=""    />
-              <Parameter Id="%AID%_P-%TT%00305" Name="CopyTargetString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Ziel-Kanal/Kanäle"     Value=""    />
-              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text=""                      Value=""    /><!-- Kopier-Resultat -->
+              <Parameter Id="%AID%_P-%TT%00306" Name="CopyMode"              ParameterType="%AID%_PT-CopyMode"                            Text="Kopier-Modus"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00304" Name="CopySourceString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Quell-Kanäle"          Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"            ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00305" Name="CopyTargetString"      ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Ziel-Kanäle"           Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text=""                      Value=""    /><!-- Kopier-Resultat / Vorschau -->
               <Parameter Id="%AID%_P-%TT%00390" Name="CopyModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                  Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
               <!-- TODO check inverse coding with "OK" -->
-              <Parameter Id="%AID%_P-%TT%00391" Name="CopySourceError"       ParameterType="%AID%_PT-ChannelSelectionError"               Text="Fehler: Quell-Kanal"   Value="0"   Access="None" />
-              <Parameter Id="%AID%_P-%TT%00392" Name="CopyTargetError"       ParameterType="%AID%_PT-ChannelSelectionError"               Text="Fehler: Ziel-Kanal"    Value="0"   Access="None" />
+              <Parameter Id="%AID%_P-%TT%00391" Name="CopySourceError"       ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Quell-Kanal"   Value="0"   Access="None" />
+              <Parameter Id="%AID%_P-%TT%00392" Name="CopyTargetError"       ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Ziel-Kanal"    Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00393" Name="CopySameError"         ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Kanäle"        Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00394" Name="CopyError"             ParameterType="%AID%_PT-CheckBox"                            Text="Fehler"                Value="0"   Access="None" />
-              <Parameter Id="%AID%_P-%TT%00395" Name="CopyType"              ParameterType="%AID%_PT-CopyType"                            Text="Erkannter Kopier-Typ:" Value="0"   Access="Read" />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
@@ -379,20 +388,18 @@
               <ParameterRef Id="%AID%_P-%TT%00206_R-%TT%0020601" RefId="%AID%_P-%TT%00206" />
 
               <ParameterRef Id="%AID%_P-%TT%00300_R-%TT%0030001" RefId="%AID%_P-%TT%00300" />
-              <!--
               <ParameterRef Id="%AID%_P-%TT%00301_R-%TT%0030101" RefId="%AID%_P-%TT%00301" />
               <ParameterRef Id="%AID%_P-%TT%00302_R-%TT%0030201" RefId="%AID%_P-%TT%00302" />
-              -->
               <ParameterRef Id="%AID%_P-%TT%00303_R-%TT%0030301" RefId="%AID%_P-%TT%00303" />
               <ParameterRef Id="%AID%_P-%TT%00304_R-%TT%0030401" RefId="%AID%_P-%TT%00304" />
               <ParameterRef Id="%AID%_P-%TT%00305_R-%TT%0030501" RefId="%AID%_P-%TT%00305" />
+              <ParameterRef Id="%AID%_P-%TT%00306_R-%TT%0030601" RefId="%AID%_P-%TT%00306" />
 
               <ParameterRef Id="%AID%_P-%TT%00390_R-%TT%0039001" RefId="%AID%_P-%TT%00390" />
               <ParameterRef Id="%AID%_P-%TT%00391_R-%TT%0039101" RefId="%AID%_P-%TT%00391" />
               <ParameterRef Id="%AID%_P-%TT%00392_R-%TT%0039201" RefId="%AID%_P-%TT%00392" />
               <ParameterRef Id="%AID%_P-%TT%00393_R-%TT%0039301" RefId="%AID%_P-%TT%00393" />
               <ParameterRef Id="%AID%_P-%TT%00394_R-%TT%0039401" RefId="%AID%_P-%TT%00394" />
-              <ParameterRef Id="%AID%_P-%TT%00395_R-%TT%0039501" RefId="%AID%_P-%TT%00395" />
 
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
@@ -444,12 +451,10 @@
               <ParameterCalculation Id="%AID%_PC-%TT%00006" Language="JavaScript" Name="UctCopyParamCheck"   LRTransformationFunc="uctParamCopyCheck" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" AliasName="CopyModul"               />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" AliasName="CopySourceString"        />
-                  <!--
+                  <ParameterRefRef RefId="%AID%_P-%TT%00306_R-%TT%0030601" AliasName="CopyMode"                />
                   <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" AliasName="CopySource"              />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" AliasName="CopyTargetType"          />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" AliasName="CopySourceString"        />
                   <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" AliasName="CopyTarget"              />
-                  -->
                   <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" AliasName="CopyTargetString"        />
                 </LParameters>
                 <RParameters>
@@ -458,7 +463,6 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" AliasName="CopyTargetError"         />
                   <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" AliasName="CopySameError"           />
                   <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" AliasName="CopyError"               />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" AliasName="CopyType"                />
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  />
                 </RParameters>
               </ParameterCalculation>
@@ -630,201 +634,88 @@
                 </ParameterBlock>                
                 <choose ParamRefId="%AID%_P-%TT%00300_R-%TT%0030001">
                   <when test="!=255"><!-- Module with Channels selected -->
+
+                    <ParameterRefRef RefId="%AID%_P-%TT%00306_R-%TT%0030601" />
+  
                     <ParameterBlock Id="%AID%_PB-nnn" Name="CopyPath" Inline="true" Layout="Grid" HelpContext="Empty">
                       <Rows>
                         <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                         <Row Id="%AID%_PB-nnn_R-2" Name="Row2" />
-                        <Row Id="%AID%_PB-nnn_R-3" Name="Row3" />
+                        <Row Id="%AID%_PB-nnn_R-3" Name="Row3" CollapseIfEmpty="true" />
+                        <!--
                         <Row Id="%AID%_PB-nnn_R-4" Name="Row4" />
                         <Row Id="%AID%_PB-nnn_R-5" Name="Row5" />
                         <Row Id="%AID%_PB-nnn_R-6" Name="Row6" />
                         <Row Id="%AID%_PB-nnn_R-7" Name="Row7" />
+                        -->
                       </Rows>
                       <Columns>
                         <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="45%" />
                         <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="10%" />
                         <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="45%" />
                       </Columns>
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Quelle:" Cell="1,1" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="  * Einzelkanal" Cell="2,1" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="  * Kanalgruppe/Mehrfachauswahl" Cell="3,1" />
 
                       <ParameterSeparator Id="%AID%_PS-nnn" Text="    --&gt;" Cell="2,2" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="    --&gt;" Cell="3,2" />
-
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel:" Cell="1,3" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="  * Einzelkanal oder Mehrfachauswahl" Cell="2,3" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="  * Erster Kanal für Gruppenkopie" Cell="3,3" />
-
-                      <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" Cell="4,1" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="    --&gt;" Cell="4,2" />
-                      <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" Cell="4,3" />
-
+                      <choose ParamRefId="%AID%_P-%TT%00306_R-%TT%0030601">
+                        <when test="0">
+                          <!-- single -->
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Quelle:" Cell="1,1" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" Cell="2,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel (Mehrfachangabe möglich):" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" Cell="2,3" />
+                        </when>
+                        <when test="1">
+                          <!-- multi -->
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Quelle (Mehrfachauswahl):" Cell="1,1" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" Cell="2,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel/Startkanal für Kopie:" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" Cell="2,3" />
+                        </when>
+                      </choose>
+  
                       <!-- Error of Copy Source Selection -->
+                      <ParameterRefRef RefId="%AID%_P-%TT%00391_R-%TT%0039101" />
                       <choose ParamRefId="%AID%_P-%TT%00391_R-%TT%0039101">
-                        <when test="1"><ParameterSeparator Id="%AID%_PS-nnn" Text="Definition fehlt!" UIHint="Error" Cell="5,1" /></when>
-                        <when test="2"><ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="5,1" /></when>
+                        <when test="1">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="3,1" />
+                        </when>
                       </choose>
 
                       <!-- Error of Copy Target Selection -->
                       <choose ParamRefId="%AID%_P-%TT%00392_R-%TT%0039201">
                         <when test="1">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Definition fehlt!" UIHint="Error" Cell="5,3" />
-                        </when>
-                        <when test="2">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="5,3" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="3,3" />
                         </when>
                         <when test="0">
                           <choose ParamRefId="%AID%_P-%TT%00393_R-%TT%0039301">
-                            <when test="!=0">
-                              <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
-                                <when test="3">
-                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG: Überlappung mit Quellekanälen!" UIHint="Information" Cell="5,3" />
+                            <when test="1">
+                              <choose ParamRefId="%AID%_P-%TT%00306_R-%TT%0030601">
+                                <when test="1">
+                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG:&#10;Überlappung mit Quellkanälen!" UIHint="Information" Cell="3,3" />
                                 </when>
                                 <when default="true">
-                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Identisch mit Quell-Kanal!" UIHint="Error" Cell="5,3" />
+                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Identisch mit Quell-Kanal!" UIHint="Error" Cell="3,3" />
                                 </when>
                               </choose>
                             </when>
                           </choose>
                         </when>
                       </choose>
-
-                      <!--
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="=> Einzelkanal" Cell="5,1" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal fehlt!" UIHint="Error" Cell="5,1" />
-                      -->
-
                     </ParameterBlock>
 
-                    <!--
-                    <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
-                    <Enumeration   Value="1" Id="%ENID%" Text="Einfache Kopie (1 Kanal auf 1 Kanal)"                                  />
-                    <Enumeration   Value="2" Id="%ENID%" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)"                                />
-                    <Enumeration   Value="3" Id="%ENID%" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)"             />
-                    <Enumeration   Value="2" Id="%ENID%" Text="N auf N - Nicht unterstützt!"                                          />                    
-                    -->
-                    <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
-                      <when test="0">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Keine Kopie möglich!" />
-                      </when>
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Einfache Kopie (1 Kanal auf 1 Kanal)" />
-                      </when>
-                      <when test="2">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)" />
-                      </when>
-                      <when test="3">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)" />
-                      </when>
-                      <when test="4">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="N auf M - Nicht unterstützt!" UIHint="Error" />
-                      </when>
-                    </choose>
-
                     <choose ParamRefId="%AID%_P-%TT%00394_R-%TT%0039401">
                       <when test="0">
-                        <Button Id="%AID%_B-%TT%00301" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
+                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
                       </when>
                     </choose>                    
+                    <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
                   </when>
                 </choose>
-
-
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-
-                
-                <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" />
-                <choose ParamRefId="%AID%_P-%TT%00300_R-%TT%0030001">
-                  <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00390_R-%TT%0039001" IndentLevel="1" />
-                    <!-- Copy Source String -->
-                    <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" IndentLevel="1" />
-
-                    <!-- TODO check integration with test=0/1? -->
-                    <choose ParamRefId="%AID%_P-%TT%00391_R-%TT%0039101">
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal fehlt!" UIHint="Error" />
-                      </when>
-                      <when test="2">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Quell-Kanal nicht im Modul enthalten!" UIHint="Error" />
-                      </when>
-                    </choose>
-
-                    <!-- Copy Target String -->
-                    <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" IndentLevel="1" />
-
-                    <!-- Error of Copy Target Selection -->
-                    <choose ParamRefId="%AID%_P-%TT%00392_R-%TT%0039201">
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal fehlt!" UIHint="Error" />
-                      </when>
-                      <when test="2">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal nicht im Modul enthalten!" UIHint="Error" />
-                      </when>
-                      <when test="0">
-                        <choose ParamRefId="%AID%_P-%TT%00393_R-%TT%0039301">
-                          <when test="!=0">
-                            <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
-                              <when test="3">
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG: Zielkanäle überlappten Quellekanäle!" UIHint="Information" />
-                              </when>
-                              <when default="true">
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel-Kanal muss vom Quell-Kanal abweichen!" UIHint="Error" />
-                              </when>
-                            </choose>
-                          </when>
-                        </choose>
-                      </when>
-                    </choose>
-
-                    <!--
-                    <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
-                    <Enumeration   Value="1" Id="%ENID%" Text="Einfache Kopie (1 Kanal auf 1 Kanal)"                                  />
-                    <Enumeration   Value="2" Id="%ENID%" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)"                                />
-                    <Enumeration   Value="3" Id="%ENID%" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)"             />
-                    <Enumeration   Value="2" Id="%ENID%" Text="N auf N - Nicht unterstützt!"                                          />                    
-                    -->
-                    <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
-                      <when test="0">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Keine Kopie!" UIHint="Information" />
-                      </when>
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Einfache Kopie (1 Kanal auf 1 Kanal)" UIHint="Information" />
-                      </when>
-                      <when test="2">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)" UIHint="Information" />
-                      </when>
-                      <when test="3">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)" UIHint="Information" />
-                      </when>
-                      <when test="4">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="N auf M - Nicht unterstützt!" UIHint="Error" />
-                      </when>
-                    </choose>
-
-                    <choose ParamRefId="%AID%_P-%TT%00394_R-%TT%0039401">
-                      <when test="0">
-                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
-                      </when>
-                    </choose>
-                  </when>
-                </choose>
-
-                <!--
-                <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Berechnung" UIHint="Headline" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00390_R-%TT%0039001" IndentLevel="1" />
-                -->
 
                 <!-- TODO check moving up -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00391_R-%TT%0039101" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" />
 
               </ParameterBlock>
 
