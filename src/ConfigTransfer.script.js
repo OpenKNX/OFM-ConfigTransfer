@@ -744,11 +744,11 @@ function uctParamCopyCheck(input, output, context) {
         output.result = overview;
     } else {
         Log.info("OpenKNX ConfigTransfer: No Module")
-        output.CopyModulChannelCount = 1;
+        output.CopyModulChannelCount = 0;
         output.CopySourceError = 0;
         output.CopyTargetError = 0;
         output.CopySameError = 0;
-        output.CopyError = 0;
+        output.CopyError = 1;
         output.result = "";
     }
 }

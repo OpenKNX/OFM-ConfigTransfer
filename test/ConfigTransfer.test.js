@@ -1003,6 +1003,34 @@ describe('Param Calculation', () => {
         var context = {};
         var output;
 
+        it("handles no module selected", () => {
+            input = {
+                "CopyModul": 255,
+                "CopyMode": 0,
+                "CopySource": 1,
+                "CopySourceString": "1",
+                "CopyTarget": 1,
+                "CopyTargetString": "1"
+            };
+            output = {
+                "CopyModulChannelCount": 10,
+                "CopySourceError": 1,
+                "CopyTargetError": 1,
+                "CopySameError": 1,
+                "CopyError": 1,
+                "result": "x"
+            };
+            uctParamCopyCheck(input, output, context);
+            expect(context).toStrictEqual({});                
+            expect(input).toStrictEqual(input);
+            expect(output.CopyModulChannelCount).toBe(0);
+            expect(output.CopySourceError).toBe(0);
+            expect(output.CopyTargetError).toBe(0);
+            expect(output.CopySameError).toBe(0);
+            expect(output.CopyError).toBe(1);
+            // TODO add test for result?
+        });
+
         describe("single channel mode", () => {
             it("detects same channel", () => {
                 input = {
