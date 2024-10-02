@@ -1087,6 +1087,60 @@ describe('Param Calculation', () => {
                 expect(output.CopyError).toBe(0);
                 // TODO add test for result?
             });
+            it("detects out of range at end", () => {
+                input = {
+                    "CopyModul": 3,
+                    "CopyMode": 1,
+                    "CopySource": 1,
+                    "CopySourceString": "1-4",
+                    "CopyTarget": 5,
+                    "CopyTargetString": "11"
+                };
+                output = {
+                    "CopyModulChannelCount": 0,
+                    "CopySourceError": 1,
+                    "CopyTargetError": 0,
+                    "CopySameError": 1,
+                    "CopyError": 0,
+                    "result": "x"
+                };
+                uctParamCopyCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.CopyModulChannelCount).toBe(7);
+                expect(output.CopySourceError).toBe(0);
+                expect(output.CopyTargetError).toBe(1);
+                expect(output.CopySameError).toBe(0);
+                expect(output.CopyError).toBe(1);
+                // TODO add test for result?
+            });
+            it("detects out of range at begin", () => {
+                input = {
+                    "CopyModul": 3,
+                    "CopyMode": 1,
+                    "CopySource": 1,
+                    "CopySourceString": "1-4",
+                    "CopyTarget": 11,
+                    "CopyTargetString": "11"
+                };
+                output = {
+                    "CopyModulChannelCount": 0,
+                    "CopySourceError": 1,
+                    "CopyTargetError": 0,
+                    "CopySameError": 1,
+                    "CopyError": 0,
+                    "result": "x"
+                };
+                uctParamCopyCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.CopyModulChannelCount).toBe(7);
+                expect(output.CopySourceError).toBe(0);
+                expect(output.CopyTargetError).toBe(1);
+                expect(output.CopySameError).toBe(0);
+                expect(output.CopyError).toBe(1);
+                // TODO add test for result?
+            });            
             it.skip("other tests", () => {
                 // TODO implement
             });            
