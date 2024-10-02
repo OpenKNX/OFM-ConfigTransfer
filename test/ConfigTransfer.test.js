@@ -580,7 +580,7 @@ describe('Button Handler', () => {
         describe('Channel-Group', () => {
             // TODO add tests for multi-copy
             // TODO add tests for copy group to starting-point
-            test("allow copy one channel multiple times", () => {
+            test("allow copy channel group one time", () => {
                 device.getParameterByName("UCTD_CopyMode").value = 1;
                 device.getParameterByName("UCTD_ChannelSourceString").value = "1,3,5";
                 device.getParameterByName("UCTD_ChannelTarget").value = "2";
@@ -593,6 +593,32 @@ describe('Button Handler', () => {
                 expect(device.getParameterByName("CHN_Param4D").value).toBe("GrCh3");
                 expect(device.getParameterByName("CHN_Param6D").value).toBe("GrCh5");
             });
+            test("allow copy overlapping channel group one time with negative offset", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 1;
+                device.getParameterByName("UCTD_ChannelSourceString").value = "2-3,5";
+                device.getParameterByName("UCTD_ChannelTarget").value = "1";
+                device.getParameterByName("CHN_Param2D").value = "GrChOv-A";
+                device.getParameterByName("CHN_Param3D").value = "GrChOv-B";
+                device.getParameterByName("CHN_Param5D").value = "GrChOv-C";
+                uctBtnCopy(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/2 -> CHN/1 [OK]\nCHN/3 -> CHN/2 [OK]\nCHN/5 -> CHN/4 [OK]");
+                expect(device.getParameterByName("CHN_Param1D").value).toBe("GrChOv-A");
+                expect(device.getParameterByName("CHN_Param2D").value).toBe("GrChOv-B");
+                expect(device.getParameterByName("CHN_Param4D").value).toBe("GrChOv-C");
+            });            
+            test("allow copy overlapping channel group one time with positive offset", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 1;
+                device.getParameterByName("UCTD_ChannelSourceString").value = "2,4-5";
+                device.getParameterByName("UCTD_ChannelTarget").value = "3";
+                device.getParameterByName("CHN_Param2D").value = "GrChOv-a";
+                device.getParameterByName("CHN_Param4D").value = "GrChOv-b";
+                device.getParameterByName("CHN_Param5D").value = "GrChOv-c";
+                uctBtnCopy(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/3 -> CHN/4 [OK]\nCHN/2 -> CHN/3 [OK]");
+                expect(device.getParameterByName("CHN_Param3D").value).toBe("GrChOv-a");
+                expect(device.getParameterByName("CHN_Param5D").value).toBe("GrChOv-b");
+                expect(device.getParameterByName("CHN_Param6D").value).toBe("GrChOv-c");
+            });            
         });
     });
 
