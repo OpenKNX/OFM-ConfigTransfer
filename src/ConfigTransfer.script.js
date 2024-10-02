@@ -682,11 +682,11 @@ function uctParamCopyCheck(input, output, context) {
             sourceError = (input.CopySource > channelCount);
             targetChannels = uctParseRangesString(input.CopyTargetString);
             var targetChCount = targetChannels.length;
-            targetError = (targetChCount > 1 && targetChannels[targetChCount - 1] > channelCount);
+            targetError = (targetChCount > 0 && targetChannels[targetChCount - 1] > channelCount);
         } else /* if (input.CopyMode==1) */ {
             sourceChannels = uctParseRangesString(input.CopySourceString);
             var sourceChCount = sourceChannels.length;
-            sourceError = (sourceChCount > 1 && sourceChannels[sourceChCount - 1] > channelCount);
+            sourceError = (sourceChCount > 0 && sourceChannels[sourceChCount - 1] > channelCount);
             targetChannels = [input.CopyTarget];
             targetError = (input.CopyTarget > channelCount);
         }
