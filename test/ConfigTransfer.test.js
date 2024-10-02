@@ -395,6 +395,7 @@ describe('Button Handler', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
             "p_channelSource":"UCTD_Channel",
+            "p_channelSourcesString":"UCTD_ExportSourcesString",
             "p_exportParamSelectionSelection":"UCTD_Opt1",
             "p_exportFormatSelection":"UCTD_Opt2",
             "p_exportOutput":"UCTD_Output",
@@ -428,6 +429,18 @@ describe('Button Handler', () => {
                 },
             };
             expect(() => uctBtnExport(failingParamGet, online, progress, context)).toThrow(Error);
+        });
+        it("allows exporting multiple channels", () => {
+    
+            device.getParameterByName("UCTD_Channel").value = 253;
+            device.getParameterByName("UCTD_ExportSourcesString").value = "1-2";
+            device.getParameterByName("UCTD_Output").value = "";
+            device.getParameterByName("UCTD_Opt1").value = 1;
+            device.getParameterByName("CHN_Param1D").value = "yyyy";
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe(
+                "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/1§Param~D=yyyy§;OpenKNX\nOpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX"
+            );
         });
     });
 
