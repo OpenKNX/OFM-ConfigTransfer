@@ -996,6 +996,103 @@ describe('Param Calculation', () => {
         expect(output).toStrictEqual({"f3":"x"});
         expect(context).toStrictEqual({"c1": "z"});
     });
-    
+
+    describe("uctParamCopyCheck", () => {
+        const uctParamCopyCheck = cts.uctParamCopyCheck;
+        var input;
+        var context = {};
+        var output;
+
+        describe("single channel mode", () => {
+            it("detects same channel", () => {
+                input = {
+                    "CopyModul": 3,
+                    "CopyMode": 0,
+                    "CopySource": 1,
+                    "CopySourceString": "1",
+                    "CopyTarget": 1,
+                    "CopyTargetString": "1"
+                };
+                output = {
+                    "CopyModulChannelCount": 1,
+                    "CopySourceError": 1,
+                    "CopyTargetError": 1,
+                    "CopySameError": 0,
+                    "CopyError": 0,
+                    "result": "x"
+                };
+                uctParamCopyCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.CopyModulChannelCount).toBe(7);
+                expect(output.CopySourceError).toBe(0);
+                expect(output.CopyTargetError).toBe(0);
+                expect(output.CopySameError).toBe(1);
+                expect(output.CopyError).toBe(1);
+                // TODO add test for result?
+            });
+            it("detects out of range channels", () => {
+                input = {
+                    "CopyModul": 3,
+                    "CopyMode": 0,
+                    "CopySource": 8,
+                    "CopySourceString": "1",
+                    "CopyTarget": 1,
+                    "CopyTargetString": "11"
+                };
+                output = {
+                    "CopyModulChannelCount": 0,
+                    "CopySourceError": 0,
+                    "CopyTargetError": 0,
+                    "CopySameError": 1,
+                    "CopyError": 0,
+                    "result": "x"
+                };
+                uctParamCopyCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.CopyModulChannelCount).toBe(7);
+                expect(output.CopySourceError).toBe(1);
+                expect(output.CopyTargetError).toBe(1);
+                expect(output.CopySameError).toBe(0);
+                expect(output.CopyError).toBe(1);
+                // TODO add test for result?
+            });
+        });
+        describe("multi channel mode", () => {
+            it("detects overlapping", () => {
+                input = {
+                    "CopyModul": 3,
+                    "CopyMode": 1,
+                    "CopySource": 1,
+                    "CopySourceString": "1-2,4",
+                    "CopyTarget": 3,
+                    "CopyTargetString": "11"
+                };
+                output = {
+                    "CopyModulChannelCount": 0,
+                    "CopySourceError": 1,
+                    "CopyTargetError": 0,
+                    "CopySameError": 1,
+                    "CopyError": 0,
+                    "result": "x"
+                };
+                uctParamCopyCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.CopyModulChannelCount).toBe(7);
+                expect(output.CopySourceError).toBe(0);
+                expect(output.CopyTargetError).toBe(0);
+                expect(output.CopySameError).toBe(1);
+                expect(output.CopyError).toBe(0);
+                // TODO add test for result?
+            });
+            it.skip("other tests", () => {
+                // TODO implement
+            });            
+        });
+
+    });
+
 });
 
