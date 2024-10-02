@@ -614,7 +614,7 @@ describe('Button Handler', () => {
                 device.getParameterByName("CHN_Param4D").value = "GrChOv-b";
                 device.getParameterByName("CHN_Param5D").value = "GrChOv-c";
                 uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/3 -> CHN/4 [OK]\nCHN/2 -> CHN/3 [OK]");
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/4 -> CHN/5 [OK]\nCHN/2 -> CHN/3 [OK]");
                 expect(device.getParameterByName("CHN_Param3D").value).toBe("GrChOv-a");
                 expect(device.getParameterByName("CHN_Param5D").value).toBe("GrChOv-b");
                 expect(device.getParameterByName("CHN_Param6D").value).toBe("GrChOv-c");
