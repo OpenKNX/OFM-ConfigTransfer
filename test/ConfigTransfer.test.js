@@ -527,48 +527,72 @@ describe('Button Handler', () => {
     describe('Copy', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
-            // "p_channelTarget":"UCTD_Channel",
+            "p_copyMode":"UCTD_CopyMode",
+            "p_channelSource":"UCTD_ChannelSource",
+            "p_channelTarget":"UCTD_ChannelTarget",
             "p_channelSourceString":"UCTD_ChannelSourceString",
             "p_channelTargetString":"UCTD_ChannelTargetString",
             "p_messageOutput":"UCTD_Output",
         };
-        // TODO add tests for multi-copy
-        test("regular copy and success message", () => {
-            device.getParameterByName("UCTD_ChannelSourceString").value = "6";
-            device.getParameterByName("UCTD_ChannelTargetString").value = "5";
-            device.getParameterByName("CHN_Param6D").value = "Kanal6";
-            uctBtnCopy(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
-            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+        describe('Single Channel', () => {
+            test("regular copy and success message", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 0;
+                device.getParameterByName("UCTD_ChannelSource").value = 6;
+                device.getParameterByName("UCTD_ChannelTargetString").value = "5";
+                device.getParameterByName("CHN_Param6D").value = "Kanal6";
+                uctBtnCopy(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
+                expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+            });
+            test("allow copy one channel multiple times", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 0;
+                device.getParameterByName("UCTD_ChannelSource").value = 6;
+                device.getParameterByName("UCTD_ChannelTargetString").value = "2-4";
+                device.getParameterByName("CHN_Param6D").value = "MulCh6";
+                uctBtnCopy(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/2 [OK]\nCHN/6 -> CHN/3 [OK]\nCHN/6 -> CHN/4 [OK]");
+                expect(device.getParameterByName("CHN_Param2D").value).toBe("MulCh6");
+                expect(device.getParameterByName("CHN_Param3D").value).toBe("MulCh6");
+                expect(device.getParameterByName("CHN_Param4D").value).toBe("MulCh6");
+            });
+            // TODO extend tests for multi-copy
+            it("fails on source==target", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 0;
+                device.getParameterByName("UCTD_ChannelSource").value = 6;
+                device.getParameterByName("UCTD_ChannelTargetString").value = "6";
+                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+            });
+    
+            it("fails on source out of range", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 0;
+                device.getParameterByName("UCTD_ChannelSource").value = 99;
+                device.getParameterByName("UCTD_ChannelTargetString").value = "6";
+                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+            });
+    
+            it("fails on target out of range", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 0;
+                device.getParameterByName("UCTD_ChannelSource").value = 4;
+                device.getParameterByName("UCTD_ChannelTargetString").value = "99";
+                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+            });
         });
-        test("allow copy one channel multiple times", () => {
-            device.getParameterByName("UCTD_ChannelSourceString").value = "6";
-            device.getParameterByName("UCTD_ChannelTargetString").value = "2-4";
-            device.getParameterByName("CHN_Param6D").value = "MulCh6";
-            uctBtnCopy(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/2 [OK]\nCHN/6 -> CHN/3 [OK]\nCHN/6 -> CHN/4 [OK]");
-            expect(device.getParameterByName("CHN_Param2D").value).toBe("MulCh6");
-            expect(device.getParameterByName("CHN_Param3D").value).toBe("MulCh6");
-            expect(device.getParameterByName("CHN_Param4D").value).toBe("MulCh6");
-        });    
-        // TODO extend tests for multi-copy
-        // TODO add tests for copy group to starting-point
-        it("fails on source==target", () => {
-            device.getParameterByName("UCTD_ChannelSourceString").value = "6";
-            device.getParameterByName("UCTD_ChannelTargetString").value = "6";
-            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
-        });
-
-        it("fails on source out of range", () => {
-            device.getParameterByName("UCTD_ChannelSourceString").value = "99";
-            device.getParameterByName("UCTD_ChannelTargetString").value = "6";
-            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
-        });
-
-        it("fails on target out of range", () => {
-            device.getParameterByName("UCTD_ChannelSourceString").value = "4";
-            device.getParameterByName("UCTD_ChannelTargetString").value = "99";
-            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+        describe('Channel-Group', () => {
+            // TODO add tests for multi-copy
+            // TODO add tests for copy group to starting-point
+            test("allow copy one channel multiple times", () => {
+                device.getParameterByName("UCTD_CopyMode").value = 1;
+                device.getParameterByName("UCTD_ChannelSourceString").value = "1,3,5";
+                device.getParameterByName("UCTD_ChannelTarget").value = "2";
+                device.getParameterByName("CHN_Param1D").value = "GrCh1";
+                device.getParameterByName("CHN_Param3D").value = "GrCh3";
+                device.getParameterByName("CHN_Param5D").value = "GrCh5";
+                uctBtnCopy(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/3 -> CHN/4 [OK]\nCHN/1 -> CHN/2 [OK]");
+                expect(device.getParameterByName("CHN_Param2D").value).toBe("GrCh1");
+                expect(device.getParameterByName("CHN_Param4D").value).toBe("GrCh3");
+                expect(device.getParameterByName("CHN_Param6D").value).toBe("GrCh5");
+            });
         });
     });
 
