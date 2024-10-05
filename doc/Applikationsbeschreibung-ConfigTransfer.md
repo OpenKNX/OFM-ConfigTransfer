@@ -155,12 +155,12 @@ wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
 > * Weitergabe von Konfigurationsbeispielen einer aktuellen Modul-Version
 
 
-#### locker       (gleiche Parameternamen)
+#### lockerer     (ignoriert unbekannte Parameter)
 
-Versucht den Import durchzuführen, 
-solange keine Parameternamen enthalten sind, die im Modul in dieser Applikation unbekannt sind.
+Versucht den Import durchzuführen, so gut es möglich ist.
+Werte mit Parameternamen die im Modul dieser Applikation unbekannt sind, werden beim Import ignoriert und führen zu einer Warnmeldung, ohne den Import zu stoppen.
 
-Das wird in vielen Fällen immer noch zum gewünschten Ergebnis führen, 
+Dieses Vorgehen wird in vielen Fällen immer noch zum gewünschten Ergebnis führen, 
 wobei die in den anderen Stufen genannten Einschränkungen weiterhin gelten. 
 Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. 
 Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko.
