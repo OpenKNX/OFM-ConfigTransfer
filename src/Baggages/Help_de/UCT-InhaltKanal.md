@@ -3,6 +3,12 @@
 Entscheidet welcher Teil der Modul-Konfiguration exportiert werden soll:
 
 
+#### Mehrfachauswahl
+
+Erlaubt einen gleichzeitigen Export von mehreren Kanälen, die frei gewählt werden können.
+
+
+
 #### Basiseinstellungen (kanalunabhängig)
 
 Exportiert Konfiguration die übergreifend für alle Kanäle wirkt, oder keinen Bezug zu einem Kanal besitzt.

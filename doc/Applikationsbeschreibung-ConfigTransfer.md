@@ -232,6 +232,12 @@ Diese stehen dann nicht zur Auswahl. Das Modul Konfigurationstransfer selbst wir
 Entscheidet welcher Teil der Modul-Konfiguration exportiert werden soll:
 
 
+#### Mehrfachauswahl
+
+Erlaubt einen gleichzeitigen Export von mehreren Kanälen, die frei gewählt werden können.
+
+
+
 #### Basiseinstellungen (kanalunabhängig)
 
 Exportiert Konfiguration die übergreifend für alle Kanäle wirkt, oder keinen Bezug zu einem Kanal besitzt.
@@ -246,6 +252,15 @@ sofern ein Kanal mit dieser Nummer existiert.
 
 Der Export wird scheitern, 
 falls das gewählte Modul keine Kanäle besitzt, oder keinen Kanal mit der entsprechenden Nummer.
+
+
+
+<!-- DOC -->
+### Kanalauswahl
+
+Definiert welcher Kanal oder welche Kanäle in den Export aufgenommen werden sollen.
+
+Die Kanal-Definition erfolgt als Einzelkanal (z.B. `0`), als Kanal-Intervall (z.B. `3-5`), oder als Komma-getrennte Liste von Einzelkanälen oder Intervallen (z.B. `0,3-5,7-9,12`).
 
 
 

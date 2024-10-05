@@ -564,7 +564,7 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
                     <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
                       <when test="253">
-                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="2" /><!--  HelpContext="UCT-InhaltKanal" for Multi-Section -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="2" HelpContext="UCT-Kanalauswahl" />
                       </when>
                     </choose>
                     <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
