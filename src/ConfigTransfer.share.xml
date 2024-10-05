@@ -602,7 +602,7 @@
                 <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"   ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
                 -->
 
-                <ParameterBlock Id="%AID%_PB-nnn" Name="CopyModule" Inline="true" Layout="Grid" HelpContext="Empty">
+                <ParameterBlock Id="%AID%_PB-nnn" Name="CopyModule" Inline="true" Layout="Grid" HelpContext="UCT-Modul" >
                   <Rows>
                     <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                   </Rows>
@@ -622,19 +622,13 @@
                 <choose ParamRefId="%AID%_P-%TT%00300_R-%TT%0030001">
                   <when test="!=255"><!-- Module with Channels selected -->
 
-                    <ParameterRefRef RefId="%AID%_P-%TT%00306_R-%TT%0030601" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00306_R-%TT%0030601" HelpContext="UCT-Kopier-Modus" />
   
-                    <ParameterBlock Id="%AID%_PB-nnn" Name="CopyPath" Inline="true" Layout="Grid" HelpContext="Empty">
+                    <ParameterBlock Id="%AID%_PB-nnn" Name="CopyPath" Inline="true" Layout="Grid">
                       <Rows>
                         <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                         <Row Id="%AID%_PB-nnn_R-2" Name="Row2" />
                         <Row Id="%AID%_PB-nnn_R-3" Name="Row3" CollapseIfEmpty="true" />
-                        <!--
-                        <Row Id="%AID%_PB-nnn_R-4" Name="Row4" />
-                        <Row Id="%AID%_PB-nnn_R-5" Name="Row5" />
-                        <Row Id="%AID%_PB-nnn_R-6" Name="Row6" />
-                        <Row Id="%AID%_PB-nnn_R-7" Name="Row7" />
-                        -->
                       </Rows>
                       <Columns>
                         <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="45%" />
@@ -647,16 +641,16 @@
                         <when test="0">
                           <!-- single -->
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Quelle:" Cell="1,1" />
-                          <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" Cell="2,1" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" Cell="2,1" HelpContext="UCT-Quelle" />
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel (Mehrfachangabe möglich):" Cell="1,3" />
-                          <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" Cell="2,3" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00305_R-%TT%0030501" Cell="2,3" HelpContext="UCT-Ziel-Mehrfachangabe-moeglich" />
                         </when>
                         <when test="1">
                           <!-- multi -->
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Quelle (Mehrfachauswahl):" Cell="1,1" />
-                          <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" Cell="2,1" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00304_R-%TT%0030401" Cell="2,1" HelpContext="UCT-Quelle-Mehrfachauswahl" />
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Ziel/Startkanal für Kopie:" Cell="1,3" />
-                          <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" Cell="2,3" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" Cell="2,3" HelpContext="UCT-ZielStartkanal-fuer-Kopie" />
                         </when>
                       </choose>
   
@@ -695,7 +689,7 @@
                         <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
                       </when>
                     </choose>                    
-                    <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" HelpContext="UCT-Vorschau-und-Kopier-Resultat" />
                   </when>
                 </choose>
 

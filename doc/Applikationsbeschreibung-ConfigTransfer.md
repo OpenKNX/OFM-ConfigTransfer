@@ -332,7 +332,16 @@ wird der Export-String geleert um Widersprüche zu den gewählten Einstellungen 
 
 Erlaubt die Vervielfältigung von Kanal-Konfigurationen, bzw. kann unterstützen bei der Reorganisation von Kanälen innerhalb eines Moduls.
 
+<!-- DOCCONTENT
+### Kopieren (Button)
 
+Startet den Kopiervorgang mit Überschreiben des Ziel-Kanals bzw. der Ziel-Kanäle.
+Dieser Prozess kann je Kanal u.U. mehrere Minuten in Anspruch nehmen und kann weder unterbrochen noch rückgängig gemacht werden!
+
+> **ACHTUNG**: Vor dem Kopieren sollte sichergestellt werden, dass durch Überschreiben des Ziel-Kanals keine Konfigurationsdaten verloren gehen!
+DOCCONTENT -->
+
+<!-- DOC -->
 ### Modul
 
 <!-- TODO Redundante Beschreibungen besser lösen -->
@@ -342,41 +351,90 @@ Die Modulbezeichnungen entsprechen der Beschriftung der Konfigurationsseiten inn
 Einzelne Module können vom Ersteller der Applikation von der Nutzung im Konfigurationstransfer ausgeschlossen worden sein.
 Diese und auch Module ohne enthaltene Kanäle stehen nicht zur Auswahl.
 
+#### n Kanäle
+
+Zeigt an wie viele Kanäle das aktuell ausgewählte Modul enthält.
+Kopier-Quelle(n) und -Ziel(e) müssen im Bereich 1 bis n (=Kanalanzahl) liegen.
 
 
+<!-- DOC -->
+### Kopier-Modus
 
-### Quell-Kanal
+Über den Kopier-Modus muss ausgewählt werden, ob ein einzelner Kanal oder mehrere Kanäle kopiert werden sollen.
+In Abhängigkeit von dieser Auswahl sind unterschiedliche Formen der Quell- und Ziel-Definition erforderlich und möglich:
+
+#### Einzelkanal (mit optionaler Mehrfachkopie)
+
+Als Quelle muss genau ein einziger Kanal gewählt werden.
+Als Ziel muss mindestens ein Kanal angegegen werden, bei Angabe mehrerer Ziel-Kanäle werden mehrere Kopien der Quelle erzeugt.
+
+#### Multi-Kanal-Kopie beginnend ab Startkanal
+
+Als Quelle kann eine Gruppe von Kanälen gewählt werden. Diese muss mindestens einen Kanal enthalten.
+Die Definition der Kopier-Ziel-Kanäle erfolgt durch Angabe des Start-Kanals.
+Der Quell-Kanal mit der niedrigsten Kanal-Nummer wird auf diesen Start-Kanal kopiert, alle weiteren Ziel-Kanäle ergeben sich aus der relativen Position der Kanäle wie in der Quelle.
+
+
+<!-- DOC -->
+### Quelle
+
+<!-- DOC Skip="1" -->
+> *Nur* sichtbar im Modus *Einzelkanal (mit optionaler Mehrfachkopie)*
 
 Wählt den Kanal, der als Kopier-Vorlage dienen soll.
 
-Die Kanalkopie wird scheitern, 
-falls das gewählte Modul keine Kanäle besitzt, 
-oder keinen Kanal mit der entsprechenden Nummer.
+Die Kanalkopie ist nur dann möglich, wenn die gewählte Kanal-Nummer im gewählten Modul existiert.
 
 
-### Ziel-Kanal
+<!-- DOC -->
+### Quelle (Mehrfachauswahl)
 
-Wählt den Kanal, der mit der Konfiguration des Quell-Kanals überschrieben werden soll.
+<!-- DOC Skip="1" -->
+> *Nur* sichtbar im Modus *Multi-Kanal-Kopie beginnend ab Startkanal*
 
-Die Kanalkopie wird scheitern, 
-falls das gewählte Modul keinen Kanal mit der entsprechenden Nummer besitzt,
-oder der Ziel-Kanal identisch zum Quell-Kanal ausgewählt wurde.
+Wählt die Kanäle, die als Kopier-Vorlage dienen soll.
+Die Kanal-Definition erfolgt als Einzelkanal (z.B. `4`), als Kanal-Intervall (z.B. `3-5`), oder als Komma-getrennte Liste von Einzelkanälen oder Intervallen (z.B. `4,7-9,12`).
+
+Die Kanalkopie ist nur dann möglich, wenn alle Kanal-Nummern im gewählten Modul existieren.
+
+
+<!-- DOC -->
+### Ziel (Mehrfachangabe möglich)
+
+<!-- DOC Skip="1" -->
+> *Nur* sichtbar im Modus *Einzelkanal (mit optionaler Mehrfachkopie)*
+
+Wählt den Kanal oder die Kanäle, die mit der Konfiguration des Quell-Kanals überschrieben werden sollen.
+
+Die Kanalkopie ist nur dann möglich, wenn alle Kanal-Nummern im gewählten Modul existieren.
+
+
+<!-- DOC -->
+### Ziel/Startkanal für Kopie
+
+<!-- DOC Skip="1" -->
+> *Nur* sichtbar im Modus *Multi-Kanal-Kopie beginnend ab Startkanal
+
+Wählt den Kanal, der als Startkanal die Kanal-Nummern aller Zielkanäle definiert.
+
+Die Kanalkopie ist nur dann möglich, wenn die gewählte Kanal-Nummer und alle anderen sich aus dieser egebenden Ziel-Kanäle im gewählten Modul existieren.
 
 
 ### Kopieren (Button)
 
-Startet den Kopiervorgang mit Überschreiben des Ziel-Kanals.
-Dieser Prozess kann u.U. mehrere Minuten in Anspruch nehmen und kann weder unterbrochen noch rückgängig gemacht werden!
+Startet den Kopiervorgang mit Überschreiben des Ziel-Kanals bzw. der Ziel-Kanäle.
+Dieser Prozess kann je Kanal u.U. mehrere Minuten in Anspruch nehmen und kann weder unterbrochen noch rückgängig gemacht werden!
 
 > **ACHTUNG**: Vor dem Kopieren sollte sichergestellt werden, dass durch Überschreiben des Ziel-Kanals keine Konfigurationsdaten verloren gehen!
 
 
-### Kopier-Resultat
+<!-- DOC -->
+### Vorschau und Kopier-Resultat
 
-Hier erfolgt eine Rückmeldung aus dem Kopier-Prozess.
-Bei Bedarf kann die Ausgabe in die Zwischenablage kopiert werden;
-sobald einer der anderen Parameter auf dieser Seite verändert wird,
-wird der die Ausgabe geleert um Widersprüche zu den gewählten Einstellungen zu verhindern.
+Hier erfolgt vor dem Kopieren eine Vorschau mit der Kanalzuordnung, einschließlich ggf. vorhandener Besonderheiten 
+und nach dem Kopieren eine Rückmeldung aus dem Kopier-Prozess.
+Bei Bedarf kann die Ausgabe in die Zwischenablage kopiert werden.
+Sobald einer der anderen Parameter auf dieser Seite verändert wird, erfolgt eine Ausgabe der Vorschau.
 
 Der Wert wird nicht weiterverarbeitet innerhalb der Applikation.
 
