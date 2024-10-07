@@ -662,64 +662,46 @@ function uctParamResetNothing(input, output, context) {
 function uctParamCopyCheck(input, output, context) {
     Log.info("OpenKNX ConfigTransfer: Param Copy check ...")
 
+    var channelCount = 0;    
+    var sourceError = false;
+    var targetError = false;
+    var sameError = false;
+    var error = true;
+    var overview = "";
+
     if (input.CopyModul < uctModuleOrder.length) {
-        // 1. get module prefix
+        // get module prefix and module channel count
         var module = uctModuleOrder[input.CopyModul];
-        Log.info("OpenKNX ConfigTransfer: module=" + module);
+        channelCount = uctChannelParams[module].channels;
+        Log.info("OpenKNX UCT Copy Check: module=" + module + " / channelCount=" + channelCount);
 
-        // 2. get module channel count
-        var channelCount = uctChannelParams[module].channels;
-        Log.info("OpenKNX ConfigTransfer: channelCount=" + channelCount);
-        output.CopyModulChannelCount = channelCount;
-
-        var sourceChannels = [];
-        var targetChannels = [];
-        var sourceError = false;
-        var targetError = false;
-        // 3. switch by copy-mode
-        if (input.CopyMode==0) {
-            sourceChannels = [input.CopySource];
-            sourceError = (input.CopySource > channelCount);
-            targetChannels = uctParseRangesString(input.CopyTargetString);
+        // check parameter depending on copy mode
+        if (input.CopyMode == 0) {
+            var sourceChannel = input.CopySource;
+            sourceError = (sourceChannel > channelCount);
+            var targetChannels = uctParseRangesString(input.CopyTargetString);
             var targetChCount = targetChannels.length;
             targetError = (targetChCount > 0 && targetChannels[targetChCount - 1] > channelCount);
-        } else /* if (input.CopyMode==1) */ {
-            sourceChannels = uctParseRangesString(input.CopySourceString);
+
+            Log.info("OpenKNX UCT Copy Check: Single channel source " + sourceChannel);
+            sameError = !uctIsDisjoint([sourceChannel], targetChannels);
+            error = sourceError || targetError || sameError;
+            overview = "VORSCHAU\nKopie von Einzelkanal:\n  " + sourceChannel + " -> " + targetChannels.join(",");
+        } else if (input.CopyMode == 1) {
+            var sourceChannels = uctParseRangesString(input.CopySourceString);
             var sourceChCount = sourceChannels.length;
             sourceError = (sourceChCount > 0 && sourceChannels[sourceChCount - 1] > channelCount);
-            targetChannels = [input.CopyTarget];
-            targetError = (input.CopyTarget > channelCount);
-        }
 
-        // 3. get definition of source
-        Log.info("OpenKNX ConfigTransfer: sourceError=" + sourceError);
-        output.CopySourceError = sourceError ? 1 : 0;
-
-        // 4. get definition of target
-        Log.info("OpenKNX ConfigTransfer: targetError=" + targetError);
-        output.CopyTargetError = targetError ? 1 : 0;
-
-        var error = (output.CopySourceError + output.CopyTargetError) > 0;
-        var overview = "";
-
-        var sameError = false;
-        if (input.CopyMode == 0) {
-            Log.info("OpenKNX ConfigTransfer: Single channel source " + sourceChannels[0]);
-            sameError = !uctIsDisjoint(sourceChannels, targetChannels);
-            error = error || sameError;
-            overview = "VORSCHAU\nKopie von Einzelkanal:\n  " + sourceChannels[0] + " -> " + targetChannels.join(",");
-        } else /* if (input.CopyMode == 1) */ {
-            var sourceChCount = sourceChannels.length;
-            Log.info("OpenKNX ConfigTransfer: Multi channel source " + sourceChannels.join(","));
+            Log.info("OpenKNX UCT Copy Check: Multi channel source " + sourceChannels.join(","));
             var targetChannelsList = [];
-            var offset = targetChannels[0] - sourceChannels[0];
+            var offset = input.CopyTarget - sourceChannels[0];
             var src = {};
             for (var i = 0; i < sourceChCount; i++) {
                 src[sourceChannels[i]] = true;
                 targetChannelsList.push(sourceChannels[i] + offset);
-                Log.info("OpenKNX ConfigTransfer: " + sourceChannels[i] + " -> " + (sourceChannels[i] + offset));
+                Log.info("OpenKNX UCT Copy Check: " + sourceChannels[i] + " -> " + (sourceChannels[i] + offset));
             }
-            sameError = !uctIsDisjoint(sourceChannels, targetChannelsList);
+            targetError = (targetChannelsList[sourceChCount - 1] > channelCount);
 
             var ovCh = [];
             var hasOverlaps = false;
@@ -728,29 +710,21 @@ function uctParamCopyCheck(input, output, context) {
                 ovCh.push("  " + sourceChannels[i] + " -> " + "\t" + targetChannelsList[i] + (overlaps ? " *" : (targetChannelsList[i] > channelCount ? " !" : "")));
                 hasOverlaps = hasOverlaps || overlaps;
             }
+            sameError = hasOverlaps;
 
-            // TODO check cleanup of special handling for channel-group-copy-target
-            if (targetChannelsList[sourceChCount - 1] > channelCount) {
-                targetError = true;
-                output.CopyTargetError = targetError ? 1 : 0;
-                error = true;
-            }
-
+            error = sourceError || targetError;
             overview = "VORSCHAU\nKopie von Kanalgruppe mit " + sourceChCount + " Kanälen:\n" + ovCh.join("\n") + (hasOverlaps ? "\n* Überlappung" : "") + (targetError ? "\n! Nicht existierender Kanal" : "");
         }
-
-        output.CopySameError = sameError ? 1 : 0;
-        output.CopyError = error ? 1 : 0;
-        output.result = overview;
     } else {
-        Log.info("OpenKNX ConfigTransfer: No Module")
-        output.CopyModulChannelCount = 0;
-        output.CopySourceError = 0;
-        output.CopyTargetError = 0;
-        output.CopySameError = 0;
-        output.CopyError = 1;
-        output.result = "";
+        Log.info("OpenKNX UCT Copy Check: No Module")
     }
+
+    output.CopyModulChannelCount = channelCount;
+    output.CopySourceError = sourceError ? 1 : 0;
+    output.CopyTargetError = targetError ? 1 : 0;
+    output.CopySameError = sameError ? 1 : 0;
+    output.CopyError = error ? 1 : 0;
+    output.result = overview;
 }
 
 // -- OFM-ConfigTransfer //
