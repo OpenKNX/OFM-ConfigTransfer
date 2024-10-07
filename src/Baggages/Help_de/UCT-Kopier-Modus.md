@@ -8,7 +8,7 @@ In Abhängigkeit von dieser Auswahl sind unterschiedliche Formen der Quell- und 
 Als Quelle muss genau ein einziger Kanal gewählt werden.
 Als Ziel muss mindestens ein Kanal angegegen werden, bei Angabe mehrerer Ziel-Kanäle werden mehrere Kopien der Quelle erzeugt.
 
-#### Multi-Kanal-Kopie beginnend ab Startkanal
+#### Multi-Kanal (Kopie beginnend ab Startkanal)
 
 Als Quelle kann eine Gruppe von Kanälen gewählt werden. Diese muss mindestens einen Kanal enthalten.
 Die Definition der Kopier-Ziel-Kanäle erfolgt durch Angabe des Start-Kanals.

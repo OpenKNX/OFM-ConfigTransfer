@@ -321,7 +321,7 @@
               <ParameterType Id="%AID%_PT-CopyMode" Name="CopyMode">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration   Value="0" Id="%ENID%" Text="Einzelkanal (mit optionaler Mehrfachkopie)"                            />
-                  <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal-Kopie beginnend ab Startkanal"                             />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal (Kopie beginnend ab Startkanal)"                           />
                 </TypeRestriction>
               </ParameterType>
 
