@@ -611,7 +611,7 @@
                     <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="40%" />
                     <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                   </Columns>
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Modul:" Cell="1,1" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Modul" Cell="1,1" />
                   <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" Cell="1,2" />
                   <choose ParamRefId="%AID%_P-%TT%00300_R-%TT%0030001">
                     <when test="!=255">

@@ -725,7 +725,7 @@ function uctParamCopyCheck(input, output, context) {
             var hasOverlaps = false;
             for (var i = 0; i < sourceChCount; i++) {
                 var overlaps = src[targetChannelsList[i]];
-                ovCh.push("  " + sourceChannels[i] + " -> " + "\t" + targetChannelsList[i] + (overlaps ? " *" : (targetChannelsList[i] > channelCount ? "!" : " ")));
+                ovCh.push("  " + sourceChannels[i] + " -> " + "\t" + targetChannelsList[i] + (overlaps ? " *" : (targetChannelsList[i] > channelCount ? " !" : "")));
                 hasOverlaps = hasOverlaps || overlaps;
             }
 
