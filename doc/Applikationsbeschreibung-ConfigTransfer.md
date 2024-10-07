@@ -428,7 +428,7 @@ Die Kanalkopie ist nur dann möglich, wenn alle Kanal-Nummern im gewählten Modu
 ### Ziel/Startkanal für Kopie
 
 <!-- DOC Skip="1" -->
-> *Nur* sichtbar im Modus *Multi-Kanal-Kopie beginnend ab Startkanal
+> *Nur* sichtbar im Modus *Multi-Kanal-Kopie beginnend ab Startkanal*
 
 Wählt den Kanal, der als Startkanal die Kanal-Nummern aller Zielkanäle definiert.
 
