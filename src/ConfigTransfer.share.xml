@@ -253,25 +253,26 @@
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-ExportSourcesString" Name="ExportSourcesString" ValidationErrorRef="%AID%_M-%TT%00002">
-                <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="2400" Pattern="^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$" />
               </ParameterType>
 
+              <!-- NOT used in copy, but expected for multi-channel export
               <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
-                <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="2400" Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" />
               </ParameterType>
+               -->
               <ParameterType Id="%AID%_PT-ChannelNot0SelectionString" Name="ChannelNot0SelectionString" ValidationErrorRef="%AID%_M-%TT%00004">
-                <!-- max len:        1048575 (no full byte!) -->
                 <TypeText SizeInBit="2400" Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" />
               </ParameterType>
 
+              <!-- NOT used in copy, but expected for multi-channel export
               <ParameterType Id="%AID%_PT-ChannelSelectionType" Name="ChannelSelectionType">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration   Value="0" Id="%ENID%" Text="Einzelner Kanal"  />
                   <Enumeration   Value="1" Id="%ENID%" Text="Mehrfachauswahl"  />
                 </TypeRestriction>
               </ParameterType>
+               -->
 
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
@@ -310,28 +311,10 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ChannelSelectionError" Name="ChannelSelectionError">
-                <TypeRestriction Base="Value" SizeInBit="2">
-                  <Enumeration   Value="0" Id="%ENID%" Text="kein Fehler"                                         />
-                  <Enumeration   Value="1" Id="%ENID%" Text="Kanalauswahl erforderlich"                           />
-                  <Enumeration   Value="2" Id="%ENID%" Text="Kanal außerhalb Modul"                               />
-                </TypeRestriction>
-              </ParameterType>
-
               <ParameterType Id="%AID%_PT-CopyMode" Name="CopyMode">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration   Value="0" Id="%ENID%" Text="Einzelkanal (mit optionaler Mehrfachkopie)"                            />
                   <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal (Kopie beginnend ab Startkanal)"                           />
-                </TypeRestriction>
-              </ParameterType>
-
-              <ParameterType Id="%AID%_PT-CopyType" Name="CopyType">
-                <TypeRestriction Base="Value" SizeInBit="3">
-                  <Enumeration   Value="0" Id="%ENID%" Text="kein Kopie"                                                            />
-                  <Enumeration   Value="1" Id="%ENID%" Text="Einfache Kopie (1 Kanal auf 1 Kanal)"                                  />
-                  <Enumeration   Value="2" Id="%ENID%" Text="Mehrfache Kopie (1 Kanal auf n Kanäle)"                                />
-                  <Enumeration   Value="3" Id="%ENID%" Text="Kopie von Kanal-Gruppe (n Kanäle in gleicher Reihenfolge)"             />
-                  <Enumeration   Value="4" Id="%ENID%" Text="N auf N - Nicht unterstützt!"                                          />
                 </TypeRestriction>
               </ParameterType>
 
