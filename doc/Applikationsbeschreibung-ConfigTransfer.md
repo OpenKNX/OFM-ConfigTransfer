@@ -432,6 +432,13 @@ Die Kanalkopie ist nur dann möglich, wenn alle Kanal-Nummern im gewählten Modu
 
 Wählt den Kanal, der als Startkanal die Kanal-Nummern aller Zielkanäle definiert.
 
+Der Quell-Kanal mit der niedrigsten Kanal-Nummer (**Achtung:** diese weicht womöglich von der ersten durch den Nutzer eingegebenen Kanal-Nummer ab!) wird auf diesen Start-Kanal kopiert, alle weiteren Ziel-Kanäle ergeben sich aus der relativen Position der Kanäle wie in der Quelle.
+
+***Beispiel:***
+Ein Startkanal `8` wird bei Angabe der Quellkanäle `5-7,1,3` zu einem Kopieren auf die Kanäle `8,10,12-14` führen.
+Genauer `1->8, 3->10, 5->12, 6->13, 7->14`.
+
+
 Die Kanalkopie ist nur dann möglich, wenn die gewählte Kanal-Nummer und alle anderen sich aus dieser egebenden Ziel-Kanäle im gewählten Modul existieren.
 
 
@@ -441,6 +448,33 @@ Startet den Kopiervorgang mit Überschreiben des Ziel-Kanals bzw. der Ziel-Kanä
 Dieser Prozess kann je Kanal u.U. mehrere Minuten in Anspruch nehmen und kann weder unterbrochen noch rückgängig gemacht werden!
 
 > **ACHTUNG**: Vor dem Kopieren sollte sichergestellt werden, dass durch Überschreiben des Ziel-Kanals keine Konfigurationsdaten verloren gehen!
+
+> **VORSICHT bei Kanal-Überlappung**: Eine mehrfache Betätigung mit unveränderter Quelle und Ziel führt zum Verlust von Konfigurationsdaten ganzer Kanäle! Dies ist ausschließlich eine Folge der resultierenden Zordnung und keine technische Einschränkung.
+
+<!-- DOCEND -->
+#### Beispiel: Kanalverlust bei wiederholtem Kopieren mit Überlappung
+
+* Quelle: 1-3,5
+* Start: 2
+```
+Kopie von Kanalgruppe mit 4 Kanälen:
+  1 -> 	2 *
+  2 -> 	3 *
+  3 -> 	4 
+  5 -> 	6 
+* Überlappung
+```
+
+| Kanal |  Original  | Kopie1 | Kopie2 | Kopie3 |
+|:-----:|:----------:|:------:|:------:|:------:|
+|  1    |     a      |  (a)   |  (a)   |  (a)   |
+|   2   |     b      |   a    |   a    |   a    |
+|   3   |     c      |   b    |   a    |   a    |
+|   4   |     d      |   c    |   b    |   a    |
+|   5   |     e      |  (e)   |  (e)   |  (e)   |
+|   6   |     f      |   e    |   e    |   e    |
+
+Nach mehreren Iterationen wurden einzelne Kanäle mehrfach kopiert und andere sind vollständig verloren gegangen.
 
 
 <!-- DOC -->
