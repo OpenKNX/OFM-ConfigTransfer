@@ -686,7 +686,7 @@ function uctParamCopyCheck(input, output, context) {
             Log.info("OpenKNX UCT Copy Check: Single channel source " + sourceChannel);
             sameError = !uctIsDisjoint([sourceChannel], targetChannels);
             error = sourceError || targetError || sameError;
-            overview = "VORSCHAU\nKopie von Einzelkanal:\n  " + sourceChannel + " -> " + targetChannels.join(",");
+            overview = "VORSCHAU\n" + targetChCount + "-fache Kopie von Einzelkanal:\n  " + sourceChannel + " -> " + targetChannels.join(",");
         } else if (input.CopyMode == 1) {
             var sourceChannels = uctParseRangesString(input.CopySourceString);
             var sourceChCount = sourceChannels.length;
