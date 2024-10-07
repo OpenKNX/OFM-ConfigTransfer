@@ -96,7 +96,7 @@ Beispiele:
 
 Ein OpenKNX-Modul kann mehrere Instanzen (von ConficTransfer werden bislang 99 unterstützt) der enthaltenen Funktionalität bereitstellen,
 die unabhängig voneinander konfigurierbar sind. 
-Darüber hinaus besitzen OpenKNX-Module eine "zentrale" Konfiguration die lost gelöst von einem einzelnen Kanal existiert.
+Darüber hinaus besitzen OpenKNX-Module eine "zentrale" Konfiguration die losgelöst von einem einzelnen Kanal existiert.
 Beim Konfigurationstransfer wird diese Basiskonfiguration als "Kanal 0" abgebildet. 
 
 Beispiele:
@@ -149,12 +149,12 @@ Dieses ist erkennbar an der Struktur `OpenKNX,cv1 ... ;OpenKNX`
 Daten in einer abweichenden, nicht unterstützten, Format-Version werden abgelehnt.
 
 Zwingende Voraussetzung für einen Import ist ein übereinstimmender Modul-Schlüssel (Siehe Prefix in [Liste der OpenKNX Module](https://github.com/OpenKNX/OpenKNX/wiki/OpenKNX-Modules#liste-der-openknx-module)).
-Eine abweichende Applikations-Version, Applikations-ID, oder Modul-Version kann ggf. ignoriert werden (unter Inkaufnahme von je nach Konstellation möglichen Ungenauigkeiten).
+Eine abweichende Applikations-Version, Applikations-ID, oder Modul-Version können ggf. ignoriert werden (unter Inkaufnahme von je nach Konstellation möglichen Ungenauigkeiten).
 Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auch abweichend - gewählt werden. 
 
 
 
-### Kanaltransfer
+### Kanalkopie
 
 Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
 
@@ -171,7 +171,7 @@ Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes 
 
 #### Bekannte Limitationen
 
-* Parameter mit Kanal-Spezifischen Werten können (bislang) nicht zurückgesetzt werden
+* Parameter mit Kanal-spezifischen Werten können (bislang) nicht vollständig zurückgesetzt werden
 * Es erfolgt kein (direkter) Schreibzugriff auf Parameter anderer Kanäle oder Module um deren Konfiguration nicht zu verändern. 
   Bei kanalübergreifenden Abhängigkeiten können Nebeneffekte jedoch nicht ausgeschlossen werden. 
 
