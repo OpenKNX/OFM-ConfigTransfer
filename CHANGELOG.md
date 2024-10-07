@@ -1,3 +1,8 @@
+# (geplant) v0.3
+* Fix: Aktualisierung Hilfetexte zu Update in Hotfix #14 
+* Feature #11: Erweiterung der Kopierfunktion um Unterstützung für Kanalgruppen und Mehrfachkopien
+* Feature #17: Batch-Export mit Ausgabe von mehreren Einzelkanälen  
+
 # v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
   Exporte aus älteren Versionen von PM konnten nicht importiert werden, weil Parameter entfallen sind.
