@@ -411,6 +411,7 @@
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" AliasName="ExportModul"           />
                   <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" AliasName="ExportSource"          />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" AliasName="ExportSourcesString"   />
                   <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" AliasName="ExportParamSelection"  />
                   <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" AliasName="ExportFormat"          />
                 </LParameters>
@@ -561,7 +562,18 @@
                     </choose>
                     <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
                       <when test="253">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Format:  Je eine Zeile pro Kanal im Standardformat (Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)" />
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid" HelpContext="UCT-Format" >
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <!-- col1>45% to prevent text left of other elements on right side -->
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Format" Cell="1,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)" Cell="1,2" />
+                        </ParameterBlock>                
                       </when>
                       <when default="true">
                         <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />

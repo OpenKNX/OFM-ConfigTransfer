@@ -49,10 +49,18 @@ function uctParseRangesString(channelsString) {
 function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
+    var moduleChannelCount = uctChannelParams[module].channels;
+
     var channelSource = device.getParameterByName(context.p_channelSource).value;
     var channels = [channelSource];
     if (channelSource == 253) {
         channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+    }
+    if (channels.length == 0) {
+        throw new Error("Kein Kanal definiert!");
+    }
+    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
+        throw new Error("Kanal außerhalb von Modul-Bereich!");
     }
     if (channels.length > 1) {
         Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
