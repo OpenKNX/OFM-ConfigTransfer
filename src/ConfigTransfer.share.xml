@@ -624,6 +624,94 @@
                 </choose>
               </ParameterBlock>
 
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="import" HelpContext="UCT-Import" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
+
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"   ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
+                <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"  ParameterType="%AID%_PT-ImportTarget"   Text="Import-Ziel"           Value="255" />
+                <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"   ParameterType="%AID%_PT-ImportCheck"    Text="Kompatiblitätsprüfung" Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
+                -->
+  
+                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Transfer-String" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" HelpContext="UCT-Import-Ziel" />
+                <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" HelpContext="UCT-Kompatibilitaetspruefung" />
+                    <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
+                      <when test="7">
+                      </when>
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
+                      </when>
+                      <when test="0">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede und Release-Notes beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
+                      </when>
+                    </choose>
+    
+                    <Button Id="%AID%_B-%TT%00100" Text="Importieren"   EventHandler="uctBtnImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Export" Text="Export" Icon="export" HelpContext="UCT-Export" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Export" UIHint="Headline" />
+                <!-- 
+                <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"   ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"  ParameterType="%AID%_PT-ExportSource"   Text="Inhalt/Kanal"          Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ExportSourcesString"                 Text="Kanalauswahl"          Value=""    />
+                <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"  ParameterType="%AID%_PT-ExportFormat"   Text="Format"                Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
+                <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" HelpContext="UCT-Modul" />
+                <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
+                      <when test="253">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="2" HelpContext="UCT-Kanalauswahl" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
+                    <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen!&#xD;&#xA;Einstellungen die ausgeblendet sind entfalten keine Wirkung, können jedoch die Kompatibilität mit anderen Modul-Versionen reduzieren." UIHint="Information" />
+                      </when>
+                      <when test="2">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen!&#xD;&#xA;Kann beim Import in Modul-Versionen mit veränderten Standardwerten helfen." UIHint="Information" />
+                      </when>
+                    </choose>
+                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
+                      <when test="253">
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid" HelpContext="UCT-Format" >
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <!-- col1>45% to prevent text left of other elements on right side -->
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Format" Cell="1,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)" Cell="1,2" />
+                        </ParameterBlock>                
+                      </when>
+                      <when default="true">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
+                      </when>
+                    </choose>
+                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                    <!--
+                    <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
+                    -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+
             </Channel>
           </Dynamic>
         </ApplicationProgram>
