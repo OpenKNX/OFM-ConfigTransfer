@@ -148,119 +148,16 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ExportSource" Name="ExportSource">
-                <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Value="253" Id="%ENID%" Text="Mehrfachauswahl"                       />
-                  <Enumeration   Value="0" Id="%ENID%" Text="Basiseinstellungen (kanalunabhängig)"  />
-                  <Enumeration   Value="1" Id="%ENID%" Text="1" />
-                  <Enumeration   Value="2" Id="%ENID%" Text="2" />
-                  <Enumeration   Value="3" Id="%ENID%" Text="3" />
-                  <Enumeration   Value="4" Id="%ENID%" Text="4" />
-                  <Enumeration   Value="5" Id="%ENID%" Text="5" />
-                  <Enumeration   Value="6" Id="%ENID%" Text="6" />
-                  <Enumeration   Value="7" Id="%ENID%" Text="7" />
-                  <Enumeration   Value="8" Id="%ENID%" Text="8" />
-                  <Enumeration   Value="9" Id="%ENID%" Text="9" />
-                  <Enumeration  Value="10" Id="%ENID%" Text="10" />
-                  <Enumeration  Value="11" Id="%ENID%" Text="11" />
-                  <Enumeration  Value="12" Id="%ENID%" Text="12" />
-                  <Enumeration  Value="13" Id="%ENID%" Text="13" />
-                  <Enumeration  Value="14" Id="%ENID%" Text="14" />
-                  <Enumeration  Value="15" Id="%ENID%" Text="15" />
-                  <Enumeration  Value="16" Id="%ENID%" Text="16" />
-                  <Enumeration  Value="17" Id="%ENID%" Text="17" />
-                  <Enumeration  Value="18" Id="%ENID%" Text="18" />
-                  <Enumeration  Value="19" Id="%ENID%" Text="19" />
-                  <Enumeration  Value="20" Id="%ENID%" Text="20" />
-                  <Enumeration  Value="21" Id="%ENID%" Text="21" />
-                  <Enumeration  Value="22" Id="%ENID%" Text="22" />
-                  <Enumeration  Value="23" Id="%ENID%" Text="23" />
-                  <Enumeration  Value="24" Id="%ENID%" Text="24" />
-                  <Enumeration  Value="25" Id="%ENID%" Text="25" />
-                  <Enumeration  Value="26" Id="%ENID%" Text="26" />
-                  <Enumeration  Value="27" Id="%ENID%" Text="27" />
-                  <Enumeration  Value="28" Id="%ENID%" Text="28" />
-                  <Enumeration  Value="29" Id="%ENID%" Text="29" />
-                  <Enumeration  Value="30" Id="%ENID%" Text="30" />
-                  <Enumeration  Value="31" Id="%ENID%" Text="31" />
-                  <Enumeration  Value="32" Id="%ENID%" Text="32" />
-                  <Enumeration  Value="33" Id="%ENID%" Text="33" />
-                  <Enumeration  Value="34" Id="%ENID%" Text="34" />
-                  <Enumeration  Value="35" Id="%ENID%" Text="35" />
-                  <Enumeration  Value="36" Id="%ENID%" Text="36" />
-                  <Enumeration  Value="37" Id="%ENID%" Text="37" />
-                  <Enumeration  Value="38" Id="%ENID%" Text="38" />
-                  <Enumeration  Value="39" Id="%ENID%" Text="39" />
-                  <Enumeration  Value="40" Id="%ENID%" Text="40" />
-                  <Enumeration  Value="41" Id="%ENID%" Text="41" />
-                  <Enumeration  Value="42" Id="%ENID%" Text="42" />
-                  <Enumeration  Value="43" Id="%ENID%" Text="43" />
-                  <Enumeration  Value="44" Id="%ENID%" Text="44" />
-                  <Enumeration  Value="45" Id="%ENID%" Text="45" />
-                  <Enumeration  Value="46" Id="%ENID%" Text="46" />
-                  <Enumeration  Value="47" Id="%ENID%" Text="47" />
-                  <Enumeration  Value="48" Id="%ENID%" Text="48" />
-                  <Enumeration  Value="49" Id="%ENID%" Text="49" />
-                  <Enumeration  Value="50" Id="%ENID%" Text="50" />
-                  <Enumeration  Value="51" Id="%ENID%" Text="51" />
-                  <Enumeration  Value="52" Id="%ENID%" Text="52" />
-                  <Enumeration  Value="53" Id="%ENID%" Text="53" />
-                  <Enumeration  Value="54" Id="%ENID%" Text="54" />
-                  <Enumeration  Value="55" Id="%ENID%" Text="55" />
-                  <Enumeration  Value="56" Id="%ENID%" Text="56" />
-                  <Enumeration  Value="57" Id="%ENID%" Text="57" />
-                  <Enumeration  Value="58" Id="%ENID%" Text="58" />
-                  <Enumeration  Value="59" Id="%ENID%" Text="59" />
-                  <Enumeration  Value="60" Id="%ENID%" Text="60" />
-                  <Enumeration  Value="61" Id="%ENID%" Text="61" />
-                  <Enumeration  Value="62" Id="%ENID%" Text="62" />
-                  <Enumeration  Value="63" Id="%ENID%" Text="63" />
-                  <Enumeration  Value="64" Id="%ENID%" Text="64" />
-                  <Enumeration  Value="65" Id="%ENID%" Text="65" />
-                  <Enumeration  Value="66" Id="%ENID%" Text="66" />
-                  <Enumeration  Value="67" Id="%ENID%" Text="67" />
-                  <Enumeration  Value="68" Id="%ENID%" Text="68" />
-                  <Enumeration  Value="69" Id="%ENID%" Text="69" />
-                  <Enumeration  Value="70" Id="%ENID%" Text="70" />
-                  <Enumeration  Value="71" Id="%ENID%" Text="71" />
-                  <Enumeration  Value="72" Id="%ENID%" Text="72" />
-                  <Enumeration  Value="73" Id="%ENID%" Text="73" />
-                  <Enumeration  Value="74" Id="%ENID%" Text="74" />
-                  <Enumeration  Value="75" Id="%ENID%" Text="75" />
-                  <Enumeration  Value="76" Id="%ENID%" Text="76" />
-                  <Enumeration  Value="77" Id="%ENID%" Text="77" />
-                  <Enumeration  Value="78" Id="%ENID%" Text="78" />
-                  <Enumeration  Value="79" Id="%ENID%" Text="79" />
-                  <Enumeration  Value="80" Id="%ENID%" Text="80" />
-                  <Enumeration  Value="81" Id="%ENID%" Text="81" />
-                  <Enumeration  Value="82" Id="%ENID%" Text="82" />
-                  <Enumeration  Value="83" Id="%ENID%" Text="83" />
-                  <Enumeration  Value="84" Id="%ENID%" Text="84" />
-                  <Enumeration  Value="85" Id="%ENID%" Text="85" />
-                  <Enumeration  Value="86" Id="%ENID%" Text="86" />
-                  <Enumeration  Value="87" Id="%ENID%" Text="87" />
-                  <Enumeration  Value="88" Id="%ENID%" Text="88" />
-                  <Enumeration  Value="89" Id="%ENID%" Text="89" />
-                  <Enumeration  Value="90" Id="%ENID%" Text="90" />
-                  <Enumeration  Value="91" Id="%ENID%" Text="91" />
-                  <Enumeration  Value="92" Id="%ENID%" Text="92" />
-                  <Enumeration  Value="93" Id="%ENID%" Text="93" />
-                  <Enumeration  Value="94" Id="%ENID%" Text="94" />
-                  <Enumeration  Value="95" Id="%ENID%" Text="95" />
-                  <Enumeration  Value="96" Id="%ENID%" Text="96" />
-                  <Enumeration  Value="97" Id="%ENID%" Text="97" />
-                  <Enumeration  Value="98" Id="%ENID%" Text="98" />
-                  <Enumeration  Value="99" Id="%ENID%" Text="99" />
-                </TypeRestriction>
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
               </ParameterType>
+              <!-- NOT used in export anymore
               <ParameterType Id="%AID%_PT-ExportSourcesString" Name="ExportSourcesString" ValidationErrorRef="%AID%_M-%TT%00002">
                 <TypeText SizeInBit="2400" Pattern="^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$" />
               </ParameterType>
-
-              <!-- NOT used in copy, but expected for multi-channel export
-              <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
+               -->
+               <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
                 <TypeText SizeInBit="2400" Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" />
               </ParameterType>
-               -->
               <ParameterType Id="%AID%_PT-ChannelNot0SelectionString" Name="ChannelNot0SelectionString" ValidationErrorRef="%AID%_M-%TT%00004">
                 <TypeText SizeInBit="2400" Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" />
               </ParameterType>
@@ -287,6 +184,13 @@
                   <Enumeration   Value="7" Id="%ENID%" Text="streng       (selbe Modul- &amp; ETS-App-Version)"     />
                   <Enumeration   Value="1" Id="%ENID%" Text="moderat   (selbe Modul-Version)"  />
                   <Enumeration   Value="0" Id="%ENID%" Text="lockerer   (ignoriert unbekannte Parameter)"/>
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ExportMode" Name="ExportMode">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration   Value="0" Id="%ENID%" Text="Einzelkanal"                                                           />
+                  <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal"                                                           />
                 </TypeRestriction>
               </ParameterType>
 
@@ -328,12 +232,15 @@
               <Parameter Id="%AID%_P-%TT%00104" Name="DirectImportShow"      ParameterType="%AID%_PT-CheckBox"                            Text="Direktimport anzeigen" Value="0"    />
 
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"                      Text="Modul"                 Value="255" />
-              <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Inhalt/Kanal"          Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ExportSourcesString"                 Text="Kanalauswahl"          Value=""    />
+              <Parameter Id="%AID%_P-%TT%00207" Name="ExportMode"            ParameterType="%AID%_PT-ExportMode"                          Text="Kanalauswahl"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Kanal (0 für Basiseinstellungen)"  Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ChannelSelectionString"              Text="Kanalauswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Parameterauswahl"      Value="0"   />
               <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"                        Text="Format"                Value="0"   />
               <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Export-Resultat"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"                          Text="Export-String"         Value=""    />
+              <Parameter Id="%AID%_P-%TT%00290" Name="ExportModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
+              <Parameter Id="%AID%_P-%TT%00291" Name="ExportChannelError"    ParameterType="%AID%_PT-CheckBox"                            Text="Fehler:Kanal"          Value="0"   Access="None" />
 
               <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00306" Name="CopyMode"              ParameterType="%AID%_PT-CopyMode"                            Text="Kopier-Modus"          Value="0"   />
@@ -349,8 +256,12 @@
               <Parameter Id="%AID%_P-%TT%00394" Name="CopyError"             ParameterType="%AID%_PT-CheckBox"                            Text="Fehler"                Value="0"   Access="None" />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
+              <Parameter Id="%AID%_P-%TT%00407" Name="ResetMode"             ParameterType="%AID%_PT-ExportMode"                          Text="Kanalauswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00406" Name="ResetChannelString"    ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Kanäle"                Value="1"   />
               <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"                           Text="Resultat"              Value=""    />
+              <Parameter Id="%AID%_P-%TT%00490" Name="ResetModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                 Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
+              <Parameter Id="%AID%_P-%TT%00491" Name="ResetChannelError"     ParameterType="%AID%_PT-CheckBox"                            Text="Fehler:Kanal"          Value="0"   Access="None" />
 
             </Parameters>
             <ParameterRefs>
@@ -368,6 +279,10 @@
               <ParameterRef Id="%AID%_P-%TT%00204_R-%TT%0020401" RefId="%AID%_P-%TT%00204" />
               <ParameterRef Id="%AID%_P-%TT%00205_R-%TT%0020501" RefId="%AID%_P-%TT%00205" />
               <ParameterRef Id="%AID%_P-%TT%00206_R-%TT%0020601" RefId="%AID%_P-%TT%00206" />
+              <ParameterRef Id="%AID%_P-%TT%00207_R-%TT%0020701" RefId="%AID%_P-%TT%00207" />
+
+              <ParameterRef Id="%AID%_P-%TT%00290_R-%TT%0029001" RefId="%AID%_P-%TT%00290" />
+              <ParameterRef Id="%AID%_P-%TT%00291_R-%TT%0029101" RefId="%AID%_P-%TT%00291" />
 
               <ParameterRef Id="%AID%_P-%TT%00300_R-%TT%0030001" RefId="%AID%_P-%TT%00300" />
               <ParameterRef Id="%AID%_P-%TT%00301_R-%TT%0030101" RefId="%AID%_P-%TT%00301" />
@@ -386,6 +301,11 @@
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
               <ParameterRef Id="%AID%_P-%TT%00402_R-%TT%0040201" RefId="%AID%_P-%TT%00402" />
+              <ParameterRef Id="%AID%_P-%TT%00407_R-%TT%0040701" RefId="%AID%_P-%TT%00407"  /><!-- AliasName="channelSelectionMode" -->
+              <ParameterRef Id="%AID%_P-%TT%00406_R-%TT%0040601" RefId="%AID%_P-%TT%00406"  /><!-- AliasName="channelSourcesString" -->
+
+              <ParameterRef Id="%AID%_P-%TT%00490_R-%TT%0049001" RefId="%AID%_P-%TT%00490" />
+              <ParameterRef Id="%AID%_P-%TT%00491_R-%TT%0049101" RefId="%AID%_P-%TT%00491" />
 
             </ParameterRefs>
             <ParameterCalculations>
@@ -407,15 +327,18 @@
                 </RParameters>
               </ParameterCalculation>
 
-              <ParameterCalculation Id="%AID%_PC-%TT%00002" Language="JavaScript" Name="UctExportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+              <ParameterCalculation Id="%AID%_PC-%TT%00002" Language="JavaScript" Name="UctExportParamCheck" LRTransformationFunc="uctParamModulSelectionCheck" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
-                  <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" AliasName="ExportModul"           />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" AliasName="ExportSource"          />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" AliasName="ExportSourcesString"   />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" AliasName="modul"                 />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00207_R-%TT%0020701" AliasName="channelSelectionMode"  />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" AliasName="channelSource"         />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" AliasName="channelSourcesString"  />
                   <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" AliasName="ExportParamSelection"  />
                   <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" AliasName="ExportFormat"          />
                 </LParameters>
                 <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00290_R-%TT%0029001" AliasName="modulChannelCount"     />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00291_R-%TT%0029101" AliasName="channelError"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" AliasName="result"                /><!-- ExportOutput -->
                 </RParameters>
               </ParameterCalculation>
@@ -437,12 +360,16 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  />
                 </RParameters>
               </ParameterCalculation>
-              <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamReset"  LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+              <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamCheck"  LRTransformationFunc="uctParamModulSelectionCheck" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
-                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" AliasName="ResetModul"                />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" AliasName="ResetChannel"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" AliasName="modul"                     />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00407_R-%TT%0040701" AliasName="channelSelectionMode"  />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" AliasName="channelSource"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00406_R-%TT%0040601" AliasName="channelSourcesString"  />
                 </LParameters>
                 <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00490_R-%TT%0049001" AliasName="modulChannelCount"         />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00491_R-%TT%0049101" AliasName="channelError"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" AliasName="result"                    /><!-- ResetUserLog -->
                 </RParameters>
               </ParameterCalculation>
@@ -614,11 +541,44 @@
                 <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"  ParameterType="%AID%_PT-ModuleChannel"  Text="Kanal"                 Value="1"   />
                 <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"  ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
                 -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" />
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ResetModule" Inline="true" Layout="Grid" HelpContext="UCT-Modul" >
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="45%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="40%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Modul" Cell="1,1" />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" Cell="1,2" />
+                  <choose ParamRefId="%AID%_P-%TT%00400_R-%TT%0040001">
+                    <when test="!=255">
+                      <ParameterRefRef RefId="%AID%_P-%TT%00490_R-%TT%0049001" Cell="1,3" />
+                    </when>
+                  </choose>
+                </ParameterBlock>
                 <choose ParamRefId="%AID%_P-%TT%00400_R-%TT%0040001">
                   <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" />
-                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  EventHandler="uctBtnReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+
+                    <ParameterRefRef RefId="%AID%_P-%TT%00407_R-%TT%0040701" IndentLevel="0" />
+                    <choose ParamRefId="%AID%_P-%TT%00407_R-%TT%0040701">
+                      <when test="0">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                      </when>
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00406_R-%TT%0040601" IndentLevel="1" HelpContext="UCT-Kanalauswahl" />
+                      </when>
+                    </choose>
+
+                    <ParameterRefRef RefId="%AID%_P-%TT%00491_R-%TT%0049101" />
+                    <choose ParamRefId="%AID%_P-%TT%00491_R-%TT%0049101">
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" />
+                      </when>
+                    </choose>
+                    
+                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  EventHandler="uctBtnReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ResetMode&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;, &quot;p_channelTargetsString&quot;:&quot;%PREFIX%_ResetChannelString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
                   </when>
                 </choose>
@@ -666,15 +626,47 @@
                 <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
                 <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
                 -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" HelpContext="UCT-Modul" />
+                <ParameterBlock Id="%AID%_PB-nnn" Name="ExportModule" Inline="true" Layout="Grid" HelpContext="UCT-Modul" >
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="45%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="40%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Modul" Cell="1,1" />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00200_R-%TT%0020001" Cell="1,2" />
+                  <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
+                    <when test="!=255">
+                      <ParameterRefRef RefId="%AID%_P-%TT%00290_R-%TT%0029001" Cell="1,3" />
+                    </when>
+                  </choose>
+                </ParameterBlock>                
+                <choose ParamRefId="%AID%_P-%TT%00290_R-%TT%0029001">
+                  <when test="0">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="    Modul enthält nur Basiskonfiguration!" />
+                  </when>
+                </choose>
                 <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
                   <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
-                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
-                      <when test="253">
-                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="2" HelpContext="UCT-Kanalauswahl" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00207_R-%TT%0020701" /><!-- TODO add help! -->
+                    <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+                      <when test="0">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                      </when>
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="1" HelpContext="UCT-Kanalauswahl" />
                       </when>
                     </choose>
+
+                    <ParameterRefRef RefId="%AID%_P-%TT%00291_R-%TT%0029101" />
+                    <choose ParamRefId="%AID%_P-%TT%00291_R-%TT%0029101">
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" />
+                      </when>
+                    </choose>
+
                     <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
                     <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
                       <when test="1">
@@ -684,8 +676,12 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen!&#xD;&#xA;Kann beim Import in Modul-Versionen mit veränderten Standardwerten helfen." UIHint="Information" />
                       </when>
                     </choose>
-                    <choose ParamRefId="%AID%_P-%TT%00201_R-%TT%0020101">
-                      <when test="253">
+                    <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+                      <when test="0">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
+                      </when>
+                      <when test="1">
+                        <!-- TODO later add selection of batch-export to multi-line OR multi-channel to single-line -->
                         <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid" HelpContext="UCT-Format" >
                           <Rows>
                             <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
@@ -695,15 +691,12 @@
                             <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
                             <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Format" Cell="1,1" />
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Format&#xD;&#xA;" Cell="1,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)&#xD;&#xA;" Cell="1,2" />
                         </ParameterBlock>                
                       </when>
-                      <when default="true">
-                        <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
-                      </when>
                     </choose>
-                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <!--
                     <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
                     -->

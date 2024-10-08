@@ -394,6 +394,7 @@ describe('Button Handler', () => {
     describe('Export', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
+            "p_channelMode": "UCTD_ChannelSelectionMode",
             "p_channelSource":"UCTD_Channel",
             "p_channelSourcesString":"UCTD_ExportSourcesString",
             "p_exportParamSelectionSelection":"UCTD_Opt1",
@@ -401,6 +402,8 @@ describe('Button Handler', () => {
             "p_exportOutput":"UCTD_Output",
         };
         it("includes non-default and allow single or multi-line output", () => {
+            device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
+
             uctBtnExport(device, online, progress, context);
             expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
     
@@ -432,7 +435,7 @@ describe('Button Handler', () => {
         });
         it("allows exporting multiple channels", () => {
     
-            device.getParameterByName("UCTD_Channel").value = 253;
+            device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
             device.getParameterByName("UCTD_ExportSourcesString").value = "1-2";
             device.getParameterByName("UCTD_Output").value = "";
             device.getParameterByName("UCTD_Opt1").value = 1;
@@ -635,23 +638,40 @@ describe('Button Handler', () => {
         });
     });
 
-    test("Reset", () => {
+    describe("Reset", () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
+            "p_channelMode":"UCTD_Opt1",
             "p_channelTarget":"UCTD_Channel",
+            "p_channelTargetsString":"UCTD_ChannelsString",
             "p_messageOutput":"UCTD_Output",
         };
-        device.getParameterByName("UCTD_Channel").value = 3;
-        uctBtnReset(device, online, progress, context);
-        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/3 Reset [OK]");
+        test("Reset single Channel", () => {
+            device.getParameterByName("UCTD_Opt1").value = 0;
 
-        device.getParameterByName("UCTD_Channel").value = 4;
-        uctBtnReset(device, online, progress, context);
-        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/4 Reset [OK]");
+            device.getParameterByName("UCTD_Channel").value = 3;
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/3 Reset [OK]");
+    
+            device.getParameterByName("UCTD_Channel").value = 4;
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/4 Reset [OK]");
+    
+            device.getParameterByName("UCTD_Channel").value = 1;
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]");
+        });
+        test("Reset multiple Channels", () => {
+            device.getParameterByName("UCTD_Opt1").value = 1;
 
-        device.getParameterByName("UCTD_Channel").value = 1;
-        uctBtnReset(device, online, progress, context);
-        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]");
+            device.getParameterByName("UCTD_ChannelsString").value = "1,3";
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]\nCHN/3 Reset [OK]");
+
+            device.getParameterByName("UCTD_ChannelsString").value = "4,1-2";
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]\nCHN/2 Reset [OK]\nCHN/4 Reset [OK]");
+        });
 
         // TODO extend
     });

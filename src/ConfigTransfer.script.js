@@ -51,9 +51,9 @@ function uctBtnExport(device, online, progress, context) {
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var moduleChannelCount = uctChannelParams[module].channels;
 
-    var channelSource = device.getParameterByName(context.p_channelSource).value;
-    var channels = [channelSource];
-    if (channelSource == 253) {
+    var channelMode = device.getParameterByName(context.p_channelMode).value;
+    var channels = [device.getParameterByName(context.p_channelSource).value];
+    if (channelMode == 1) {
         channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
     }
     if (channels.length == 0) {
@@ -73,7 +73,7 @@ function uctBtnExport(device, online, progress, context) {
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
     // multi-channel export is restricted to single line
-    var multiLine = (exportFormatSelection == 1) && (channelSource != 253);
+    var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
 
     // TODO add p_messageOutput again?
 
@@ -140,9 +140,32 @@ function uctBtnCopy(device, online, progress, context) {
 function uctBtnReset(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...")
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
-    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
+    var moduleChannelCount = uctChannelParams[module].channels;
+
+    var channelMode = device.getParameterByName(context.p_channelMode).value;
+    var channels = [device.getParameterByName(context.p_channelTarget).value];
+    if (channelMode == 1) {
+        channels = uctParseRangesString(device.getParameterByName(context.p_channelTargetsString).value);
+    }
+    if (channels.length == 0) {
+        throw new Error("Kein Kanal definiert!");
+    }
+    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
+        throw new Error("Kanal außerhalb von Modul-Bereich!");
+    }
+    if (channels.length > 1) {
+        Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
+    }
+
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    param_messageOutput.value = uctResetModuleChannel(device, module, channelTarget);
+    var result = [];
+    for (var i = 0; i < channels.length; i++) {
+        var channelNumber = channels[i];
+        Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber);
+        result.push(uctResetModuleChannel(device, module, channels[i]));
+        Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber + " [DONE]");
+    }
+    param_messageOutput.value = result.join("\n");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset [DONE]")
 }
 
@@ -666,6 +689,32 @@ function uctParamResetSelection(input, output, context) {
 function uctParamResetNothing(input, output, context) {
     // do nothing
 } 
+
+function uctParamModulSelectionCheck(input, output, context) {
+    Log.info("OpenKNX ConfigTransfer: Param Selection check ...")
+
+    var channelCount = 0;
+    var channelError = false;
+    var overview = "";
+
+    if (input.modul < uctModuleOrder.length) {
+        // get module prefix and module channel count
+        var module = uctModuleOrder[input.modul];
+        channelCount = uctChannelParams[module].channels;
+        channelCount = (channelCount != undefined) ? channelCount : 0;
+        Log.info("OpenKNX UCT Check: module=" + module + " / channelCount=" + channelCount);
+
+        var channels = (input.channelSelectionMode == 0) ? [input.channelSource] : uctParseRangesString(input.channelSourcesString);
+        channelError = (channels.length > 0) && channels[channels.length - 1] > channelCount;
+        Log.info("OpenKNX UCT Check: channels=" + channels.join(",") + " / channelError=" + channelError);
+    } else {
+        Log.info("OpenKNX UCT Check: No Module")
+    }
+
+    output.modulChannelCount = channelCount;
+    output.channelError = channelError ? 1 : 0;
+    output.result = overview;
+}
 
 function uctParamCopyCheck(input, output, context) {
     Log.info("OpenKNX ConfigTransfer: Param Copy check ...")
