@@ -234,7 +234,7 @@
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"                      Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00207" Name="ExportMode"            ParameterType="%AID%_PT-ExportMode"                          Text="Kanalauswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Kanal (0 für Basiseinstellungen)"  Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ChannelSelectionString"              Text="Kanalauswahl"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ChannelSelectionString"              Text="Kanäle (0 für Basiseinstellungen)" Value="0"   />
               <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Parameterauswahl"      Value="0"   />
               <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"                        Text="Format"                Value="0"   />
               <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Export-Resultat"       Value=""    />
