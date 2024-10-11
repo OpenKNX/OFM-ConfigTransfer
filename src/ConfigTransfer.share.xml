@@ -223,7 +223,6 @@
               <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ChannelSelectionString"              Text="Kanäle (0 für Basiseinstellungen)" Value="0"   />
               <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Parameterauswahl"      Value="0"   />
               <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"          ParameterType="%AID%_PT-ExportFormat"                        Text="Format"                Value="0"   />
-              <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Export-Resultat"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"          ParameterType="%AID%_PT-TextMaxLen"                          Text="Export-String"         Value=""    />
               <Parameter Id="%AID%_P-%TT%00290" Name="ExportModulChannelCount" ParameterType="%AID%_PT-ModuleChannelCount"                Text=""                      Value="0"   Access="Read" SuffixText="Kanäle" /><!-- Kanal-Anzahl im Modul -->
               <Parameter Id="%AID%_P-%TT%00291" Name="ExportChannelError"    ParameterType="%AID%_PT-CheckBox"                            Text="Fehler:Kanal"          Value="0"   Access="None" />
@@ -261,7 +260,6 @@
 
               <ParameterRef Id="%AID%_P-%TT%00201_R-%TT%0020101" RefId="%AID%_P-%TT%00201" />
               <ParameterRef Id="%AID%_P-%TT%00202_R-%TT%0020201" RefId="%AID%_P-%TT%00202" />
-              <ParameterRef Id="%AID%_P-%TT%00203_R-%TT%0020301" RefId="%AID%_P-%TT%00203" />
               <ParameterRef Id="%AID%_P-%TT%00204_R-%TT%0020401" RefId="%AID%_P-%TT%00204" />
               <ParameterRef Id="%AID%_P-%TT%00205_R-%TT%0020501" RefId="%AID%_P-%TT%00205" />
               <ParameterRef Id="%AID%_P-%TT%00206_R-%TT%0020601" RefId="%AID%_P-%TT%00206" />
@@ -608,7 +606,6 @@
                 <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"  ParameterType="%AID%_PT-ExportSource"   Text="Inhalt/Kanal"          Value="0"   />
                 <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ExportSourcesString"                 Text="Kanalauswahl"          Value=""    />
                 <Parameter Id="%AID%_P-%TT%00202" Name="ExportFormat"  ParameterType="%AID%_PT-ExportFormat"   Text="Format"                Value="0"   />
-                <Parameter Id="%AID%_P-%TT%00203" Name="ExportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Export-Resultat"       Value=""    />
                 <Parameter Id="%AID%_P-%TT%00204" Name="ExportOutput"  ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
                 -->
                 <ParameterBlock Id="%AID%_PB-nnn" Name="ExportModule" Inline="true" Layout="Grid" HelpContext="UCT-Modul" >
@@ -709,9 +706,6 @@
                     </choose>
 
                     <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
-                    <!--
-                    <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />
-                    -->
                     <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
                   </when>
                 </choose>
