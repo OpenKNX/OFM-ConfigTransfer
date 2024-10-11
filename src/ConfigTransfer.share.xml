@@ -505,6 +505,9 @@
                     </ParameterBlock>
 
                     <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
+                      <when test="0">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Schaltfläche [Kopieren] ausgeblendet um versehentlichen Überschreiben von Kanälen zu verhindern! Erneutes Einblenden durch Ändern beliebiger Parameter." UIHint="Information" />
+                      </when>
                       <when test="1">
                         <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
                       </when>
