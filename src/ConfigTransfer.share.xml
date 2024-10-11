@@ -150,26 +150,12 @@
               <ParameterType Id="%AID%_PT-ExportSource" Name="ExportSource">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
               </ParameterType>
-              <!-- NOT used in export anymore
-              <ParameterType Id="%AID%_PT-ExportSourcesString" Name="ExportSourcesString" ValidationErrorRef="%AID%_M-%TT%00002">
-                <TypeText SizeInBit="2400" Pattern="^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$" />
-              </ParameterType>
-               -->
-               <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
+              <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
                 <TypeText SizeInBit="2400" Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" />
               </ParameterType>
               <ParameterType Id="%AID%_PT-ChannelNot0SelectionString" Name="ChannelNot0SelectionString" ValidationErrorRef="%AID%_M-%TT%00004">
                 <TypeText SizeInBit="2400" Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" />
               </ParameterType>
-
-              <!-- NOT used in copy, but expected for multi-channel export
-              <ParameterType Id="%AID%_PT-ChannelSelectionType" Name="ChannelSelectionType">
-                <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration   Value="0" Id="%ENID%" Text="Einzelner Kanal"  />
-                  <Enumeration   Value="1" Id="%ENID%" Text="Mehrfachauswahl"  />
-                </TypeRestriction>
-              </ParameterType>
-               -->
 
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
@@ -187,7 +173,7 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ExportMode" Name="ExportMode">
+              <ParameterType Id="%AID%_PT-ChannelSelectionMode" Name="ChannelSelectionMode">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration   Value="0" Id="%ENID%" Text="Einzelkanal"                                                           />
                   <Enumeration   Value="1" Id="%ENID%" Text="Multi-Kanal"                                                           />
@@ -232,7 +218,7 @@
               <Parameter Id="%AID%_P-%TT%00104" Name="DirectImportShow"      ParameterType="%AID%_PT-CheckBox"                            Text="Direktimport anzeigen" Value="0"    />
 
               <Parameter Id="%AID%_P-%TT%00200" Name="ExportModul"           ParameterType="%AID%_PT-ModuleSelector"                      Text="Modul"                 Value="255" />
-              <Parameter Id="%AID%_P-%TT%00207" Name="ExportMode"            ParameterType="%AID%_PT-ExportMode"                          Text="Kanalauswahl"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00207" Name="ExportMode"            ParameterType="%AID%_PT-ChannelSelectionMode"                Text="Kanalauswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00201" Name="ExportSource"          ParameterType="%AID%_PT-ExportSource"                        Text="Kanal (0 für Basiseinstellungen)"  Value="0"   />
               <Parameter Id="%AID%_P-%TT%00206" Name="ExportSourcesString"   ParameterType="%AID%_PT-ChannelSelectionString"              Text="Kanäle (0 für Basiseinstellungen)" Value="0"   />
               <Parameter Id="%AID%_P-%TT%00205" Name="ExportParamSelection"  ParameterType="%AID%_PT-ExportParamSelection"                Text="Parameterauswahl"      Value="0"   />
@@ -256,7 +242,7 @@
               <Parameter Id="%AID%_P-%TT%00394" Name="CopyError"             ParameterType="%AID%_PT-CheckBox"                            Text="Fehler"                Value="0"   Access="None" />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
-              <Parameter Id="%AID%_P-%TT%00407" Name="ResetMode"             ParameterType="%AID%_PT-ExportMode"                          Text="Kanalauswahl"          Value="0"   />
+              <Parameter Id="%AID%_P-%TT%00407" Name="ResetMode"             ParameterType="%AID%_PT-ChannelSelectionMode"                Text="Kanalauswahl"          Value="0"   />
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
               <Parameter Id="%AID%_P-%TT%00406" Name="ResetChannelString"    ParameterType="%AID%_PT-ChannelNot0SelectionString"          Text="Kanäle"                Value="1"   />
               <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"                           Text="Resultat"              Value=""    />
@@ -301,8 +287,8 @@
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
               <ParameterRef Id="%AID%_P-%TT%00402_R-%TT%0040201" RefId="%AID%_P-%TT%00402" />
-              <ParameterRef Id="%AID%_P-%TT%00407_R-%TT%0040701" RefId="%AID%_P-%TT%00407"  /><!-- AliasName="channelSelectionMode" -->
-              <ParameterRef Id="%AID%_P-%TT%00406_R-%TT%0040601" RefId="%AID%_P-%TT%00406"  /><!-- AliasName="channelSourcesString" -->
+              <ParameterRef Id="%AID%_P-%TT%00407_R-%TT%0040701" RefId="%AID%_P-%TT%00407" />
+              <ParameterRef Id="%AID%_P-%TT%00406_R-%TT%0040601" RefId="%AID%_P-%TT%00406" />
 
               <ParameterRef Id="%AID%_P-%TT%00490_R-%TT%0049001" RefId="%AID%_P-%TT%00490" />
               <ParameterRef Id="%AID%_P-%TT%00491_R-%TT%0049101" RefId="%AID%_P-%TT%00491" />
@@ -362,15 +348,15 @@
               </ParameterCalculation>
               <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamCheck"  LRTransformationFunc="uctParamModulSelectionCheck" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
-                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" AliasName="modul"                     />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00407_R-%TT%0040701" AliasName="channelSelectionMode"  />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" AliasName="channelSource"              />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00406_R-%TT%0040601" AliasName="channelSourcesString"  />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" AliasName="modul"                   />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00407_R-%TT%0040701" AliasName="channelSelectionMode"    />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" AliasName="channelSource"           />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00406_R-%TT%0040601" AliasName="channelSourcesString"    />
                 </LParameters>
                 <RParameters>
-                  <ParameterRefRef RefId="%AID%_P-%TT%00490_R-%TT%0049001" AliasName="modulChannelCount"         />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00491_R-%TT%0049101" AliasName="channelError"          />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" AliasName="result"                    /><!-- ResetUserLog -->
+                  <ParameterRefRef RefId="%AID%_P-%TT%00490_R-%TT%0049001" AliasName="modulChannelCount"       />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00491_R-%TT%0049101" AliasName="channelError"            />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" AliasName="result"                  />
                 </RParameters>
               </ParameterCalculation>
             </ParameterCalculations>
@@ -385,7 +371,6 @@
             </Script>
             <Messages>
               <Message Id="%AID%_M-%TT%00001" Name="InvalidTransferString" Text="Kein gültiger/vollständiger OpenKNX-ConfigTransfer-String. Erwarte mindestens Beginn &quot;OpenKNX,&quot; und Ende &quot;§;OpenKNX&quot;." />
-              <Message Id="%AID%_M-%TT%00002" Name="InvalidExportSourcesString" Text="Leere Eingabe oder Kanal-Nummer(n) oder Intervall(e) mit '-'; mehrere getrennt durch Komma. Regex: /^$|^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$/" />
               <Message Id="%AID%_M-%TT%00003" Name="InvalidChannelSelectionString" Text="Kanal-Nummer(n) oder Intervall(e) mit '-'; mehrere getrennt durch Komma. Regex: /^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$/" />
               <Message Id="%AID%_M-%TT%00004" Name="InvalidChannelNot0SelectionString" Text="Kanal-Nummer(n) oder Intervall(e) mit '-'; ohne Kanal 0; mehrere getrennt durch Komma. Regex: /^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$/" />
             </Messages>
