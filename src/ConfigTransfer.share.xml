@@ -239,6 +239,7 @@
               <Parameter Id="%AID%_P-%TT%00392" Name="CopyTargetError"       ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Ziel-Kanal"    Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00393" Name="CopySameError"         ParameterType="%AID%_PT-CheckBox"                            Text="Fehler: Kanäle"        Value="0"   Access="None" />
               <Parameter Id="%AID%_P-%TT%00394" Name="CopyError"             ParameterType="%AID%_PT-CheckBox"                            Text="Fehler"                Value="0"   Access="None" />
+              <Parameter Id="%AID%_P-%TT%00395" Name="CopyShowButton"        ParameterType="%AID%_PT-CheckBox"                            Text="Kopieren-Btn sichtbar" Value="1"   Access="None" />
 
               <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"            ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
               <Parameter Id="%AID%_P-%TT%00407" Name="ResetMode"             ParameterType="%AID%_PT-ChannelSelectionMode"                Text="Kanalauswahl"          Value="0"   />
@@ -281,6 +282,7 @@
               <ParameterRef Id="%AID%_P-%TT%00392_R-%TT%0039201" RefId="%AID%_P-%TT%00392" />
               <ParameterRef Id="%AID%_P-%TT%00393_R-%TT%0039301" RefId="%AID%_P-%TT%00393" />
               <ParameterRef Id="%AID%_P-%TT%00394_R-%TT%0039401" RefId="%AID%_P-%TT%00394" />
+              <ParameterRef Id="%AID%_P-%TT%00395_R-%TT%0039501" RefId="%AID%_P-%TT%00395" />
 
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
@@ -341,6 +343,7 @@
                   <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" AliasName="CopyTargetError"         />
                   <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" AliasName="CopySameError"           />
                   <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" AliasName="CopyError"               />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" AliasName="CopyButtonShow"          />
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  />
                 </RParameters>
               </ParameterCalculation>
@@ -501,9 +504,9 @@
                       </choose>
                     </ParameterBlock>
 
-                    <choose ParamRefId="%AID%_P-%TT%00394_R-%TT%0039401">
-                      <when test="0">
-                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
+                    <choose ParamRefId="%AID%_P-%TT%00395_R-%TT%0039501">
+                      <when test="1">
+                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
                       </when>
                     </choose>                    
                     <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" HelpContext="UCT-Vorschau-und-Kopier-Resultat" />
@@ -514,6 +517,7 @@
                 <ParameterRefRef RefId="%AID%_P-%TT%00392_R-%TT%0039201" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00393_R-%TT%0039301" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00394_R-%TT%0039401" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00395_R-%TT%0039501" />
 
               </ParameterBlock>
 

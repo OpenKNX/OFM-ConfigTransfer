@@ -134,6 +134,9 @@ function uctBtnCopy(device, online, progress, context) {
         } else /* (offset == 0) */ {
             // should never happen
         }
+
+        // TODO FIXME hide for disjoint only!
+        device.getParameterByName(context.p_showButton).value = 0;
     }
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = result.join("\n");
@@ -784,6 +787,7 @@ function uctParamCopyCheck(input, output, context) {
     output.CopyTargetError = targetError ? 1 : 0;
     output.CopySameError = sameError ? 1 : 0;
     output.CopyError = error ? 1 : 0;
+    output.CopyButtonShow = 1; // show ony chaning any input
     output.result = overview;
 }
 
