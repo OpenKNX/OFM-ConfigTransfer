@@ -43,5 +43,6 @@ module.exports = {
     uctParamResetResult,
     uctParamResetSelection,
     uctParamResetNothing,
+    uctParamModulSelectionCheck,
     uctParamCopyCheck,
 };

@@ -401,49 +401,83 @@ describe('Button Handler', () => {
             "p_exportFormatSelection":"UCTD_Opt2",
             "p_exportOutput":"UCTD_Output",
         };
-        it("includes non-default and allow single or multi-line output", () => {
-            device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
-
-            uctBtnExport(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
+        describe('Single-Channel', () => {
+            it("includes non-default", () => {
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
+                device.getParameterByName("UCTD_Channel").value = 3;
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
+            });
+            it("allow single or multi-line output", () => {
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
+                
+                var p = device.getParameterByName("CHN_Param2C"); 
+                expect(p.value).toBe(500);
+                p.value = 400;
+                expect(p.value).toBe(400);
+        
+                device.getParameterByName("UCTD_Channel").value = 2;
+                device.getParameterByName("UCTD_Output").value = "";
+                device.getParameterByName("UCTD_Opt1").value = 1;
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX");
+        
+                // multi-line format
+                device.getParameterByName("UCTD_Opt2").value = 1;
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
     
-            var p = device.getParameterByName("CHN_Param2C"); 
-            expect(p.value).toBe(500);
-            p.value = 400;
-            expect(p.value).toBe(400);
-    
-            device.getParameterByName("UCTD_Channel").value = 2;
-            device.getParameterByName("UCTD_Output").value = "";
-            device.getParameterByName("UCTD_Opt1").value = 1;
-            uctBtnExport(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX");
-    
-            // multi-line format
-            device.getParameterByName("UCTD_Opt2").value = 1;
-            uctBtnExport(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
-
-            // TODO split: move to separate testcase
-            // TODO extract mock for device::getParameterByName fail
-            const failingParamGet = {
-                getParameterByName: function (name) {
-                    // fail on non UCT fields
-                    return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
-                },
-            };
-            expect(() => uctBtnExport(failingParamGet, online, progress, context)).toThrow(Error);
+                // TODO split: move to separate testcase
+                // TODO extract mock for device::getParameterByName fail
+                const failingParamGet = {
+                    getParameterByName: function (name) {
+                        // fail on non UCT fields
+                        return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
+                    },
+                };
+                expect(() => uctBtnExport(failingParamGet, online, progress, context)).toThrow(Error);
+            });
         });
-        it("allows exporting multiple channels", () => {
-    
-            device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
-            device.getParameterByName("UCTD_ExportSourcesString").value = "1-2";
-            device.getParameterByName("UCTD_Output").value = "";
-            device.getParameterByName("UCTD_Opt1").value = 1;
-            device.getParameterByName("CHN_Param1D").value = "yyyy";
-            uctBtnExport(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe(
-                "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/1§Param~D=yyyy§;OpenKNX\nOpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX"
-            );
+        describe('Multi-Channel', () => {
+            it("allows exporting multiple channels", () => {
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "1-2";
+                device.getParameterByName("UCTD_Output").value = "";
+                device.getParameterByName("UCTD_Opt1").value = 1;
+                device.getParameterByName("CHN_Param1D").value = "yyyy";
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe(
+                    "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/1§Param~D=yyyy§;OpenKNX\nOpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX"
+                );
+            });
+            it("fails on empty or wrong multi-channel-selection", () => {
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "4-1";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "x";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+            });
+            it("fails on channels out of range", () => {
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "99";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "7-8";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "1-7";
+                expect(() => uctBtnExport(device, online, progress, context)).not.toThrow(Error);
+
+                device.getParameterByName("UCTD_ExportSourcesString").value = "0-99";
+                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+            });
         });
     });
 
@@ -1028,6 +1062,76 @@ describe('Param Calculation', () => {
         expect(input).toStrictEqual({"f1":"value", "f2":3});
         expect(output).toStrictEqual({"f3":"x"});
         expect(context).toStrictEqual({"c1": "z"});
+    });
+
+    describe("uctParamModulSelectionCheck", () => {
+        const uctParamModulSelectionCheck = cts.uctParamModulSelectionCheck;
+        var input;
+        var context = {};
+        var output;
+
+        it("handles no module selected", () => {
+            input = {
+                "modul": 255,
+                "channelSelectionMode": 0,
+                "channelSource": 1,
+                "channelSourcesString": "1",
+            };
+            output = {
+                "modulChannelCount": 10,
+                "channelError": 1,
+                "result": "x"
+            };
+            uctParamModulSelectionCheck(input, output, context);
+            expect(context).toStrictEqual({});                
+            expect(input).toStrictEqual(input);
+            expect(output.modulChannelCount).toBe(0);
+            expect(output.channelError).toBe(0);
+            // TODO add test for result?
+        });
+
+        describe("single channel mode", () => {
+            it("detects out of range channel", () => {
+                input = {
+                    "modul": 3,
+                    "channelSelectionMode": 0,
+                    "channelSource": 8,
+                    "channelSourcesString": "1",
+                };
+                output = {
+                    "modulChannelCount": 0,
+                    "channelError": 0,
+                    "result": "x"
+                };
+                uctParamModulSelectionCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.modulChannelCount).toBe(7);
+                expect(output.channelError).toBe(1);
+                // TODO add test for result?
+            });
+        });
+        describe("multi channel mode", () => {
+            it("detects out of range channel", () => {
+                input = {
+                    "modul": 3,
+                    "channelSelectionMode": 1,
+                    "channelSource": 8,
+                    "channelSourcesString": "7-8",
+                };
+                output = {
+                    "modulChannelCount": 0,
+                    "channelError": 0,
+                    "result": "x"
+                };
+                uctParamModulSelectionCheck(input, output, context);
+                expect(context).toStrictEqual({});                
+                expect(input).toStrictEqual(input);
+                expect(output.modulChannelCount).toBe(7);
+                expect(output.channelError).toBe(1);                
+                // TODO add test for result?
+            });
+        });
     });
 
     describe("uctParamCopyCheck", () => {
