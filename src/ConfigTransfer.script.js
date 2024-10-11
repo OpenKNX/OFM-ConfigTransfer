@@ -113,7 +113,17 @@ function uctBtnCopy(device, online, progress, context) {
         var sourceChannel = device.getParameterByName(context.p_channelSource).value;
         var targetChannels = uctParseRangesString(device.getParameterByName(context.p_channelTargetString).value);
         Log.info("OpenKNX ConfigTransfer: Copy single channel " + sourceChannel + " to " + targetChannels.join(","));
-        // TODO check range before copy!
+
+        // precheck channels:
+        // uctGetModuleParamsDef(module, targetChannel[targetChannel.length - 1]);
+        if (targetChannels.length > 0) {
+            // ignore result, but expect error for non-existing channel
+            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
+            if (!uctIsDisjoint([sourceChannel], targetChannels)) {
+                throw new Error("Ziel-Kanal muss von Quell-Kanal abweichen!");
+            }
+        }
+
         for (var i = 0; i < targetChannels.length; i++) {
             result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
         }
@@ -122,6 +132,21 @@ function uctBtnCopy(device, online, progress, context) {
         var targetChannel = device.getParameterByName(context.p_channelTarget).value;
         var offset = targetChannel - sourceChannels[0];
         Log.info("OpenKNX ConfigTransfer: Copy channel group " + sourceChannels.join(",") + " to channels starting at " + targetChannel + "; offset=" + offset);
+
+        if (sourceChannels.length > 0) {
+            // ignore result, but expect error for non-existing channel
+            uctGetModuleParamsDef(module, sourceChannels[sourceChannels.length - 1]);
+        }
+
+        var targetChannels = [];
+        for (var i = 0; i < sourceChannels.length; i++) {
+            targetChannels.push(sourceChannels[i] + offset);
+        }
+        if (targetChannels.length > 0) {
+            // ignore result, but expect error for non-existing channel
+            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
+        }
+
         // TODO check range before copy!
         if (offset < 0) {
             for (var i = 0; i < sourceChannels.length; i++) {
@@ -135,8 +160,8 @@ function uctBtnCopy(device, online, progress, context) {
             // should never happen
         }
 
-        // TODO FIXME hide for disjoint only!
-        device.getParameterByName(context.p_showButton).value = 0;
+        // hide for disjoint only!
+        device.getParameterByName(context.p_showButton).value = uctIsDisjoint(sourceChannels, targetChannels) ? 1 : 0;
     }
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = result.join("\n");
