@@ -489,7 +489,7 @@
                             <when test="1">
                               <choose ParamRefId="%AID%_P-%TT%00306_R-%TT%0030601">
                                 <when test="1">
-                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG:&#10;Überlappung mit Quellkanälen!" UIHint="Information" Cell="3,3" />
+                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG:&#xD;&#xA;Überlappung mit Quellkanälen!" UIHint="Information" Cell="3,3" />
                                 </when>
                                 <when default="true">
                                   <ParameterSeparator Id="%AID%_PS-nnn" Text="Identisch mit Quell-Kanal!" UIHint="Error" Cell="3,3" />
