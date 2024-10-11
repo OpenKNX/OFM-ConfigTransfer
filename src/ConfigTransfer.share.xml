@@ -645,22 +645,45 @@
                 </ParameterBlock>                
                 <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
                   <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00207_R-%TT%0020701" /><!-- TODO add help! -->
-                    <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+
+                    <choose ParamRefId="%AID%_P-%TT%00290_R-%TT%0029001">
                       <when test="0">
-                        <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid">
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                            <Row Id="%AID%_PB-nnn_R-2" Name="Row2" />
+                          </Rows>
+                          <Columns>
+                            <!-- col1>45% to prevent text left of other elements on right side -->
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalauswahl" Cell="1,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Einzelkanal" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Kanal" Cell="2,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Basiseinstellungen" Cell="2,2" />
+                        </ParameterBlock>
                       </when>
-                      <when test="1">
-                        <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="1" HelpContext="UCT-Kanalauswahl" />
+                      <when default="true">
+                        <!-- show channel selection for channels available only -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%00207_R-%TT%0020701" /><!-- TODO add help! -->
+                        <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+                          <when test="0">
+                            <ParameterRefRef RefId="%AID%_P-%TT%00201_R-%TT%0020101" IndentLevel="1" HelpContext="UCT-InhaltKanal" />
+                          </when>
+                          <when test="1">
+                            <ParameterRefRef RefId="%AID%_P-%TT%00206_R-%TT%0020601" IndentLevel="1" HelpContext="UCT-Kanalauswahl" />
+                          </when>
+                        </choose>
+                        <choose ParamRefId="%AID%_P-%TT%00291_R-%TT%0029101">
+                          <when test="1">
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" />
+                          </when>
+                        </choose>
                       </when>
                     </choose>
 
-                    <ParameterRefRef RefId="%AID%_P-%TT%00291_R-%TT%0029101" />
-                    <choose ParamRefId="%AID%_P-%TT%00291_R-%TT%0029101">
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" />
-                      </when>
-                    </choose>
+                    <ParameterRefRef RefId="%AID%_P-%TT%00291_R-%TT%0029101" /><!-- channel out of range -->
 
                     <ParameterRefRef RefId="%AID%_P-%TT%00205_R-%TT%0020501" HelpContext="UCT-Exportierte-Parameter" />
                     <choose ParamRefId="%AID%_P-%TT%00205_R-%TT%0020501">
@@ -671,26 +694,35 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Kann zu deutlich vergrößertem Export führen!&#xD;&#xA;Kann beim Import in Modul-Versionen mit veränderten Standardwerten helfen." UIHint="Information" />
                       </when>
                     </choose>
-                    <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+
+                    <choose ParamRefId="%AID%_P-%TT%00290_R-%TT%0029001">
                       <when test="0">
                         <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
                       </when>
-                      <when test="1">
-                        <!-- TODO later add selection of batch-export to multi-line OR multi-channel to single-line -->
-                        <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid" HelpContext="UCT-Format" >
-                          <Rows>
-                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
-                          </Rows>
-                          <Columns>
-                            <!-- col1>45% to prevent text left of other elements on right side -->
-                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
-                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
-                          </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Format&#xD;&#xA;" Cell="1,1" />
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)&#xD;&#xA;" Cell="1,2" />
-                        </ParameterBlock>                
+                      <when default="true">
+                        <choose ParamRefId="%AID%_P-%TT%00207_R-%TT%0020701">
+                          <when test="0">
+                            <ParameterRefRef RefId="%AID%_P-%TT%00202_R-%TT%0020201" HelpContext="UCT-Format" />
+                          </when>
+                          <when test="1">
+                            <!-- TODO later add selection of batch-export to multi-line OR multi-channel to single-line -->
+                            <ParameterBlock Id="%AID%_PB-nnn" Name="ExportFormatBatch" Inline="true" Layout="Grid" HelpContext="UCT-Format" >
+                              <Rows>
+                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                              </Rows>
+                              <Columns>
+                                <!-- col1>45% to prevent text left of other elements on right side -->
+                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="46%" />
+                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="54%" />
+                              </Columns>
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Format&#xD;&#xA;" Cell="1,1" />
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Je eine Zeile pro Kanal im Standardformat&#xD;&#xA;(Import als Einzelkanäle möglich in älteren Versionen von Konfigurationstransfer)&#xD;&#xA;" Cell="1,2" />
+                            </ParameterBlock>                
+                          </when>
+                        </choose>
                       </when>
                     </choose>
+
                     <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <!--
                     <ParameterRefRef RefId="%AID%_P-%TT%00203_R-%TT%0020301" />

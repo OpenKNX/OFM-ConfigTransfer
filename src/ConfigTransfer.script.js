@@ -52,9 +52,12 @@ function uctBtnExport(device, online, progress, context) {
     var moduleChannelCount = uctChannelParams[module].channels;
 
     var channelMode = device.getParameterByName(context.p_channelMode).value;
-    var channels = [device.getParameterByName(context.p_channelSource).value];
-    if (channelMode == 1) {
-        channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+    var channels = [0];
+    if (moduleChannelCount > 0) {
+        channels = [device.getParameterByName(context.p_channelSource).value];
+        if (channelMode == 1) {
+            channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+        }
     }
     if (channels.length == 0) {
         throw new Error("Kein Kanal definiert!");

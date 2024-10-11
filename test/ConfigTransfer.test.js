@@ -426,6 +426,9 @@ describe('Button Handler', () => {
                 device.getParameterByName("UCTD_Opt2").value = 1;
                 uctBtnExport(device, online, progress, context);
                 expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
+
+                // TODO FIXME ensure always resetting!
+                device.getParameterByName("UCTD_Opt2").value = 0;
     
                 // TODO split: move to separate testcase
                 // TODO extract mock for device::getParameterByName fail
@@ -477,6 +480,24 @@ describe('Button Handler', () => {
 
                 device.getParameterByName("UCTD_ExportSourcesString").value = "0-99";
                 expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+            });
+        });
+        describe('Module with 0 Channels', () => {
+            it("ignore channel selection paramters", () => {
+                
+                device.getParameterByName("UCTD_ModuleIndex").value = 2;
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
+                device.getParameterByName("UCTD_Channel").value = 95;
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX");
+
+                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+                device.getParameterByName("UCTD_ExportSourcesString").value = "11-20";
+                uctBtnExport(device, online, progress, context);
+                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX");
+
+                // TODO FIXME ensure always resetting!
+                device.getParameterByName("UCTD_ModuleIndex").value = 3;
             });
         });
     });
