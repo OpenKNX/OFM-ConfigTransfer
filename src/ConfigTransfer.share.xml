@@ -643,11 +643,6 @@
                     </when>
                   </choose>
                 </ParameterBlock>                
-                <choose ParamRefId="%AID%_P-%TT%00290_R-%TT%0029001">
-                  <when test="0">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="    Modul enthält nur Basiskonfiguration!" />
-                  </when>
-                </choose>
                 <choose ParamRefId="%AID%_P-%TT%00200_R-%TT%0020001">
                   <when test="!=255">
                     <ParameterRefRef RefId="%AID%_P-%TT%00207_R-%TT%0020701" /><!-- TODO add help! -->
