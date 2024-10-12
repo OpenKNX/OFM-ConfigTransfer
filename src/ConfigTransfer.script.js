@@ -120,7 +120,7 @@ function uctBtnCopy(device, online, progress, context) {
             // ignore result, but expect error for non-existing channel
             uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
             if (!uctIsDisjoint([sourceChannel], targetChannels)) {
-                throw new Error("Ziel-Kanal muss von Quell-Kanal abweichen!");
+                throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
             }
         }
 
