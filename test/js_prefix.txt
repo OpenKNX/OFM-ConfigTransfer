@@ -6,8 +6,8 @@ var uctChannelParams = {
     // UCT Demo
     "UCTD": {
         "share":{
-            "names": ["ModuleIndex", "ChannelSelectionMode", "Channel", "ChannelsString", "ChannelSource", "ChannelSourceString", "ChannelTarget", "ChannelTargetString", "Opt1", "Opt2", "Output", "Import", "ImportCheck", "CopyMode", "ExportSourcesString"],
-            "defaults": [3, 0, 3, "1-2", 6, "6", 5, "5", 0, 0, "", "", 0, 0, ""],
+            "names": ["ModuleIndex", "ChannelSelectionMode", "Channel", "ChannelsString", "ChannelSource", "ChannelSourceString", "ChannelTarget", "ChannelTargetString", "Opt1", "Opt2", "Output", "Import", "ImportCheck", "CopyMode", "ExportSourcesString", "CopyShowButton"],
+            "defaults": [3, 0, 3, "1-2", 6, "6", 5, "5", 0, 0, "", "", 0, 0, "", 1],
         },
     },
     // no version module

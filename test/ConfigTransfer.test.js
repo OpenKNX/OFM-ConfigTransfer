@@ -604,6 +604,7 @@ describe('Button Handler', () => {
             "p_channelSourceString":"UCTD_ChannelSourceString",
             "p_channelTargetString":"UCTD_ChannelTargetString",
             "p_messageOutput":"UCTD_Output",
+            "p_showButton":"UCTD_CopyShowButton",
         };
         describe('Single Channel', () => {
             test("regular copy and success message", () => {
@@ -614,6 +615,7 @@ describe('Button Handler', () => {
                 uctBtnCopy(device, online, progress, context);
                 expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
                 expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
             test("allow copy one channel multiple times", () => {
                 device.getParameterByName("UCTD_CopyMode").value = 0;
@@ -625,6 +627,7 @@ describe('Button Handler', () => {
                 expect(device.getParameterByName("CHN_Param2D").value).toBe("MulCh6");
                 expect(device.getParameterByName("CHN_Param3D").value).toBe("MulCh6");
                 expect(device.getParameterByName("CHN_Param4D").value).toBe("MulCh6");
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
             // TODO extend tests for multi-copy
             it("fails on source==target", () => {
@@ -632,6 +635,7 @@ describe('Button Handler', () => {
                 device.getParameterByName("UCTD_ChannelSource").value = 6;
                 device.getParameterByName("UCTD_ChannelTargetString").value = "6";
                 expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
     
             it("fails on source out of range", () => {
@@ -639,6 +643,7 @@ describe('Button Handler', () => {
                 device.getParameterByName("UCTD_ChannelSource").value = 99;
                 device.getParameterByName("UCTD_ChannelTargetString").value = "6";
                 expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
     
             it("fails on target out of range", () => {
@@ -646,6 +651,7 @@ describe('Button Handler', () => {
                 device.getParameterByName("UCTD_ChannelSource").value = 4;
                 device.getParameterByName("UCTD_ChannelTargetString").value = "99";
                 expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
         });
         describe('Channel-Group', () => {
@@ -663,6 +669,7 @@ describe('Button Handler', () => {
                 expect(device.getParameterByName("CHN_Param2D").value).toBe("GrCh1");
                 expect(device.getParameterByName("CHN_Param4D").value).toBe("GrCh3");
                 expect(device.getParameterByName("CHN_Param6D").value).toBe("GrCh5");
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
             });
             test("allow copy overlapping channel group one time with negative offset", () => {
                 device.getParameterByName("UCTD_CopyMode").value = 1;
@@ -676,6 +683,7 @@ describe('Button Handler', () => {
                 expect(device.getParameterByName("CHN_Param1D").value).toBe("GrChOv-A");
                 expect(device.getParameterByName("CHN_Param2D").value).toBe("GrChOv-B");
                 expect(device.getParameterByName("CHN_Param4D").value).toBe("GrChOv-C");
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(0);
             });            
             test("allow copy overlapping channel group one time with positive offset", () => {
                 device.getParameterByName("UCTD_CopyMode").value = 1;
@@ -689,6 +697,7 @@ describe('Button Handler', () => {
                 expect(device.getParameterByName("CHN_Param3D").value).toBe("GrChOv-a");
                 expect(device.getParameterByName("CHN_Param5D").value).toBe("GrChOv-b");
                 expect(device.getParameterByName("CHN_Param6D").value).toBe("GrChOv-c");
+                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(0);
             });            
         });
     });
