@@ -161,7 +161,8 @@ function uctBtnCopy(device, online, progress, context) {
                 result.push(uctCopyModuleChannel(device, module, sourceChannels[i], sourceChannels[i] + offset));
             }
         } else /* (offset == 0) */ {
-            // should never happen
+            // all channes are the same
+            throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
         }
 
         // hide for disjoint only!
