@@ -98,7 +98,7 @@ function uctBtnImport(device, online, progress, context) {
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
     var importCheck = device.getParameterByName(context.p_importCheck).value;
-    
+
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]");
@@ -238,7 +238,7 @@ function uctCreateHeader(module, channel) {
         ((moduleVersion != undefined) ? uctHexNumberStr(moduleVersion) : '-')
     ];
 
-    var path =  [pathApp.join(":"), pathModule.join(":"), channel];
+    var path = [pathApp.join(":"), pathModule.join(":"), channel];
 
     var header = ["OpenKNX", version.join(":"), path.join("/")];
     return header.join(",");
@@ -256,7 +256,7 @@ function uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix) {
     var paramObj = device.getParameterByName(paramFullName);
     var paramObjRefId = paramObj.parameterRefId;
     if (paramObjRefId.length>2 && paramObjRefId.slice(-2)!=paramRefIdSuffix) {
-        paramObj = device.getParameterById(paramObjRefId.slice(0,-2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
+        paramObj = device.getParameterById(paramObjRefId.slice(0, -2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
     }
     return paramObj;
 }
@@ -277,11 +277,11 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
     var result = [];
     var errors = [];
     for (var i = 0; i < params.names.length; i++) {
-        
+
         /* compact or human readable output */
         var paramKey = (keyFormat=="name") ? params.names[i] : i;
 
-        try { 
+        try {
 
             /* TODO extract to function! */
             var paramNameDef = params.names[i].split(":");
@@ -291,7 +291,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
             if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
                 if (exportDefault || paramValue != params.defaults[i]) {
-                    result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
+                    result.push(paramKey + "=" + uctSerializeParamValue(paramValue));
                 }
             }
         } catch (e) {
@@ -448,7 +448,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var allowMissing = (importCheck == 0);
 
     var checkModuleVersion = (importCheck >= 1);
-    var checkAppId =  (importCheck >= 7);
+    var checkAppId = (importCheck >= 7);
     var checkAppVersion = (importCheck >= 7);
 
     var importLines = exportStr.split("§");
@@ -488,7 +488,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             if (!checkAppVersion && (isDifferentAppId || isDifferentAppVer)) {
                 throw new Error('Für Modul-Version "-" ist Gleichheit nur bei identischer Applikation und Version möglich!');
             }
-    
+
         } else if (header.modul.ver != uctChannelParams[module].version) {
             // TODO show versions in same format, to prevent mixed decimal/hex representation
             throw new Error('Modul-Version '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
@@ -536,7 +536,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         importContent = importContent.slice(1);
     }
     var result = {
-        'lines':[],
+        'lines': [],
         'messages': 0,
         'warnings': 0,
         'errors': 0
@@ -662,7 +662,7 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
                 var paramFullName = module + "_" + paramName.replace('~', channel);
                 var param = uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix);
                 if (typeof param.value == "number") {
-                    // At least in German Localisation with ',' as decimal separator: 
+                    // At least in German Localisation with ',' as decimal separator:
                     // using string with '.' as decimal separator would remove decimal separtor a all
                     // parse string to number to prevent this problem
                     param.value = parseFloat(paramValue);
@@ -686,8 +686,8 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
  * Copy the configuration from one channel to an other.
  * @param {object} device - the device object provided by ETS
  * @param {string} module
- * @param {number} channelSource 
- * @param {number} channelTarget 
+ * @param {number} channelSource
+ * @param {number} channelTarget
  */
 function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     // TODO recombine with inline extract for 1 to n copy
@@ -704,8 +704,8 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
  * Set channel configuration to default values.
  * LIMITATION: Default values are independent of assignments.
  * @param {object} device - the device object provided by ETS
- * @param {string} module 
- * @param {number} channel 
+ * @param {string} module
+ * @param {number} channel
  */
 function uctResetModuleChannel(device, module, channel) {
     uctImportModuleChannelFromString(device, module, channel, uctCreateHeader(module, channel) + '§' + ";OpenKNX", 7);
@@ -725,7 +725,7 @@ function uctParamResetSelection(input, output, context) {
 
 function uctParamResetNothing(input, output, context) {
     // do nothing
-} 
+}
 
 function uctParamModulSelectionCheck(input, output, context) {
     Log.info("OpenKNX ConfigTransfer: Param Selection check ...");
@@ -756,7 +756,7 @@ function uctParamModulSelectionCheck(input, output, context) {
 function uctParamCopyCheck(input, output, context) {
     Log.info("OpenKNX ConfigTransfer: Param Copy check ...");
 
-    var channelCount = 0;    
+    var channelCount = 0;
     var sourceError = false;
     var targetError = false;
     var sameError = false;
