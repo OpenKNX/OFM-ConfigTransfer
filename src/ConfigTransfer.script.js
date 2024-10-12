@@ -198,7 +198,7 @@ function uctBtnReset(device, online, progress, context) {
     for (var i = 0; i < channels.length; i++) {
         var channelNumber = channels[i];
         Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber);
-        result.push(uctResetModuleChannel(device, module, channels[i]));
+        result.push(uctResetModuleChannel(device, module, channelNumber));
         Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber + " [DONE]");
     }
     param_messageOutput.value = result.join("\n");
