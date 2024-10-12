@@ -47,7 +47,7 @@ function uctParseRangesString(channelsString) {
 }
 
 function uctBtnExport(device, online, progress, context) {
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var moduleChannelCount = uctChannelParams[module].channels;
 
@@ -89,11 +89,11 @@ function uctBtnExport(device, online, progress, context) {
         Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
     }
     param_exportOutput.value = channelExportResult.join("\n");
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]");
 }
 
 function uctBtnImport(device, online, progress, context) {
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Import ...")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Import ...");
     var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var importLine = device.getParameterByName(context.p_importLine).value;
@@ -101,11 +101,11 @@ function uctBtnImport(device, online, progress, context) {
     
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]");
 }
 
 function uctBtnCopy(device, online, progress, context) {
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var mode = device.getParameterByName(context.p_copyMode).value;
     var result = [];
@@ -165,11 +165,11 @@ function uctBtnCopy(device, online, progress, context) {
     }
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = result.join("\n");
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]");
 }
 
 function uctBtnReset(device, online, progress, context) {
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var moduleChannelCount = uctChannelParams[module].channels;
 
@@ -197,7 +197,7 @@ function uctBtnReset(device, online, progress, context) {
         Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber + " [DONE]");
     }
     param_messageOutput.value = result.join("\n");
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Reset [DONE]")
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Reset [DONE]");
 }
 
 
@@ -438,7 +438,7 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
  */
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
-    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...")
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...");
 
     var allowMissing = (importCheck == 0);
 
@@ -524,7 +524,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         throw new Error('Keine Parameter definiert für Modul "'+module+'" und Kanal "'+channel+'"!');
     }
 
-    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...")
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Prepare Param Values ...");
     var importContent = importLines.slice(1, -1);
     var merge = (importContent.length > 0 && importContent[0]=="!merge");
     if (merge) {
@@ -539,14 +539,14 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var newValues = uctPrepareParamValues(params, importContent, result, merge, allowMissing);
 
     /* write new values */
-    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...")
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...");
     var writeClean = uctWriteParams(device, module, channel, params, newValues, result);
     if (!writeClean) {
-        Log.error("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params produced Errors!")
+        Log.error("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params produced Errors!");
     }
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
-    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]")
+    Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
     var msg = module + "/" + channel + " Import ";
     if (result.errors) {
         msg = msg + "[ >>> FEHLER! <<< ]\n";
@@ -668,7 +668,7 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
 
         } catch (e) {
             var paramFullNameTempl = module + "_" + paramName;
-            Log.error("Failed writing "+paramFullNameTempl+" in channel "+channel+": "+e)
+            Log.error("Failed writing "+paramFullNameTempl+" in channel "+channel+": "+e);
             result.lines.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
             result.errors++;
             clean = false;
@@ -712,7 +712,7 @@ function uctParamResetResult(input, output, context) {
 }
 
 function uctParamResetSelection(input, output, context) {
-    Log.info("OpenKNX ConfigTransfer: uctParamResetSelection")
+    Log.info("OpenKNX ConfigTransfer: uctParamResetSelection");
     // reset `selection` parameter
     output.selection = 255;
 }
@@ -722,7 +722,7 @@ function uctParamResetNothing(input, output, context) {
 } 
 
 function uctParamModulSelectionCheck(input, output, context) {
-    Log.info("OpenKNX ConfigTransfer: Param Selection check ...")
+    Log.info("OpenKNX ConfigTransfer: Param Selection check ...");
 
     var channelCount = 0;
     var channelError = false;
@@ -739,7 +739,7 @@ function uctParamModulSelectionCheck(input, output, context) {
         channelError = (channels.length > 0) && channels[channels.length - 1] > channelCount;
         Log.info("OpenKNX UCT Check: channels=" + channels.join(",") + " / channelError=" + channelError);
     } else {
-        Log.info("OpenKNX UCT Check: No Module")
+        Log.info("OpenKNX UCT Check: No Module");
     }
 
     output.modulChannelCount = channelCount;
@@ -748,7 +748,7 @@ function uctParamModulSelectionCheck(input, output, context) {
 }
 
 function uctParamCopyCheck(input, output, context) {
-    Log.info("OpenKNX ConfigTransfer: Param Copy check ...")
+    Log.info("OpenKNX ConfigTransfer: Param Copy check ...");
 
     var channelCount = 0;    
     var sourceError = false;
@@ -804,7 +804,7 @@ function uctParamCopyCheck(input, output, context) {
             overview = "VORSCHAU\nKopie von Kanalgruppe mit " + sourceChCount + " Kanälen:\n" + ovCh.join("\n") + (hasOverlaps ? "\n* Überlappung" : "") + (targetError ? "\n! Nicht existierender Kanal" : "");
         }
     } else {
-        Log.info("OpenKNX UCT Copy Check: No Module")
+        Log.info("OpenKNX UCT Copy Check: No Module");
     }
 
     output.CopyModulChannelCount = channelCount;
