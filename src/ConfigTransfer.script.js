@@ -527,6 +527,10 @@ function uctParseHeader(headerStr) {
         throw new Error('Format-Version NICHT definiert!');
     }
     var versionParts = headerParts[1].split(":");
+    var uctFormatVerMulti = "cv1multi"; // preview
+    if (versionParts[0] == uctFormatVerMulti) {
+        throw new Error('Multi-Kanal Format-Version ("' + versionParts[0] + '") NICHT unterstützt! Geplant für zukünftige Versionen von Konfigurationstransfer!');
+    }
     var uctFormatVerDev = "ck-dev0"; // legacy support for version id used in development and internal testing; never use in new transfer-strings; can be removed in later versions without notice!
     if (versionParts[0] != uctFormatVer && versionParts[0] != uctFormatVerDev) {
         throw new Error('Format-Version NICHT unterstützt! Version "'+uctFormatVer+'" erwartet, aber "' + versionParts[0] + '" gefunden!');
