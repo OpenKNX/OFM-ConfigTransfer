@@ -676,14 +676,14 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     }
 
 
-    /* allow channel auto-selection from export-string */
+    // allow channel auto-selection from export-string
     if (channel == 100) {
         if (isNaN(header.channel)) {
             throw new Error('Keine explizite Kanal-Definition im Transfer-String!');
         }
         channel = header.channel;
     }
-    /* channel 0 can not be imported into any other */
+    // channel 0 can not be imported into any other
     if (header.channel == 0 && channel != 0) {
         throw new Error('Basiseinstellungen können nicht in einen Kanal importiert werden!');
     }
