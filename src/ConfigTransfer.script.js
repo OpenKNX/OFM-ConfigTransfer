@@ -48,47 +48,65 @@ function uctParseRangesString(channelsString) {
 
 function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...");
-    var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
-    var moduleChannelCount = uctChannelParams[module].channels;
-
-    var channelMode = device.getParameterByName(context.p_channelMode).value;
-    var channels = [0];
-    if (moduleChannelCount > 0) {
-        channels = [device.getParameterByName(context.p_channelSource).value];
-        if (channelMode == 1) {
-            channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+    var moduleSelection = device.getParameterByName(context.p_moduleSelection).value;
+    if (moduleSelection < uctModuleOrder.length) {
+        var module = uctModuleOrder[moduleSelection];
+        var moduleChannelCount = uctChannelParams[module].channels;
+    
+        var channelMode = device.getParameterByName(context.p_channelMode).value;
+        var channels = [0];
+        if (moduleChannelCount > 0) {
+            channels = [device.getParameterByName(context.p_channelSource).value];
+            if (channelMode == 1) {
+                channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
+            }
         }
+        if (channels.length == 0) {
+            throw new Error("Kein Kanal definiert!");
+        }
+        if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
+            throw new Error("Kanal außerhalb von Modul-Bereich!");
+        }
+        if (channels.length > 1) {
+            Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
+        }
+    
+        var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
+        var includeHidden = (includeSelection == 1);
+        var includeDefault = (includeSelection == 2);
+    
+        var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
+        var exportFormat = (exportFormatSelection==3) ? "" : "name";
+        // multi-channel export is restricted to single line
+        var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
+    
+        // TODO add p_messageOutput again?
+    
+        var param_exportOutput = device.getParameterByName(context.p_exportOutput);
+        var channelExportResult = [];
+        for (var i = 0; i < channels.length; i++) {
+            var channelNumber = channels[i];
+            Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber);
+            channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, exportFormat, multiLine, includeHidden, includeDefault));
+            Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
+        }
+        param_exportOutput.value = channelExportResult.join("\n");
+    } else {
+        // TODO check reduction of redundancy
+        var param_exportOutput = device.getParameterByName(context.p_exportOutput);
+        var channelExportResult = [];
+        for (var i = 0; i < uctModuleOrder.length; i++) {
+            var module = uctModuleOrder[i];
+            var moduleChannelCount = uctChannelParams[module].channels;
+            moduleChannelCount = moduleChannelCount > 0 ? moduleChannelCount : 0;
+            for (var channelNumber = 0; channelNumber <= moduleChannelCount; channelNumber++) {
+                Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber);
+                channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, "name", false, false, false));
+                Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber + " [DONE]");
+            }
+        }
+        param_exportOutput.value = channelExportResult.join("\n");
     }
-    if (channels.length == 0) {
-        throw new Error("Kein Kanal definiert!");
-    }
-    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
-        throw new Error("Kanal außerhalb von Modul-Bereich!");
-    }
-    if (channels.length > 1) {
-        Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
-    }
-
-    var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
-    var includeHidden = (includeSelection == 1);
-    var includeDefault = (includeSelection == 2);
-
-    var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
-    var exportFormat = (exportFormatSelection==3) ? "" : "name";
-    // multi-channel export is restricted to single line
-    var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
-
-    // TODO add p_messageOutput again?
-
-    var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    var channelExportResult = [];
-    for (var i = 0; i < channels.length; i++) {
-        var channelNumber = channels[i];
-        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber);
-        channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, exportFormat, multiLine, includeHidden, includeDefault));
-        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
-    }
-    param_exportOutput.value = channelExportResult.join("\n");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]");
 }
 

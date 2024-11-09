@@ -711,7 +711,11 @@
                         </choose>
                       </when>
                     </choose>
-
+                  </when>
+                  <when test="255"><!-- TODO use defined id for exporting ALL -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Experimentelles Feature: Export ALLER Kanäle.&#xD;&#xA;ACHTUNG: Ausführungsdauer im Stundenbereich möglich!" UIHint="Information" />
+                  </when>
+                  <when test="&lt;=255"><!-- TODO use defined id for exporting ALL -->
                     <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
                   </when>
