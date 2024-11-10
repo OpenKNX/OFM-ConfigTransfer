@@ -40,6 +40,13 @@
                 <TypeText SizeInBit="1048568" Pattern="^$|^OpenKNX,.+§;OpenKNX$" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-EtsButtonExecMode" Name="EtsButtonExecMode">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Id="%ENID%"  Value="0"  Text="Interaktiv"                                  /><!--  (nur online &amp; nach Prog.) ; Online-Operation (Fortschrittsanzeige und Abbruch) -->
+                  <Enumeration Id="%ENID%"  Value="1"  Text="Fallback (immer möglich)"                    />
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-ImportTarget" Name="ImportTarget">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Value="255" Id="%ENID%" Text="Bitte wählen..."                      />
@@ -211,6 +218,9 @@
             </ParameterTypes>
             <Parameters>
 
+              <Parameter Id="%AID%_P-%TT%00000" Name="EtsMode"               ParameterType="%AID%_PT-CheckBox"                            Text=""                      Value="0"   SuffixText="Fallback (immer möglich)"/>
+              <Parameter Id="%AID%_P-%TT%00001" Name="EtsInteractiveNote"    ParameterType="%AID%_PT-CheckBox"                            Text="ETS-Ausführungsmodus Interaktiv/Fallback" Value="1"   />
+
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
@@ -251,6 +261,9 @@
 
             </Parameters>
             <ParameterRefs>
+
+              <ParameterRef Id="%AID%_P-%TT%00000_R-%TT%0000001" RefId="%AID%_P-%TT%00000" />
+              <ParameterRef Id="%AID%_P-%TT%00001_R-%TT%0000101" RefId="%AID%_P-%TT%00001" />
 
               <ParameterRef Id="%AID%_P-%TT%00100_R-%TT%0010001" RefId="%AID%_P-%TT%00100" />
               <ParameterRef Id="%AID%_P-%TT%00101_R-%TT%0010101" RefId="%AID%_P-%TT%00101" />
@@ -411,6 +424,12 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Abweichungen bei Modul-Integration/-Version" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Innerhalb von OpenKNX-Modulen veränderte Standard-Parameter-Werte können dazu führen, dass beim Import die Standardwerte der Zielumgebung verwendet werden." />
 
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Einstellungen" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="  Hinweise anzeigen" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00001_R-%TT%0000101" IndentLevel="2" />
+
               </ParameterBlock>
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="card-multiple-outline" HelpContext="UCT-Kanalkopie" >
@@ -509,7 +528,21 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Schaltfläche [Kopieren] ausgeblendet um versehentlichen Überschreiben von Kanälen zu verhindern! Erneutes Einblenden durch Ändern beliebiger Parameter." UIHint="Information" />
                       </when>
                       <when test="1">
-                        <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                        <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
+                          <when test="0">
+                            <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
+                              <when test="1">
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Starten im Interaktiven Ausführungsmodus ist nur möglich, wenn eine Schnittstelle erreichbar ist und bereits ein Download aufs Gerät erfolgte!&#xD;&#xA;Ggf. Fallback nutzen, bis zur ersten Programmierung oder bei Offline-Betrieb." UIHint="Information" />
+                              </when>
+                            </choose>
+                            <Button Id="%AID%_B-%TT%00301" Text="Kopieren"                 EventHandler="uctBtnCopy"   EventHandlerOnline="ConnectionOriented"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
+                          </when>
+                          <when test="1">
+                            <Button Id="%AID%_B-%TT%00300" Text="Kopieren"                 EventHandler="uctBtnCopy"                                             EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
+                          </when>
+                        </choose>
+                        <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
                       </when>
                     </choose>                    
                     <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" HelpContext="UCT-Vorschau-und-Kopier-Resultat" />
@@ -567,8 +600,23 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" />
                       </when>
                     </choose>
-                    
-                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  EventHandler="uctBtnReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ResetMode&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;, &quot;p_channelTargetsString&quot;:&quot;%PREFIX%_ResetChannelString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                    <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
+                      <when test="0">
+                        <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
+                          <when test="1">
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Starten im Interaktiven Ausführungsmodus ist nur möglich, wenn eine Schnittstelle erreichbar ist und bereits ein Download aufs Gerät erfolgte!&#xD;&#xA;Ggf. Fallback nutzen, bis zur ersten Programmierung oder bei Offline-Betrieb." UIHint="Information" />
+                          </when>
+                        </choose>
+                        <Button Id="%AID%_B-%TT%00401" Text="Zurücksetzen"             EventHandler="uctBtnReset"  EventHandlerOnline="ConnectionOriented"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ResetMode&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;, &quot;p_channelTargetsString&quot;:&quot;%PREFIX%_ResetChannelString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+                      </when>
+                      <when test="1">
+                        <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"             EventHandler="uctBtnReset"                                            EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ResetMode&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;, &quot;p_channelTargetsString&quot;:&quot;%PREFIX%_ResetChannelString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+
                     <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
                   </when>
                 </choose>
@@ -716,7 +764,23 @@
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Experimentelles Feature: Export ALLER Kanäle.&#xD;&#xA;ACHTUNG: Ausführungsdauer im Stundenbereich möglich!" UIHint="Information" />
                   </when>
                   <when test="&lt;=255"><!-- TODO use defined id for exporting ALL -->
-                    <Button Id="%AID%_B-%TT%00200" Text="Exportieren"   EventHandler="uctBtnExport" EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                    <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
+                      <when test="0">
+                        <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
+                          <when test="1">
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Starten im Interaktiven Ausführungsmodus ist nur möglich, wenn eine Schnittstelle erreichbar ist und bereits ein Download aufs Gerät erfolgte!&#xD;&#xA;Ggf. Fallback nutzen, bis zur ersten Programmierung oder bei Offline-Betrieb." UIHint="Information" />
+                          </when>
+                        </choose>
+                        <Button Id="%AID%_B-%TT%00201" Text="Exportieren"              EventHandler="uctBtnExport" EventHandlerOnline="ConnectionOriented"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                      </when>
+                      <when test="1">
+                        <Button Id="%AID%_B-%TT%00200" Text="Exportieren"              EventHandler="uctBtnExport"                                           EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+
                     <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
                   </when>
                 </choose>
