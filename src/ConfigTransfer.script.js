@@ -141,9 +141,28 @@ function _uctBtnExport(device, online, progress, context) {
         uctProgressText(progress, "Export " + module + "/" + channels.join(",") + " [OK]");
     } else {
         uctProgressText(progress, "Export ALL ...");
-        uctProgress(progress, -1, 1, 0, 1);
+        uctProgress(progress, -1, 0, 0, 1);
+
         // TODO check reduction of redundancy
-        // TODO calc progress based on param-count
+
+        // cald progress based on channels and params
+        var progressMax = 0;
+        var progressChMax = 0;
+        for (var i = 0; i < uctModuleOrder.length; i++) {
+            var module = uctModuleOrder[i];
+            var moduleChannelCount = uctChannelParams[module].channels;
+            progressChMax += 1 + (moduleChannelCount ? moduleChannelCount : 0);
+            progressMax += 1 * uctChannelParams[module].share.defaults.length + (moduleChannelCount ? (moduleChannelCount * uctChannelParams[module].templ.defaults.length): 0);
+        }
+        if (progressMax ==0 ) {
+            progressMax = 1; // should never happen, at least BASE should be present
+        }
+        if (progressChMax == 0) {
+            progressChMax = 1; // should never happen, at least BASE should be present
+        }
+        var progressPos = 0;
+        var progressChPos = 0;
+        
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];
         for (var i = 0; i < uctModuleOrder.length; i++) {
@@ -153,11 +172,15 @@ function _uctBtnExport(device, online, progress, context) {
             for (var channelNumber = 0; channelNumber <= moduleChannelCount; channelNumber++) {
                 if (!uctProgressIsCanceled(progress)) {
                     Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber);
-                    var progressText = "Export " + module + "/" + channelNumber;
+                    progressChPos++;
+                    progressPos += uctGetModuleParamsDef(module, channelNumber).defaults.length;
+                    var progressText = "Export (" + progressChPos + "/" + progressChMax + ") " + module + "/" + channelNumber;
                     uctProgressText(progress, progressText + " ...");
                     channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, "name", false, false, false));
                     uctProgressText(progress, progressText + " [OK]");
                     Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber + " [DONE]");
+
+                    uctProgress(progress, 0, 97, progressPos, progressMax);
                 }
             }
         }
