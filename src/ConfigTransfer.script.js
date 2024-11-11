@@ -165,12 +165,15 @@ function _uctBtnExport(device, online, progress, context) {
         
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];
+        var wasCanceled = false;
         for (var i = 0; i < uctModuleOrder.length; i++) {
             var module = uctModuleOrder[i];
             var moduleChannelCount = uctChannelParams[module].channels;
             moduleChannelCount = moduleChannelCount > 0 ? moduleChannelCount : 0;
             for (var channelNumber = 0; channelNumber <= moduleChannelCount; channelNumber++) {
-                if (!uctProgressIsCanceled(progress)) {
+                if (uctProgressIsCanceled(progress)) {
+                    wasCanceled = true;
+                } else {
                     Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber);
                     progressChPos++;
                     progressPos += uctGetModuleParamsDef(module, channelNumber).defaults.length;
@@ -185,7 +188,9 @@ function _uctBtnExport(device, online, progress, context) {
             }
         }
         param_exportOutput.value = channelExportResult.join("\n");
-        uctProgressText(progress, "Export ALL [OK]");
+        if (!wasCanceled) {
+            uctProgressText(progress, "Export ALL [OK]");
+        }
     }
     uctProgress(progress, 97, 3, 1, 1);
     // uctProgressText(progress, "Export " + module + "/" + channels.join(",") + " [OK]");
