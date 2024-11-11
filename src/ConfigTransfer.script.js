@@ -259,30 +259,20 @@ function _uctBtnCopy(device, online, progress, context) {
         uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannels.join(",") + " -> " + targetChannels.join(","));
         uctProgress(progress, 1, 1, 1, 1);
 
-        // TODO check range before copy!
-        if (offset < 0) {
-            for (var i = 0; i < sourceChannels.length; i++) {
-                if (!uctProgressIsCanceled(progress)) {
-                    var progressText = "Kanalkopie (" + (i + 1) + "/" + sourceChannels.length + ") " + module + "/" + sourceChannels[i] + " -> " + module + "/" + (sourceChannels[i] + offset);
-                    uctProgressText(progress, progressText + " ...");
-                    uctProgress(progress, 2, 95, i, sourceChannels.length);
-                    result.push(uctCopyModuleChannel(device, module, sourceChannels[i], sourceChannels[i] + offset));
-                    uctProgressText(progress, progressText + " [OK]");
-                }
-            }
-        } else if (offset > 0) {
-            for (var i = sourceChannels.length - 1; i >= 0; i--) {
-                if (!uctProgressIsCanceled(progress)) {
-                    var progressText = "Kanalkopie (" + (sourceChannels.length - i + 1) + "/" + sourceChannels.length + ") " + module + "/" + sourceChannels[i] + " -> " + module + "/" + (sourceChannels[i] + offset);
-                    uctProgressText(progress, progressText + " ...");
-                    uctProgress(progress, 2, 95, sourceChannels.length - i, sourceChannels.length);
-                    result.push(uctCopyModuleChannel(device, module, sourceChannels[i], sourceChannels[i] + offset));
-                    uctProgressText(progress, progressText + " [OK]");
-                }
-            }
-        } else /* (offset == 0) */ {
-            // all channes are the same
+        if (offset == 0) {
+            // all channels are the same
             throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
+        }
+        for (var i = 0; i < sourceChannels.length; i++) {
+            if (!uctProgressIsCanceled(progress)) {
+                var chSrc = sourceChannels[(offset < 0) ? i : (sourceChannels.length - 1 - i)];
+                var chTarget = chSrc + offset;
+                var progressText = "Kanalkopie (" + (i + 1) + "/" + sourceChannels.length + ") " + module + "/" + chSrc + " -> " + module + "/" + chTarget;
+                uctProgressText(progress, progressText + " ...");
+                uctProgress(progress, 2, 95, i, sourceChannels.length);
+                result.push(uctCopyModuleChannel(device, module, chSrc, chTarget));
+                uctProgressText(progress, progressText + " [OK]");
+            }
         }
 
         // hide for disjoint only!
