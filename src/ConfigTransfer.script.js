@@ -73,6 +73,16 @@ function uctOnlineBtnSuccess(device, online, progress, context) {
     }
 }
 
+function uctErrorMapper(device, progress, p_name, e) {
+    if (progress) {
+        var param_messageOutput = device.getParameterByName(p_name);
+        param_messageOutput.value = "[ >>> FEHLER! <<< ]\n" + e.message;
+        throw new Error("[ >>> FEHLER! <<< ] " + e.message);
+    } else {
+        throw e;
+    }
+}
+
 
 function uctBtnExport(device, online, progress, context) {
     try {
@@ -80,13 +90,7 @@ function uctBtnExport(device, online, progress, context) {
         uctOnlineBtnSuccess(device, online, progress, context);
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Export [ERROR]");
-        if (progress) {
-            var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-            param_messageOutput.value = "[ >>> FEHLER! <<< ]\n" + e.message;
-            throw new Error("[ >>> FEHLER! <<< ] " + e.message);
-        } else {
-            throw e;
-        }
+        uctErrorMapper(device, progress, context.p_messageOutput, e);
     }    
 }
 
@@ -220,13 +224,7 @@ function uctBtnCopy(device, online, progress, context) {
         uctOnlineBtnSuccess(device, online, progress, context);
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Copy [ERROR]");
-        if (progress) {
-            var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-            param_messageOutput.value = "[ >>> FEHLER! <<< ]\n" + e.message;
-            throw new Error("[ >>> FEHLER! <<< ] " + e.message);
-        } else {
-            throw e;
-        }
+        uctErrorMapper(device, progress, context.p_messageOutput, e);
     }    
 }
 
@@ -324,13 +322,7 @@ function uctBtnReset(device, online, progress, context) {
         uctOnlineBtnSuccess(device, online, progress, context);
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Reset [ERROR]");
-        if (progress) {
-            var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-            param_messageOutput.value = "[ >>> FEHLER! <<< ]\n" + e.message;
-            throw new Error("[ >>> FEHLER! <<< ] " + e.message);
-        } else {
-            throw e;
-        }
+        uctErrorMapper(device, progress, context.p_messageOutput, e);
     }    
 }
 
