@@ -47,9 +47,14 @@ function uctParseRangesString(channelsString) {
 }
 
 // TODO move
-function uctProgress(progress, offset, size, current, max) {
+function uctProgress(progress, pos) {
     if (progress) {
-        progress.setProgress(offset + size * current/max);
+        progress.setProgress(pos);
+    }
+}
+function uctProgressCalc(progress, a, b, current, max) {
+    if (progress) {
+        progress.setProgress(a + (b-a)*current/max);
     }
 }
 function uctProgressText(progress, message) {
@@ -88,7 +93,7 @@ function uctBtnExport(device, online, progress, context) {
 function _uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...");
     uctProgressText(progress, "Export ...");
-    uctProgress(progress, 1, 1, 0, 1);
+    uctProgress(progress, 1);
     var moduleSelection = device.getParameterByName(context.p_moduleSelection).value;
     if (moduleSelection < uctModuleOrder.length) {
         var module = uctModuleOrder[moduleSelection];
@@ -131,7 +136,7 @@ function _uctBtnExport(device, online, progress, context) {
                 Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber);
                 var progressText = "Export (" + (i + 1) + "/" + channels.length + ") " + module + "/" + channelNumber;
                 uctProgressText(progress, progressText + " ...");
-                uctProgress(progress, 2, 95, i, channels.length);
+                uctProgressCalc(progress, 2, 97, i, channels.length);
                 channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, exportFormat, multiLine, includeHidden, includeDefault));
                 uctProgressText(progress, progressText + " [OK]");
                 Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
@@ -141,7 +146,7 @@ function _uctBtnExport(device, online, progress, context) {
         uctProgressText(progress, "Export " + module + "/" + channels.join(",") + " [OK]");
     } else {
         uctProgressText(progress, "Export ALL ...");
-        uctProgress(progress, -1, 0, 0, 1);
+        uctProgress(progress, 1);
 
         // TODO check reduction of redundancy
 
@@ -183,7 +188,7 @@ function _uctBtnExport(device, online, progress, context) {
                     uctProgressText(progress, progressText + " [OK]");
                     Log.info("OpenKNX ConfigTransfer: Export Channel " + module + "/" + channelNumber + " [DONE]");
 
-                    uctProgress(progress, 0, 97, progressPos, progressMax);
+                    uctProgressCalc(progress, 1, 97, progressPos, progressMax);
                 }
             }
         }
@@ -192,7 +197,7 @@ function _uctBtnExport(device, online, progress, context) {
             uctProgressText(progress, "Export ALL [OK]");
         }
     }
-    uctProgress(progress, 97, 3, 1, 1);
+    uctProgress(progress, 100);
     // uctProgressText(progress, "Export " + module + "/" + channels.join(",") + " [OK]");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]");
 }
@@ -228,7 +233,7 @@ function uctBtnCopy(device, online, progress, context) {
 function _uctBtnCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...");
     uctProgressText(progress, "Kanalkopie ...");
-    uctProgress(progress, 1, 1, 0, 1);
+    uctProgress(progress, 1);
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var mode = device.getParameterByName(context.p_copyMode).value;
     var result = [];
@@ -250,20 +255,20 @@ function _uctBtnCopy(device, online, progress, context) {
 
         // inline without duplicate export: result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
         /* TODO copy without serialize/deserialize */
-        uctProgress(progress, 1, 1, 1, 1);
+        uctProgress(progress, 2);
         var exportStr = uctExportModuleChannelToString(device, module, sourceChannel, "", false, true);
-        uctProgress(progress, 2, 95, 1+0, 1+targetChannels.length);
+        uctProgressCalc(progress, 2, 97, 1+0, 1+targetChannels.length);
         for (var i = 0; i < targetChannels.length; i++) {
             if (!uctProgressIsCanceled(progress)) {
                 var progressText = "Kanalkopie (" + (i + 1) + "/" + targetChannels.length + ") " + module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i];
                 uctProgressText(progress, progressText + " ...");
-                uctProgress(progress, 2, 95, 1 + i, 1 + targetChannels.length);
+                uctProgressCalc(progress, 2, 97, 1 + i, 1 + targetChannels.length);
                 uctImportModuleChannelFromString(device, module, targetChannels[i], exportStr, 7);
                 result.push(module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i] + " [OK]");
                 uctProgressText(progress, progressText + " [OK]");
             }
         }
-        uctProgress(progress, 2, 95, 1 + targetChannels.length, 1 + targetChannels.length);
+        uctProgress(progress, 97);
     } else if (mode == 1) {
         var sourceChannels = uctParseRangesString(device.getParameterByName(context.p_channelSourceString).value);
         var targetChannel = device.getParameterByName(context.p_channelTarget).value;
@@ -285,7 +290,7 @@ function _uctBtnCopy(device, online, progress, context) {
             uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
         }
         uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannels.join(",") + " -> " + targetChannels.join(","));
-        uctProgress(progress, 1, 1, 1, 1);
+        uctProgress(progress, 1);
 
         if (offset == 0) {
             // all channels are the same
@@ -297,7 +302,7 @@ function _uctBtnCopy(device, online, progress, context) {
                 var chTarget = chSrc + offset;
                 var progressText = "Kanalkopie (" + (i + 1) + "/" + sourceChannels.length + ") " + module + "/" + chSrc + " -> " + module + "/" + chTarget;
                 uctProgressText(progress, progressText + " ...");
-                uctProgress(progress, 2, 95, i, sourceChannels.length);
+                uctProgressCalc(progress, 2, 97, i, sourceChannels.length);
                 result.push(uctCopyModuleChannel(device, module, chSrc, chTarget));
                 uctProgressText(progress, progressText + " [OK]");
             }
@@ -308,7 +313,7 @@ function _uctBtnCopy(device, online, progress, context) {
     }
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = result.join("\n");
-    uctProgress(progress, 97, 3, 1, 1);
+    uctProgress(progress, 100);
     uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannel + " -> " + targetChannels.join(",") + " [OK]");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]");
 }
@@ -332,7 +337,7 @@ function uctBtnReset(device, online, progress, context) {
 function _uctBtnReset(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...");
     uctProgressText(progress, "Standardwerte ...");
-    uctProgress(progress, 1, 1, 0, 1);
+    uctProgress(progress, 1);
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
     var moduleChannelCount = uctChannelParams[module].channels;
 
@@ -359,14 +364,14 @@ function _uctBtnReset(device, online, progress, context) {
             Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber);
             var progressText = "Reset (" + (i + 1) + "/" + channels.length + ") " + module + "/" + channelNumber;
             uctProgressText(progress, progressText + " ...");
-            uctProgress(progress, 2, 95, i, channels.length);
+            uctProgressCalc(progress, 2, 97, i, channels.length);
             result.push(uctResetModuleChannel(device, module, channelNumber));
             uctProgressText(progress, progressText + " [OK]");
             Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber + " [DONE]");
         }
     }
     param_messageOutput.value = result.join("\n");
-    uctProgress(progress, 97, 3, 1, 1);
+    uctProgress(progress, 100);
     uctProgressText(progress, "Reset " + module + "/" + channels.join(",") + " [OK]");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset [DONE]");
 }
