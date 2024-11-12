@@ -220,6 +220,7 @@
 
               <Parameter Id="%AID%_P-%TT%00000" Name="EtsMode"               ParameterType="%AID%_PT-CheckBox"                            Text=""                      Value="0"   SuffixText="Fallback (immer möglich)"/>
               <Parameter Id="%AID%_P-%TT%00001" Name="EtsInteractiveNote"    ParameterType="%AID%_PT-CheckBox"                            Text="ETS-Ausführungsmodus Interaktiv/Fallback" Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00002" Name="EtsModeShow"           ParameterType="%AID%_PT-CheckBox"                            Text="Auswahl auf allen Seiten zeigen" Value="0"   />
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
@@ -264,6 +265,7 @@
 
               <ParameterRef Id="%AID%_P-%TT%00000_R-%TT%0000001" RefId="%AID%_P-%TT%00000" />
               <ParameterRef Id="%AID%_P-%TT%00001_R-%TT%0000101" RefId="%AID%_P-%TT%00001" />
+              <ParameterRef Id="%AID%_P-%TT%00002_R-%TT%0000201" RefId="%AID%_P-%TT%00002" />
 
               <ParameterRef Id="%AID%_P-%TT%00100_R-%TT%0010001" RefId="%AID%_P-%TT%00100" />
               <ParameterRef Id="%AID%_P-%TT%00101_R-%TT%0010101" RefId="%AID%_P-%TT%00101" />
@@ -429,6 +431,9 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Einstellungen" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="  Hinweise anzeigen" UIHint="Headline" />
                 <ParameterRefRef RefId="%AID%_P-%TT%00001_R-%TT%0000101" IndentLevel="2" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="  ETS-Ausführungsmodus" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" IndentLevel="2" />
+                <ParameterRefRef RefId="%AID%_P-%TT%00002_R-%TT%0000201" IndentLevel="2" />
 
               </ParameterBlock>
 
@@ -542,7 +547,14 @@
                             <Button Id="%AID%_B-%TT%00300" Text="Kopieren"                 EventHandler="uctBtnCopy"                                             EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
                           </when>
                         </choose>
-                        <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+
+                        <!-- direct show selection of fallback ? -->
+                        <choose ParamRefId="%AID%_P-%TT%00002_R-%TT%0000201">
+                          <when test="1">
+                            <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+                          </when>
+                        </choose>
+
                       </when>
                     </choose>                    
                     <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" HelpContext="UCT-Vorschau-und-Kopier-Resultat" />
@@ -615,7 +627,13 @@
                         <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"             EventHandler="uctBtnReset"                                            EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ResetMode&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;, &quot;p_channelTargetsString&quot;:&quot;%PREFIX%_ResetChannelString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
                       </when>
                     </choose>
-                    <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+
+                    <!-- direct show selection of fallback ? -->
+                    <choose ParamRefId="%AID%_P-%TT%00002_R-%TT%0000201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+                      </when>
+                    </choose>
 
                     <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
                   </when>
@@ -779,7 +797,13 @@
                         <Button Id="%AID%_B-%TT%00200" Text="Exportieren"              EventHandler="uctBtnExport"                                           EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ExportModul&quot;, &quot;p_channelMode&quot;:&quot;%PREFIX%_ExportMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_ExportSource&quot;, &quot;p_channelSourcesString&quot;:&quot;%PREFIX%_ExportSourcesString&quot;, &quot;p_exportParamSelectionSelection&quot;:&quot;%PREFIX%_ExportParamSelection&quot;, &quot;p_exportFormatSelection&quot;:&quot;%PREFIX%_ExportFormat&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ExportUserLog&quot; ,  &quot;p_exportOutput&quot;:&quot;%PREFIX%_ExportOutput&quot;  }" />
                       </when>
                     </choose>
-                    <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+
+                    <!-- direct show selection of fallback ? -->
+                    <choose ParamRefId="%AID%_P-%TT%00002_R-%TT%0000201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_P-%TT%00000_R-%TT%0000001" />
+                      </when>
+                    </choose>
 
                     <ParameterRefRef RefId="%AID%_P-%TT%00204_R-%TT%0020401" HelpContext="UCT-Export-String" />
                   </when>
