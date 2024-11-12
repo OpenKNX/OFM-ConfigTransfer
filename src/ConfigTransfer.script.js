@@ -91,7 +91,7 @@ function uctBtnExport(device, online, progress, context) {
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Export [ERROR]");
         uctErrorMapper(device, progress, context.p_messageOutput, e);
-    }    
+    }
 }
 
 function _uctBtnExport(device, online, progress, context) {
@@ -102,7 +102,7 @@ function _uctBtnExport(device, online, progress, context) {
     if (moduleSelection < uctModuleOrder.length) {
         var module = uctModuleOrder[moduleSelection];
         var moduleChannelCount = uctChannelParams[module].channels;
-    
+
         var channelMode = device.getParameterByName(context.p_channelMode).value;
         var channels = [0];
         if (moduleChannelCount > 0) {
@@ -120,18 +120,18 @@ function _uctBtnExport(device, online, progress, context) {
         if (channels.length > 1) {
             Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
         }
-    
+
         var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
         var includeHidden = (includeSelection == 1);
         var includeDefault = (includeSelection == 2);
-    
+
         var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
         var exportFormat = (exportFormatSelection==3) ? "" : "name";
         // multi-channel export is restricted to single line
         var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
-    
+
         // TODO add p_messageOutput again?
-    
+
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];
         for (var i = 0; i < channels.length; i++) {
@@ -171,7 +171,7 @@ function _uctBtnExport(device, online, progress, context) {
         }
         var progressPos = 0;
         var progressChPos = 0;
-        
+
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];
         var wasCanceled = false;
@@ -225,7 +225,7 @@ function uctBtnCopy(device, online, progress, context) {
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Copy [ERROR]");
         uctErrorMapper(device, progress, context.p_messageOutput, e);
-    }    
+    }
 }
 
 function _uctBtnCopy(device, online, progress, context) {
@@ -323,7 +323,7 @@ function uctBtnReset(device, online, progress, context) {
     } catch (e) {
         Log.error("OpenKNX ConfigTransfer: Handle Channel Reset [ERROR]");
         uctErrorMapper(device, progress, context.p_messageOutput, e);
-    }    
+    }
 }
 
 function _uctBtnReset(device, online, progress, context) {
