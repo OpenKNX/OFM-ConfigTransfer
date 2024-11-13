@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <op:nowarn id="3" regex="uctProgress" />
+  <op:nowarn id="3" regex="uctProgressCalc" />
+  <op:nowarn id="3" regex="uctProgressText" />
+  <op:nowarn id="3" regex="uctProgressIsCanceled" />
+  <op:nowarn id="3" regex="uctOnlineBtnSuccess" />
+  <op:nowarn id="3" regex="uctErrorMapper" />
+  <op:nowarn id="3" regex="_uctBtnExport" />
+  <op:nowarn id="3" regex="_uctBtnCopy" />
+  <op:nowarn id="3" regex="_uctBtnReset" />
   <op:nowarn id="3" regex="uctSerializeParamValue" />
   <op:nowarn id="3" regex="uctUnserializeParamValue" />
   <op:nowarn id="3" regex="uctCreateHeader" />
@@ -8,6 +17,11 @@
   <op:nowarn id="3" regex="uctExportModuleChannelToStrings" />
   <op:nowarn id="3" regex="uctExportModuleChannelToString" />
   <op:nowarn id="3" regex="uctImportModuleChannelFromString" />
+  <op:nowarn id="3" regex="uctImportCheckAndGetModule" />
+  <op:nowarn id="3" regex="uctImportPrecheck" />
+  <op:nowarn id="3" regex="uctImportGetAndCheckChannel" />
+  <op:nowarn id="3" regex="uctImportChannelFromEntries" />
+  <op:nowarn id="3" regex="uctImportChannelResultMessage" />
   <op:nowarn id="3" regex="uctPrepareParamValues" />
   <op:nowarn id="3" regex="uctWriteParams" />
   <op:nowarn id="3" regex="uctCopyModuleChannel" />
