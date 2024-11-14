@@ -735,6 +735,10 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     // TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
+    return uctImportChannelResultMessage(result);
+}
+
+function uctImportChannelResultMessage(result) {
     var msg = "";
     if (result.errors) {
         msg = msg + "[ >>> FEHLER! <<< ]\n";
