@@ -15,6 +15,8 @@ module.exports = {
     // helper functions
     uctIsDisjoint,
 
+    uctOnlineBtnSuccess,
+
     // functions
     uctParseRangesString,
     uctSerializeParamValue, 
@@ -45,4 +47,9 @@ module.exports = {
     uctParamResetNothing,
     uctParamModulSelectionCheck,
     uctParamCopyCheck,
+
+    uctProgress,
+    uctProgressCalc,
+    uctProgressText,
+    uctProgressIsCanceled,
 };

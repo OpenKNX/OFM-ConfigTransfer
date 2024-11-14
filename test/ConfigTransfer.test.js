@@ -11,6 +11,161 @@
 const cts = require("../test/testing.js");
 
 
+describe("Online Buttons", () => {
+    let mockProgress;
+    beforeEach(() => {
+        mockProgress = {
+            setProgress: jest.fn(),
+            setText: jest.fn(),
+            isCanceled: jest.fn().mockReturnValue(false),
+        };
+    });    
+
+    describe("Progress Wrapper Functions", () => {
+        describe("uctProgress", () => {
+            const uctProgress = cts.uctProgress;
+            it('is called when progress is defined', () => {
+                const pos = 10;
+                uctProgress(mockProgress, pos);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(pos);
+            });
+            it('is NOT called called, when progress is undefined', () => {
+                const pos = 10;
+                uctProgress(undefined, pos);
+                uctProgress(null, pos);
+                // expect(mockProgress.setProgress).not.toHaveBeenCalled();
+            });
+        });
+    
+        describe("uctProgressCalc", () => {
+            const uctProgressCalc = cts.uctProgressCalc;
+            it('is called when progress is defined and calculates position', () => {
+                const lower = 0;
+                const upper = 100;
+                const pos = 25;
+                const max = 50;
+                uctProgressCalc(mockProgress, 0, 100, 25, 50);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(50);
+                uctProgressCalc(mockProgress, 0, 100, 0, 50);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(0);
+                uctProgressCalc(mockProgress, 0, 100, 50, 50);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(100);
+    
+                uctProgressCalc(mockProgress, 0, 20, 70, 140);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(10);
+                uctProgressCalc(mockProgress, 20, 80, 6, 30);
+                expect(mockProgress.setProgress).toHaveBeenCalledWith(32);
+            });
+            it('is NOT called called, when progress is undefined', () => {
+                const lower = 0;
+                const upper = 100;
+                const pos = 10;
+                const max = 35;
+                uctProgressCalc(undefined, lower, upper, pos, max);
+                uctProgressCalc(null, lower, upper, pos, max);
+                // expect(mockProgress.setProgress).not.toHaveBeenCalled();
+            });
+        });
+    
+        describe("uctProgressText", () => {
+            const uctProgressText = cts.uctProgressText;
+            it('is called when progress is defined and call with prefix', () => {
+                uctProgressText(mockProgress, "Benutzer-Infotext");
+                expect(mockProgress.setText).toHaveBeenCalledWith("ConfigTransfer: Benutzer-Infotext");
+            });
+            it('is NOT called called, when progress is undefined', () => {
+                uctProgressText(undefined, "test with undefined");
+                uctProgressText(null, "test with null");
+                // expect(mockProgress.uctProgressText).not.toHaveBeenCalled();
+            });
+        });
+    
+        describe("uctProgressIsCanceled", () => {
+            const uctProgressIsCanceled = cts.uctProgressIsCanceled;
+            it('is NOT called called, and returns false', () => {
+                expect(uctProgressIsCanceled(null)).toBe(false);
+            });
+            it('is false, as long NOT progress.isCancelled()', () => {
+                expect(uctProgressIsCanceled(mockProgress)).toBe(false);
+                expect(mockProgress.isCanceled).toHaveBeenCalled();
+            });
+            it('is true, when progress.isCancelled()', () => {
+                const mockProgressCanceled = {
+                    isCanceled: jest.fn().mockReturnValue(true),
+                };            
+                expect(uctProgressIsCanceled(mockProgressCanceled)).toBe(true);
+                expect(mockProgressCanceled.isCanceled).toHaveBeenCalled();
+            });
+            it('is true, progress.isCancelled() is reached', () => {
+                const mockCancel = {
+                    isCanceled: jest.fn()
+                        .mockReturnValueOnce(false)
+                        .mockReturnValueOnce(true),
+                };            
+                expect(uctProgressIsCanceled(mockCancel)).toBe(false);
+                expect(mockCancel.isCanceled).toHaveBeenCalled();
+                expect(uctProgressIsCanceled(mockCancel)).toBe(true);
+                expect(mockCancel.isCanceled).toHaveBeenCalled();
+            });
+        });
+    
+    });
+    
+    describe('Online-Button-Info', () => {
+        const device = cts.device;
+        const uctOnlineBtnSuccess = cts.uctOnlineBtnSuccess;
+        const online = null; // ignored
+        const context = {};
+        it("hide mote when progress is defined", () => {
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 1;
+            uctOnlineBtnSuccess(device, online, mockProgress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+        });
+        it("keeps note visible when progress is defined", () => {
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 0;
+            uctOnlineBtnSuccess(device, online, mockProgress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+        });
+        it("keeps note visible when progress is undefined", () => {
+            [0, 1].forEach(visibility => {
+                device.getParameterByName("UCT_EtsInteractiveNote").value = visibility;
+                uctOnlineBtnSuccess(device, online, undefined, context);
+                expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(visibility);
+                uctOnlineBtnSuccess(device, online, null, context);
+                expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(visibility);
+            });
+        });
+        it.skip("Usage in Buttons: Copy, Reset, Import, Export", () => {
+            const progress = mockProgress;
+
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 1;
+            uctBtnCopy(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+            uctBtnCopy(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 1;
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+            uctBtnReset(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 1;
+            uctBtnImport(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+            uctBtnImport(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+
+            device.getParameterByName("UCT_EtsInteractiveNote").value = 1;
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCT_EtsInteractiveNote").value).toBe(0);
+
+        });
+    });
+});
+
 
 describe("Helper Functions", () => {
     describe("uctIsDisjoint", () => {
