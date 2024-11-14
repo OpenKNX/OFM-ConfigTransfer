@@ -631,9 +631,8 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     var header = uctParseHeader(importLines[0]);
 
-    /* check for completeness */
-    var importEnd = importLines[importLines.length-1];
-    if (importEnd != ";OpenKNX") {
+    // check for completeness
+    if (importLines[importLines.length - 1] != ";OpenKNX") {
         throw new Error('Unvollständiger Transfer-String: Fehlender End-Marker ";OpenKNX"!');
     }
 
