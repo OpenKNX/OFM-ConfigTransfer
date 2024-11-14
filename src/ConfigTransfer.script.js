@@ -66,6 +66,27 @@ function uctProgressIsCanceled(progress) {
     return progress && progress.isCanceled();
 }
 
+function uctProgressMaxChannels() {
+    var progressChMax = 0;
+    for (var i = 0; i < uctModuleOrder.length; i++) {
+        var n = uctChannelParams[uctModuleOrder[i]].channels;
+        progressChMax += 1 + (n ? n : 0);
+    }
+    // 0 should never happen, at least BASE/0 is expected
+    return (progressChMax == 0) ? 1 : progressChMax;
+}
+function uctProgressMaxParams() {
+    var progressMax = 0;
+    for (var i = 0; i < uctModuleOrder.length; i++) {
+        var params = uctChannelParams[uctModuleOrder[i]];
+        var n = params.channels;
+        var paramsOfModuleChannels = n ? (n * params.templ.defaults.length) : 0;
+        progressMax += params.share.defaults.length + paramsOfModuleChannels;
+    }
+    // 0 should never happen, at least BASE/0 params are expected
+    return (progressMax == 0) ? 1 : progressMax;
+}
+
 function uctOnlineBtnSuccess(device, online, progress, context) {
     if (progress) {
         // hide info message on success of online button
@@ -154,23 +175,11 @@ function _uctBtnExport(device, online, progress, context) {
 
         // TODO check reduction of redundancy
 
-        // cald progress based on channels and params
-        var progressMax = 0;
-        var progressChMax = 0;
-        for (var i = 0; i < uctModuleOrder.length; i++) {
-            var module = uctModuleOrder[i];
-            var moduleChannelCount = uctChannelParams[module].channels;
-            progressChMax += 1 + (moduleChannelCount ? moduleChannelCount : 0);
-            progressMax += 1 * uctChannelParams[module].share.defaults.length + (moduleChannelCount ? (moduleChannelCount * uctChannelParams[module].templ.defaults.length): 0);
-        }
-        if (progressMax ==0 ) {
-            progressMax = 1; // should never happen, at least BASE should be present
-        }
-        if (progressChMax == 0) {
-            progressChMax = 1; // should never happen, at least BASE should be present
-        }
-        var progressPos = 0;
+        // calc progress based on channels and params
         var progressChPos = 0;
+        var progressChMax = uctProgressMaxChannels();
+        var progressPos = 0;
+        var progressMax = uctProgressMaxParams();
 
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];

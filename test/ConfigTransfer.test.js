@@ -110,7 +110,30 @@ describe("Online Buttons", () => {
         });
     
     });
-    
+
+    describe("Progress Helper Functions", () => {
+        describe("uctProgressMaxChannels", () => {
+            const uctProgressMaxChannels = cts.uctProgressMaxChannels;
+            it('is returns the numberof all channels in all modules (include base)', () => {
+                const channelCount = (1 + 0) + (1 + 0) + (1 + 0) + (1 + 7) + (1 + 2) + (1 + 12);
+                expect(uctProgressMaxChannels()).toBe(channelCount);
+            });
+        });
+        describe("uctProgressMaxParams", () => {
+            const uctProgressMaxParams = cts.uctProgressMaxParams;
+            it('is returns the numberof all parameters in all modules and their channels', () => {
+                const cUCT = 1 * 17 + 0;
+                const cNVEM = 1 * 2 + 0;
+                const cTXS = 1 * 1 + 0;
+                const cCHN = 1 * 2 + 7 * 2;
+                const cMRP = 1 * 3 + 2 * 3;
+                const cMGR = 1 *4 + 12 * 1;
+                const count = cUCT + cNVEM + cTXS + cCHN + cMRP + cMGR;
+                expect(uctProgressMaxParams()).toBe(count);
+            });
+        });
+    });
+
     describe('Online-Button-Info', () => {
         const device = cts.device;
         const uctOnlineBtnSuccess = cts.uctOnlineBtnSuccess;
