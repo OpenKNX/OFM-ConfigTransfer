@@ -63,7 +63,7 @@ function uctProgressText(progress, message) {
     }
 }
 function uctProgressIsCanceled(progress) {
-    return progress && progress.isCanceled();
+    return !!(progress && progress.isCanceled());
 }
 
 function uctProgressMaxChannels() {
