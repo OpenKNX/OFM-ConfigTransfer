@@ -232,7 +232,7 @@
             </ParameterTypes>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%00000" Name="EtsMode"               ParameterType="%AID%_PT-CheckBox"                            Text=""                      Value="0"   SuffixText="Fallback (immer möglich)"/>
+              <Parameter Id="%AID%_P-%TT%00000" Name="EtsMode"               ParameterType="%AID%_PT-CheckBox"                            Text=""                      Value="0"   SuffixText="Fallback-Modus"/>
               <Parameter Id="%AID%_P-%TT%00001" Name="EtsInteractiveNote"    ParameterType="%AID%_PT-CheckBox"                            Text="ETS-Ausführungsmodus Interaktiv/Fallback" Value="1"   />
               <Parameter Id="%AID%_P-%TT%00002" Name="EtsModeShow"           ParameterType="%AID%_PT-CheckBox"                            Text="Auswahl auf allen Seiten zeigen" Value="0"   />
 
