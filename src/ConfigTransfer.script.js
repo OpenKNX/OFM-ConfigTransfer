@@ -90,7 +90,7 @@ function uctProgressMaxParams() {
 function uctOnlineBtnSuccess(device, online, progress, context) {
     if (progress) {
         // hide info message on success of online button
-        device.getParameterByName("UCT_EtsInteractiveNote").value = "0";
+        device.getParameterByName("UCT_EtsInteractiveNote").value = 0;
     }
 }
 
