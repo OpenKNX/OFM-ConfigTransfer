@@ -547,7 +547,7 @@
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Schaltfläche [Kopieren] ausgeblendet um versehentlichen Überschreiben von Kanälen zu verhindern! Erneutes Einblenden durch Ändern beliebiger Parameter." UIHint="Information" />
                       </when>
                       <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="HorizontalRuler" />
                         <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
                           <when test="0">
                             <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
@@ -627,7 +627,7 @@
                       </when>
                     </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="HorizontalRuler" />
                     <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
                       <when test="0">
                         <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
@@ -797,7 +797,7 @@
                   </when>
                   <when test="&lt;=255"><!-- TODO use defined id for exporting ALL -->
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="Text" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " UIHint="HorizontalRuler" />
                     <choose ParamRefId="%AID%_P-%TT%00000_R-%TT%0000001">
                       <when test="0">
                         <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
