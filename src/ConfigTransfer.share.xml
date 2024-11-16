@@ -172,10 +172,18 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
               </ParameterType>
               <ParameterType Id="%AID%_PT-ChannelSelectionString" Name="ChannelSelectionString" ValidationErrorRef="%AID%_M-%TT%00003">
-                <TypeText SizeInBit="2400" Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" />
+                <TypeText SizeInBit="2400" />
+                <!-- not validate due to usage with buttons:
+                Input-Field showed new value, but parameter-value (used in action) was not updated on validation fail
+                Pattern="^(0|[1-9]\d?)(-(0|[1-9]\d?))?(,(0|[1-9]\d?)(-(0|[1-9]\d?))?)*$" /
+                -->
               </ParameterType>
               <ParameterType Id="%AID%_PT-ChannelNot0SelectionString" Name="ChannelNot0SelectionString" ValidationErrorRef="%AID%_M-%TT%00004">
-                <TypeText SizeInBit="2400" Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" />
+                <TypeText SizeInBit="2400" />
+                <!-- not validate due to usage with buttons:
+                Input-Field showed new value, but parameter-value (used in action) was not updated on validation fail
+                Pattern="^([1-9]\d?)(-([1-9]\d?))?(,([1-9]\d?)(-([1-9]\d?))?)*$" /
+                -->
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ModuleChannel" Name="ModuleChannel">
