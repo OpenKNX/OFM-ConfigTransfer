@@ -323,8 +323,7 @@ function _uctBtnCopy(device, online, progress, context) {
         // hide for disjoint only!
         device.getParameterByName(context.p_showButton).value = uctIsDisjoint(sourceChannels, targetChannels) ? 1 : 0;
     }
-    var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    param_messageOutput.value = result.join("\n");
+    device.getParameterByName(context.p_messageOutput).value = result.join("\n");
     uctProgress(progress, 100);
     uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannel + " -> " + targetChannels.join(",") + " [OK]");
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]");
