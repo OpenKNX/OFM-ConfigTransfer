@@ -54,6 +54,19 @@
                 <TypeText SizeInBit="1048568" Pattern="^$|^OpenKNX,.+§;OpenKNX$" />
               </ParameterType>
 
+              <!-- Transfer Icon -->
+              <ParameterType Id="%AID%_PT-IconTransfer" Name="IconTransfer">
+                <TypePicture RefId="%FILE-icon-transfer%" HorizontalAlignment="Middle"/>
+              </ParameterType>
+              <!-- Warn Icon (Prefix): "(!)"  -->
+              <ParameterType Id="%AID%_PT-IconPrefixWarn" Name="IconPrefixWarn">
+                <TypePicture RefId="%FILE-icon-warn%" HorizontalAlignment="Left"/>
+              </ParameterType>
+              <!-- Warn 2 Icon (Prefix): "/!\"  -->
+              <ParameterType Id="%AID%_PT-IconPrefixWarn2" Name="IconPrefixWarn2">
+                <TypePicture RefId="%FILE-icon-warn2%" HorizontalAlignment="Left"/>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-EtsButtonExecMode" Name="EtsButtonExecMode">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration Id="%ENID%"  Value="0"  Text="Interaktiv"                                  /><!--  (nur online &amp; nach Prog.) ; Online-Operation (Fortschrittsanzeige und Abbruch) -->
@@ -244,6 +257,11 @@
               <Parameter Id="%AID%_P-%TT%00001" Name="EtsInteractiveNote"    ParameterType="%AID%_PT-CheckBox"                            Text="ETS-Ausführungsmodus Interaktiv/Fallback" Value="1"   />
               <Parameter Id="%AID%_P-%TT%00002" Name="EtsModeShow"           ParameterType="%AID%_PT-CheckBox"                            Text="Auswahl auf allen Seiten zeigen" Value="0"   />
 
+              <!-- Icons -->
+              <Parameter Id="%AID%_P-%TT%00080" Name="IconTransfer"          ParameterType="%AID%_PT-IconTransfer"                        Text="Icon Transfer"         Value=""    Access="Read" />
+              <Parameter Id="%AID%_P-%TT%00081" Name="IconPrefixWarn"        ParameterType="%AID%_PT-IconPrefixWarn"                      Text="Icon Warn (Prefix)"    Value=""    Access="Read" />
+              <Parameter Id="%AID%_P-%TT%00082" Name="IconPrefixWarn2"       ParameterType="%AID%_PT-IconPrefixWarn2"                     Text="Icon Warn2 (Prefix)"   Value=""    Access="Read" />
+
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
               <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
@@ -288,6 +306,10 @@
               <ParameterRef Id="%AID%_P-%TT%00000_R-%TT%0000001" RefId="%AID%_P-%TT%00000" />
               <ParameterRef Id="%AID%_P-%TT%00001_R-%TT%0000101" RefId="%AID%_P-%TT%00001" />
               <ParameterRef Id="%AID%_P-%TT%00002_R-%TT%0000201" RefId="%AID%_P-%TT%00002" />
+
+              <ParameterRef Id="%AID%_P-%TT%00080_R-%TT%0008001" RefId="%AID%_P-%TT%00080" />
+              <ParameterRef Id="%AID%_P-%TT%00081_R-%TT%0008101" RefId="%AID%_P-%TT%00081" />
+              <ParameterRef Id="%AID%_P-%TT%00082_R-%TT%0008201" RefId="%AID%_P-%TT%00082" />
 
               <ParameterRef Id="%AID%_P-%TT%00100_R-%TT%0010001" RefId="%AID%_P-%TT%00100" />
               <ParameterRef Id="%AID%_P-%TT%00101_R-%TT%0010101" RefId="%AID%_P-%TT%00101" />
@@ -494,15 +516,16 @@
                       <Rows>
                         <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                         <Row Id="%AID%_PB-nnn_R-2" Name="Row2" />
-                        <Row Id="%AID%_PB-nnn_R-3" Name="Row3" CollapseIfEmpty="true" />
+                        <Row Id="%AID%_PB-nnn_R-3" Name="Row3" /><!-- CollapseIfEmpty="true" -->
                       </Rows>
                       <Columns>
-                        <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="45%" />
-                        <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="10%" />
-                        <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="45%" />
+                        <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="40%" />
+                        <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="5%" />
+                        <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="40%" />
+                        <!-- 15% unused -->
                       </Columns>
 
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="    --&gt;" Cell="2,2" />
+                      <ParameterRefRef RefId="%AID%_P-%TT%00080_R-%TT%0008001" Cell="2,2" />
                       <choose ParamRefId="%AID%_P-%TT%00306_R-%TT%0030601">
                         <when test="0">
                           <!-- single -->
@@ -524,24 +547,28 @@
                       <ParameterRefRef RefId="%AID%_P-%TT%00391_R-%TT%0039101" />
                       <choose ParamRefId="%AID%_P-%TT%00391_R-%TT%0039101">
                         <when test="1">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="3,1" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00081_R-%TT%0008101" Cell="3,1" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="      Kanal außerhalb von Modul!" Cell="3,1" />
                         </when>
                       </choose>
 
                       <!-- Error of Copy Target Selection -->
                       <choose ParamRefId="%AID%_P-%TT%00392_R-%TT%0039201">
                         <when test="1">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal außerhalb von Modul!" UIHint="Error" Cell="3,3" />
+                          <ParameterRefRef RefId="%AID%_P-%TT%00081_R-%TT%0008101" Cell="3,3" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="      Kanal außerhalb von Modul!" Cell="3,3" />
                         </when>
                         <when test="0">
                           <choose ParamRefId="%AID%_P-%TT%00393_R-%TT%0039301">
                             <when test="1">
                               <choose ParamRefId="%AID%_P-%TT%00306_R-%TT%0030601">
                                 <when test="1">
-                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="ACHTUNG:&#xD;&#xA;Überlappung mit Quellkanälen!" UIHint="Information" Cell="3,3" />
+                                  <ParameterRefRef RefId="%AID%_P-%TT%00082_R-%TT%0008201" Cell="3,3" />
+                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="      Überlappung mit Quellkanälen!" Cell="3,3" />
                                 </when>
                                 <when default="true">
-                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Identisch mit Quell-Kanal!" UIHint="Error" Cell="3,3" />
+                                  <ParameterRefRef RefId="%AID%_P-%TT%00081_R-%TT%0008101" Cell="3,3" />
+                                  <ParameterSeparator Id="%AID%_PS-nnn" Text="      Identisch mit Quell-Kanal!" Cell="3,3" />
                                 </when>
                               </choose>
                             </when>
@@ -560,7 +587,7 @@
                           <when test="0">
                             <choose ParamRefId="%AID%_P-%TT%00001_R-%TT%0000101">
                               <when test="1">
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Starten im Interaktiven Ausführungsmodus ist nur möglich, wenn eine Schnittstelle erreichbar ist und bereits ein Download aufs Gerät erfolgte!&#xD;&#xA;Ggf. Fallback nutzen, bis zur ersten Programmierung oder bei Offline-Betrieb." UIHint="Information" />
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Starten im Interaktiven Ausführungsmodus ist nur möglich, wenn bereits ein Download aufs Gerät erfolgte und eine Schnittstelle erreichbar ist!&#xD;&#xA;Ggf. Fallback nutzen, bis zur ersten Programmierung oder bei Offline-Betrieb." UIHint="Information" />
                               </when>
                             </choose>
                             <Button Id="%AID%_B-%TT%00301" Text="Kopieren"                 EventHandler="uctBtnCopy"   EventHandlerOnline="ConnectionOriented"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_copyMode&quot;:&quot;%PREFIX%_CopyMode&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelSourceString&quot;:&quot;%PREFIX%_CopySourceString&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_channelTargetString&quot;:&quot;%PREFIX%_CopyTargetString&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot;, &quot;p_showButton&quot;:&quot;%PREFIX%_CopyShowButton&quot; }" />
@@ -837,6 +864,15 @@
         </ApplicationProgram>
       </ApplicationPrograms>
       <Baggages>
+        <Baggage TargetPath="" Name="transfer-right.16x16.png" Id="%FILE-icon-transfer%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
+        <Baggage TargetPath="" Name="alert-circle-outline.c00.16x16.png" Id="%FILE-icon-warn%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
+        <Baggage TargetPath="" Name="alert-outline.iblue.16x16.png" Id="%FILE-icon-warn2%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
         <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
           <FileInfo TimeInfo="%DATETIME%" />
         </Baggage>
