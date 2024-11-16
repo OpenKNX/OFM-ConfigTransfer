@@ -247,17 +247,19 @@ function _uctBtnCopy(device, online, progress, context) {
     if (mode == 0) {
         var sourceChannel = device.getParameterByName(context.p_channelSource).value;
         var targetChannels = uctParseRangesString(device.getParameterByName(context.p_channelTargetString).value);
+        if (targetChannels.length == 0) {
+            throw new Error('Kein Ziel-Kanal definiert!');
+        }
+        // => targetChannels are NOT empty
+
         Log.info("OpenKNX ConfigTransfer: Copy single channel " + sourceChannel + " to " + targetChannels.join(","));
         uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannel + " -> " + targetChannels.join(","));
 
         // precheck channels:
-        // uctGetModuleParamsDef(module, targetChannel[targetChannel.length - 1]);
-        if (targetChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
-            if (!uctIsDisjoint([sourceChannel], targetChannels)) {
-                throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
-            }
+        // ignore result, but expect error for non-existing channel
+        uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
+        if (!uctIsDisjoint([sourceChannel], targetChannels)) {
+            throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
         }
 
         // inline without duplicate export: result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
@@ -278,24 +280,27 @@ function _uctBtnCopy(device, online, progress, context) {
         uctProgress(progress, 97);
     } else if (mode == 1) {
         var sourceChannels = uctParseRangesString(device.getParameterByName(context.p_channelSourceString).value);
+        if (sourceChannels.length == 0) {
+            throw new Error('Kein Quell-Kanal definiert!');
+        }
+
         var targetChannel = device.getParameterByName(context.p_channelTarget).value;
         var offset = targetChannel - sourceChannels[0];
         Log.info("OpenKNX ConfigTransfer: Copy channel group " + sourceChannels.join(",") + " to channels starting at " + targetChannel + "; offset=" + offset);
         uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannels.join(",") + " -> ...");
 
-        if (sourceChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, sourceChannels[sourceChannels.length - 1]);
-        }
+        // ignore result, but expect error for non-existing channel
+        uctGetModuleParamsDef(module, sourceChannels[sourceChannels.length - 1]);
 
         var targetChannels = [];
         for (var i = 0; i < sourceChannels.length; i++) {
             targetChannels.push(sourceChannels[i] + offset);
         }
-        if (targetChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
-        }
+        // sourceChannels NOT empty => targetChannels NOT empty
+
+        // ignore result, but expect error for non-existing channel
+        uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
+
         uctProgressText(progress, "Kanalkopie " + module + "/" + sourceChannels.join(",") + " -> " + targetChannels.join(","));
         uctProgress(progress, 1);
 
