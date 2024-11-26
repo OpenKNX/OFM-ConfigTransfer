@@ -501,6 +501,18 @@ function uctExportModuleChannelToString(device, module, channel, keyFormat, mult
 }
 
 
+function uctVersionToStr(ver) {
+    if (typeof ver == 'number' && (ver % 1) == 0) {
+        var minor = ver % 16;
+        var major = (ver - minor) / 16;
+        return 'v' + major + '.' + minor;
+    } else if (typeof ver == 'string') {
+        return isNaN(ver) ? ('"' + ver + '"') : uctVersionToStr(parseInt(ver));
+    } else {
+        return "" + ver;
+    }
+}
+
 function uctHexNumberStr(x) {
     return "0x"+x.toString(16).toUpperCase();
 }
@@ -661,8 +673,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             // => at least one version is missing
             if (paramModVerUndef != headerModVerDash) {
                 // => not both at the same time
-                // TODO show versions in same format, to prevent mixed decimal/hex representation
-                throw new Error('Einseitig unspezifische Modul-Version: '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
+                throw new Error('Einseitig unspezifische Modul-Version: ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
             }
             // => both at the same time
             if (!checkAppVersion && (isDifferentAppId || isDifferentAppVer)) {
@@ -670,8 +681,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             }
 
         } else if (header.modul.ver != uctChannelParams[module].version) {
-            // TODO show versions in same format, to prevent mixed decimal/hex representation
-            throw new Error('Modul-Version '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
+            throw new Error('Modul-Version ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
         }
     }
 
@@ -684,7 +694,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             throw new Error('Applikation '+uctAppId+' erwartet, aber '+header.app.id+' gefunden!');
         }
         if (checkAppVersion && isDifferentAppVer) {
-            throw new Error('Applikations-Version '+uctAppVer+' erwartet, aber '+header.app.ver+' gefunden!');
+            throw new Error('Applikations-Version ' + uctVersionToStr(uctAppVer) + ' erwartet, aber ' + uctVersionToStr(header.app.ver) + ' gefunden!');
         }
     }
 
