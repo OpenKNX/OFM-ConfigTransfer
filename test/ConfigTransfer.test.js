@@ -579,7 +579,7 @@ describe('Button Handler', () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
         });
-    
+
         it("prints outputs and ignores comments", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§>echo1§#comment§>echo 2§;OpenKNX";
             device.getParameterByName("UCTD_Channel").value = 3;
@@ -615,7 +615,7 @@ describe('Button Handler', () => {
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
             device.getParameterByName("UCTD_Channel").value = 100;
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
-        });        
+        });
     });
 
     describe('Copy', () => {
