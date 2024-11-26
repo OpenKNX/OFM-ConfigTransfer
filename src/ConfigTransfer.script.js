@@ -34,7 +34,7 @@ function uctBtnImport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import ...")
     var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
-    var importLine = device.getParameterByName(context.p_importLine).value;
+    var importLine = device.getParameterByName(context.p_importLine).value.replace(/^\s+|\s+$/g, ''); // trim import
     var importCheck = device.getParameterByName(context.p_importCheck).value;
     
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);

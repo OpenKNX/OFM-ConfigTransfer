@@ -8,7 +8,8 @@
   * Kompatibilitätslevel **lockerer** als Standard.
     Das bisherige Level **streng** verhinderte in der Praxis sehr häufig den Import, 
     was bei Nutzern teilweise für Verwirrung sorgte.
-    In der Praxis führt die geringere Garantie zu keinen gravierenden Problemen.  
+    In der Praxis führt die geringere Garantie zu keinen gravierenden Problemen.
+  * Tolerieren/Trimmen von Whitespaces vor und nach Transfer-String
 * Fix: Kontexthilfe für Kompatibilitätslevel **lockerer** aus v0.2.0
 * Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
 * Bereinigung XML, Dokumentation, Kommentare
