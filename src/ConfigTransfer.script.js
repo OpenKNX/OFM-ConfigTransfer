@@ -221,7 +221,7 @@ function uctBtnImport(device, online, progress, context) {
     var importCheck = device.getParameterByName(context.p_importCheck).value;
 
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    param_messageOutput.value = uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
+    param_messageOutput.value = (module + "/" + channelTarget + " Import ") + uctImportModuleChannelFromString(device, module, channelTarget, importLine, importCheck);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import [DONE]");
 }
 
@@ -270,9 +270,9 @@ function _uctBtnCopy(device, online, progress, context) {
                 var progressText = "Kanalkopie (" + (i + 1) + "/" + targetChannels.length + ") " + module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i];
                 uctProgressText(progress, progressText + " ...");
                 uctProgressCalc(progress, 2, 97, 1 + i, 1 + targetChannels.length);
-                uctImportModuleChannelFromString(device, module, targetChannels[i], exportStr, 7);
-                result.push(module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i] + " [OK]");
-                uctProgressText(progress, progressText + " [OK]");
+                var resultMsg = uctImportModuleChannelFromString(device, module, targetChannels[i], exportStr, 7);
+                result.push(module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i] + " " + resultMsg);
+                uctProgressText(progress, progressText + " " + resultMsg);
             }
         }
         uctProgress(progress, 97);
@@ -626,7 +626,7 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
- * @returns {string} - message TODO extend
+ * @returns {string} - message without actual reference to module/channel. Just start with "[OK]" or an Warning/Error in [] TODO extend
  */
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...");
@@ -749,7 +749,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (result.lines.length) {
         msg = msg + '\n' + result.lines.join('\n');
     }
-    return (module + "/" + channel + " Import ") + msg;
+    return msg;
 }
 
 /**
@@ -885,8 +885,8 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     }
     // TODO copy without serialize/deserialize
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true, false);
-    uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
-    return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
+    var resultMsg = uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
+    return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " " + resultMsg;
 }
 
 /**
@@ -897,8 +897,8 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
  * @param {number} channel
  */
 function uctResetModuleChannel(device, module, channel) {
-    uctImportModuleChannelFromString(device, module, channel, uctCreateHeader(module, channel) + '§' + ";OpenKNX", 7);
-    return module + "/" + channel+" Reset [OK]";
+    var resultMsg = uctImportModuleChannelFromString(device, module, channel, uctCreateHeader(module, channel) + '§' + ";OpenKNX", 7);
+    return module + "/" + channel + " Reset " + resultMsg;
 }
 
 function uctParamResetResult(input, output, context) {

@@ -255,7 +255,8 @@ describe("uctImportModuleChannelFromString", () => {
 
     it("collect errors while wrting parameters", () => {
         var importCheck = 7;
-        expect(uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toBe("CHN/0 Import [OK]");
+        // "CHN/0 Import" no longer part of uctImportModuleChannelFromString
+        expect(uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toBe("[OK]");
         const failingParamGet = {
             getParameterByName: function (name) {
                 // fail on non UCT fields
@@ -265,7 +266,8 @@ describe("uctImportModuleChannelFromString", () => {
         const result = uctImportModuleChannelFromString(failingParamGet, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck);
         const resultLines = result.split("\n");
         expect(resultLines.length).toBeGreaterThanOrEqual(1+2);
-        expect(resultLines[0]).toBe("CHN/0 Import [ >>> FEHLER! <<< ]");
+        // "CHN/0 Import" no longer part of uctImportModuleChannelFromString
+        expect(resultLines[0]).toBe("[ >>> FEHLER! <<< ]");
         // TODO check using regex...
         expect(resultLines[2].split("]")[0]).toBe("[ERR@0;CHN_A=5");
         expect(resultLines[3].split("]")[0]).toBe("[ERR@1;CHN_B=385");
