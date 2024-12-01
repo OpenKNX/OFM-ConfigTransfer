@@ -621,6 +621,7 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
  * @param {string} module - the module prefix e.g. 'LOG'
  * @param {number} channel - the channel number starting with 1; maximum range [1;99]
  * @param {string} exportStr - a previously exported configuration in the format "{$index}={$value}§..§{$index}={$value}"
+ * @returns {string} - message TODO extend
  */
 function uctImportModuleChannelFromString(device, module, channel, exportStr, importCheck) {
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString ...");
@@ -731,7 +732,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
-    var msg = module + "/" + channel + " Import ";
+    var msg = "";
     if (result.errors) {
         msg = msg + "[ >>> FEHLER! <<< ]\n";
     } else if (result.warnings) {
@@ -745,7 +746,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (result.lines.length) {
         msg = msg + '\n' + result.lines.join('\n');
     }
-    return msg;
+    return (module + "/" + channel + " Import ") + msg;
 }
 
 /**
