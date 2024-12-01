@@ -854,7 +854,13 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
         } catch (e) {
             var paramFullNameTempl = module + "_" + paramName;
             Log.error("Failed writing "+paramFullNameTempl+" in channel "+channel+": "+e);
-            result.lines.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            var objErr = ("" + e + "") == "[object Error]";
+            if (objErr) {
+                result.lines.push("* { ! } " + paramFullNameTempl + "=" + paramValue + "  \t" + e.message);
+            } else {
+                // TODO remove/replace completely
+                result.lines.push("[ERR@"+i + ";" + paramFullNameTempl + "=" + paramValue + "]=" + e + ";" + e.message);
+            }
             result.errors++;
             clean = false;
         }
