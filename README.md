@@ -180,7 +180,7 @@ Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes 
 ## Geprüfte OpenKNX-Module
 
 Die Implementation des Konfigurationstransfers unterstützt grundsätzlich jedes OpenKNX-Modul, 
-das über den OpenKNXproducer in eine ETS-Applikation eingebunden werden kann, 
+das über den OpenKNXproducer (Minimalversion siehe [Voraussetzungen](#voraussetzungen)) in eine ETS-Applikation eingebunden werden kann, 
 ohne dass dazu besondere Anpassungen vorgesehen sind.
 
 Nutzung von nicht durch den Konfigurationstansfer unterstützten Konstrukten oder Limitationen der ETS können zu Einschränkungen führen.
@@ -230,7 +230,11 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 ### Voraussetzungen
 
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 (Release ab 3.3.4 empfohlen) benötigt um die Modulinformationen zur integrieren.
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [3.3.12](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.3.12) benötigt um die Modulinformationen zur integrieren.
+  > **Achtung:** Ältere Versionen des Producers sorgen dafür, dass die erzeugte Applikation Parameter exportieren wird, 
+  > die nicht Teil des Exports sein sollten! 
+  > Bei diesen Parametern handelt es sich um solche, die nicht direkt durch den Nutzer verändert werden können.
+  > Es erfolgt *keine* Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version! 
 
 
 ### ApplikationName.xml
