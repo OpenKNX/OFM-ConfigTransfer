@@ -53,14 +53,14 @@ In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur e
 |     = Erweitert            |    |  
 +----------------------------+    |
 |     ? Hilfe                |   /
-+----------------------------+
-| + # Konfigurationstransfer +   <-  dieses Modul (nur Basiseinstellungen, von Kanaltransfer ausgeschlossen )
-+----------------------------+
-| + # Beispie-Modul A        |
++----------------------------+       dieses Modul
+| + # Konfigurationstransfer +   <-  (nur Basiseinstellungen, von Kanaltransfer 
++----------------------------+        ausgeschlossen)
+| + # Beispiel-Modul A       |
 +----------------------------+
 |   ...                      |
 +----------------------------+
-| - # Beispie-Modul I        |                                                    \  
+| - # Beispiel-Modul I       |                                                    \  
 +----------------------------+                                                     |
 |     # Allgemein            |   \                                                 |
 +----------------------------+     > Basiseinstellungen                            |
@@ -74,7 +74,7 @@ In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur e
 +----------------------------+
 |   ...                      |
 +----------------------------+
-| + # Beispie-Modul N        |
+| + # Beispiel-Modul N       |
 +----------------------------+
 ````
 
