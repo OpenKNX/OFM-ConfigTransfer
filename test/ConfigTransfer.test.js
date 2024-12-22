@@ -731,25 +731,25 @@ describe('Button Handler', () => {
         });
 
         it("tolerates spaces around transfer-string", () => {
-            device.getParameterByName("UCTD_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            device.getParameterByName("UCT_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
+            device.getParameterByName("UCT_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
+            device.getParameterByName("UCT_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX   ";
+            device.getParameterByName("UCT_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX   ";
             expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
+            device.getParameterByName("UCT_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            device.getParameterByName("UCT_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
 
-            device.getParameterByName("UCTD_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
+            device.getParameterByName("UCT_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
         });
 
