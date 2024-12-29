@@ -385,7 +385,6 @@ function _uctBtnReset(device, online, progress, context) {
 
 
 function uctSerializeParamValue(paramValue) {
-    /* TODO check inclusion of ` ` and common characters without encoding */
     return encodeURIComponent(paramValue);
 }
 
@@ -454,12 +453,10 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
     var errors = [];
     for (var i = 0; i < params.names.length; i++) {
 
-        /* compact or human readable output */
+        // compact or human readable output
         var paramKey = (keyFormat=="name") ? params.names[i] : i;
 
         try {
-
-            /* TODO extract to function! */
             var paramNameDef = params.names[i].split(":");
             var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
             var paramObj = uctGetDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
@@ -541,13 +538,13 @@ function uctParseHeader(headerStr) {
 
     var headerParts = headerStr.split(",");
 
-    /* 1. check prefix */
+    // 1. check prefix
     if (headerParts[0] != "OpenKNX") {
         throw new Error('Format-Prefix ungültig! "OpenKNX" erwartet, aber "' + headerParts[0] + '" gefunden!');
     }
     header.prefix = headerParts[0];
 
-    /* 2. check format version */
+    // 2. check format version
     if (headerParts.length < 2) {
         throw new Error('Format-Version NICHT definiert!');
     }
@@ -562,12 +559,12 @@ function uctParseHeader(headerStr) {
     }
     header.format = versionParts[0];
 
-    /* ensure header completeness */
+    // ensure header completeness
     if (headerParts.length < 3) {
         throw new Error('Kopf-Bereich unvollständig! Erwarte 3 Teile (getrennt durch ","), aber nur ' + headerParts.length + ' gefunden!');
     }
 
-    /* TODO include generator, but can be ignored first */
+    // can include generator in later versions, but ignored first
     // versionParts.length>1 ? versionParts[1] : null;
     // versionParts.length>2 ? versionParts[2] : null;
     header.generator.name = null;
@@ -578,17 +575,17 @@ function uctParseHeader(headerStr) {
         throw new Error('Pfad-Angabe "'+headerParts[2]+'" ungültig! Erwarte 3 Teile (getrennt durch "/"), aber ' + path.length + ' gefunden!');
     }
 
-    /* check app */
+    // check app
     var headerApp = path[0].split(":");
-    /* TODO include app-check, but can be ignored first */
+    // TODO include app-check, but can be ignored first
     header.app.idStr = headerApp[0];
     header.app.id = headerApp[0]=="*" ? null : parseInt(headerApp[0]);
     header.app.verStr = (headerApp.length>=2) ? headerApp[1] : null;
-    /* TODO support different versions */
+    // TODO check using version parser
     header.app.ver = (headerApp.length>=2 && headerApp[1]!="*") ? parseInt(headerApp[1]) : null;
     header.app.name = (headerApp.length>=3) ? headerApp[2] : null;
 
-    /* check module */
+    // check module
     var headerModule = path[1].split(":");
     if (headerModule.length > 2) {
         /* TODO check need of handling */
@@ -607,9 +604,8 @@ function uctParseHeader(headerStr) {
 }
 
 function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
+    // possible replacement with an implementation of better runtime class, but this is still fast in relation to ets-operations
     var paramName = paramKey;
-
-    // TODO FIXME: replace with a implementation of better runtime!
     if (paramRefSuffix==1) {
         for (var i = 0; i < params.names.length; i++) {
             if (params.names[i] == paramName) {
@@ -617,8 +613,8 @@ function uctFindIndexByParamName(params, paramKey, paramRefSuffix) {
             }
         }
     }
+    // check again with sub-param (redundant implementation; possible removal later)
     paramName = paramName + ':' + paramRefSuffix;
-    // TODO FIXME remove redundancy!
     for (var i = 0; i < params.names.length; i++) {
         if (params.names[i] == paramName) {
             return i;
