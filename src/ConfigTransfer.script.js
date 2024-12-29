@@ -212,11 +212,11 @@ function uctExportModuleChannelToString(device, module, channel, keyFormat, mult
 
 function uctVersionToStr(ver) {
     if (typeof ver == 'number' && (ver % 1) == 0) {
-        var minor = ver % 16;
-        var major = (ver - minor) / 16;
+        var minor = ver & 0x0f;
+        var major = ver >> 4;
         return 'v' + major + '.' + minor;
     } else if (typeof ver == 'string') {
-        return isNaN(ver) ? ('"' + ver + '"') : uctVersionToStr(parseInt(ver));
+        return (isNaN(ver) || isNaN(parseInt(ver))) ? ('"' + ver + '"') : uctVersionToStr(parseInt(ver));
     } else {
         return "" + ver;
     }

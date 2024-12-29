@@ -378,18 +378,18 @@ describe('Button Handler', () => {
         it("includes non-default and allow single or multi-line output", () => {
             uctBtnExport(device, online, progress, context);
             expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
-    
-            var p = device.getParameterByName("CHN_Param2C"); 
+
+            var p = device.getParameterByName("CHN_Param2C");
             expect(p.value).toBe(500);
             p.value = 400;
             expect(p.value).toBe(400);
-    
+
             device.getParameterByName("UCTD_Channel").value = 2;
             device.getParameterByName("UCTD_Output").value = "";
             device.getParameterByName("UCTD_Opt1").value = 1;
             uctBtnExport(device, online, progress, context);
             expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX");
-    
+
             // multi-line format
             device.getParameterByName("UCTD_Opt2").value = 1;
             uctBtnExport(device, online, progress, context);
@@ -456,7 +456,7 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("CHN_Param4D").value).toBe("existing");
 
         });
-    
+
         it("fails on unsupported format version", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
@@ -516,7 +516,7 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
             expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
         });
-    
+
         it("fails on source==target", () => {
             device.getParameterByName("UCTD_ChannelSource").value = 6;
             device.getParameterByName("UCTD_ChannelTarget").value = 6;
@@ -751,7 +751,74 @@ describe('Helper', () => {
         expect(uctHexNumberStr(128)).toBe("0x80");
         expect(uctHexNumberStr(255)).toBe("0xFF");
     });
-    
+
+    describe("uctVersionToStr", () => {
+        const uctVersionToStr = cts.uctVersionToStr;
+        it("accepts empty string", () => {
+            expect(uctVersionToStr("")).toBe('""');
+        });
+        it("converts integer to vN.M", () => {
+            expect(uctVersionToStr(0)).toBe('v0.0');
+            expect(uctVersionToStr(0x0)).toBe('v0.0');
+            expect(uctVersionToStr(1)).toBe('v0.1');
+            expect(uctVersionToStr(0x1)).toBe('v0.1');
+            expect(uctVersionToStr(3)).toBe('v0.3');
+            expect(uctVersionToStr(0x3)).toBe('v0.3');
+            expect(uctVersionToStr(15)).toBe('v0.15');
+            expect(uctVersionToStr(0x0f)).toBe('v0.15');
+            expect(uctVersionToStr(16)).toBe('v1.0');
+            expect(uctVersionToStr(0x10)).toBe('v1.0');
+            expect(uctVersionToStr(20)).toBe('v1.4');
+            expect(uctVersionToStr(0x14)).toBe('v1.4');
+            expect(uctVersionToStr(64)).toBe('v4.0');
+            expect(uctVersionToStr(0x40)).toBe('v4.0');
+            expect(uctVersionToStr(255)).toBe('v15.15');
+            expect(uctVersionToStr(0xff)).toBe('v15.15');
+            expect(uctVersionToStr(0x80)).toBe('v8.0');
+        });
+        it("converts decimal integer string to vN.M", () => {
+            expect(uctVersionToStr("0")).toBe('v0.0');
+            expect(uctVersionToStr("1")).toBe('v0.1');
+            expect(uctVersionToStr("3")).toBe('v0.3');
+            expect(uctVersionToStr("15")).toBe('v0.15');
+            expect(uctVersionToStr("16")).toBe('v1.0');
+            expect(uctVersionToStr("20")).toBe('v1.4');
+            expect(uctVersionToStr("64")).toBe('v4.0');
+            expect(uctVersionToStr("255")).toBe('v15.15');
+        });
+        it("converts hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0x0")).toBe('v0.0');
+            expect(uctVersionToStr("0x1")).toBe('v0.1');
+            expect(uctVersionToStr("0x3")).toBe('v0.3');
+            expect(uctVersionToStr("0x0F")).toBe('v0.15');
+            expect(uctVersionToStr("0x10")).toBe('v1.0');
+            expect(uctVersionToStr("0x14")).toBe('v1.4');
+            expect(uctVersionToStr("0x40")).toBe('v4.0');
+            expect(uctVersionToStr("0xFF")).toBe('v15.15');
+            expect(uctVersionToStr("0x80")).toBe('v8.0');
+        });
+        it("converts lowercase hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0xab")).toBe('v10.11');
+            expect(uctVersionToStr("0x0f")).toBe('v0.15');
+            expect(uctVersionToStr("0xff")).toBe('v15.15');
+        });
+        it("encloses '*' and '-'", () => {
+            expect(uctVersionToStr('*')).toBe('"*"');
+            expect(uctVersionToStr('-')).toBe('"-"');
+        });
+        it("encloses strings", () => {
+            expect(uctVersionToStr('X')).toBe('"X"');
+            expect(uctVersionToStr('other_string')).toBe('"other_string"');
+            expect(uctVersionToStr('v1.0')).toBe('"v1.0"');
+        });
+        // TODO check fail as unexpected
+        it("conserves non-integer numbers", () => {
+            expect(uctVersionToStr(1.5)).toBe('1.5');
+            expect(uctVersionToStr(0.7)).toBe('0.7');
+        });
+        // TODO expected for null, undefined or other?
+    });
+
 });
 
 
@@ -947,6 +1014,6 @@ describe('Param Calculation', () => {
         expect(output).toStrictEqual({"f3":"x"});
         expect(context).toStrictEqual({"c1": "z"});
     });
-    
+
 });
 
