@@ -265,7 +265,7 @@ function _uctBtnCopy(device, online, progress, context) {
         // inline without duplicate export: result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
         /* TODO copy without serialize/deserialize */
         uctProgress(progress, 2);
-        var exportStr = uctExportModuleChannelToString(device, module, sourceChannel, "", false, true);
+        var exportStr = uctExportModuleChannelToString(device, module, sourceChannel, "", false, true, false);
         uctProgressCalc(progress, 2, 97, 1+0, 1+targetChannels.length);
         for (var i = 0; i < targetChannels.length; i++) {
             if (!uctProgressIsCanceled(progress)) {
@@ -887,7 +887,7 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
         throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
     }
     /* TODO copy without serialize/deserialize */
-    var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
+    var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true, false);
     uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
     return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
 }
