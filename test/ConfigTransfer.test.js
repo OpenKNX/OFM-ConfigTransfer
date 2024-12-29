@@ -1099,6 +1099,74 @@ describe('Helper', () => {
         // TODO handling of non-strings?
     });
 
+
+    describe("uctVersionToStr", () => {
+        const uctVersionToStr = cts.uctVersionToStr;
+        it("accepts empty string", () => {
+            expect(uctVersionToStr("")).toBe('""');
+        });
+        it("converts integer to vN.M", () => {
+            expect(uctVersionToStr(0)).toBe('v0.0');
+            expect(uctVersionToStr(0x0)).toBe('v0.0');
+            expect(uctVersionToStr(1)).toBe('v0.1');
+            expect(uctVersionToStr(0x1)).toBe('v0.1');
+            expect(uctVersionToStr(3)).toBe('v0.3');
+            expect(uctVersionToStr(0x3)).toBe('v0.3');
+            expect(uctVersionToStr(15)).toBe('v0.15');
+            expect(uctVersionToStr(0x0f)).toBe('v0.15');
+            expect(uctVersionToStr(16)).toBe('v1.0');
+            expect(uctVersionToStr(0x10)).toBe('v1.0');
+            expect(uctVersionToStr(20)).toBe('v1.4');
+            expect(uctVersionToStr(0x14)).toBe('v1.4');
+            expect(uctVersionToStr(64)).toBe('v4.0');
+            expect(uctVersionToStr(0x40)).toBe('v4.0');
+            expect(uctVersionToStr(255)).toBe('v15.15');
+            expect(uctVersionToStr(0xff)).toBe('v15.15');
+            expect(uctVersionToStr(0x80)).toBe('v8.0');
+        });
+        it("converts decimal integer string to vN.M", () => {
+            expect(uctVersionToStr("0")).toBe('v0.0');
+            expect(uctVersionToStr("1")).toBe('v0.1');
+            expect(uctVersionToStr("3")).toBe('v0.3');
+            expect(uctVersionToStr("15")).toBe('v0.15');
+            expect(uctVersionToStr("16")).toBe('v1.0');
+            expect(uctVersionToStr("20")).toBe('v1.4');
+            expect(uctVersionToStr("64")).toBe('v4.0');
+            expect(uctVersionToStr("255")).toBe('v15.15');
+        });
+        it("converts hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0x0")).toBe('v0.0');
+            expect(uctVersionToStr("0x1")).toBe('v0.1');
+            expect(uctVersionToStr("0x3")).toBe('v0.3');
+            expect(uctVersionToStr("0x0F")).toBe('v0.15');
+            expect(uctVersionToStr("0x10")).toBe('v1.0');
+            expect(uctVersionToStr("0x14")).toBe('v1.4');
+            expect(uctVersionToStr("0x40")).toBe('v4.0');
+            expect(uctVersionToStr("0xFF")).toBe('v15.15');
+            expect(uctVersionToStr("0x80")).toBe('v8.0');
+        });
+        it("converts lowercase hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0xab")).toBe('v10.11');
+            expect(uctVersionToStr("0x0f")).toBe('v0.15');
+            expect(uctVersionToStr("0xff")).toBe('v15.15');
+        });
+        it("encloses '*' and '-'", () => {
+            expect(uctVersionToStr('*')).toBe('"*"');
+            expect(uctVersionToStr('-')).toBe('"-"');
+        });
+        it("encloses strings", () => {
+            expect(uctVersionToStr('X')).toBe('"X"');
+            expect(uctVersionToStr('other_string')).toBe('"other_string"');
+            expect(uctVersionToStr('v1.0')).toBe('"v1.0"');
+        });
+        // TODO check fail as unexpected
+        it("conserves non-integer numbers", () => {
+            expect(uctVersionToStr(1.5)).toBe('1.5');
+            expect(uctVersionToStr(0.7)).toBe('0.7');
+        });
+        // TODO expected for null, undefined or other?
+    });
+
 });
 
 

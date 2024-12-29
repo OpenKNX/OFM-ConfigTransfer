@@ -23,7 +23,8 @@ module.exports = {
     uctUnserializeParamValue, 
     uctCreateHeader,
     uctHexNumberStr,
-    uctParseHeader,  
+    uctParseHeader,
+    uctVersionToStr,
 
     uctBtnExport,
     uctBtnImport,
