@@ -351,8 +351,7 @@ function _uctBtnReset(device, online, progress, context) {
     }
     if (channels.length == 0) {
         throw new Error("Kein Kanal definiert!");
-    }
-    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
+    } else if (channels[channels.length - 1] > moduleChannelCount) {
         throw new Error("Kanal außerhalb von Modul-Bereich!");
     }
     if (channels.length > 1) {
