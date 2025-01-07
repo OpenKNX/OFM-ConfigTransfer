@@ -263,7 +263,7 @@ function _uctBtnCopy(device, online, progress, context) {
         }
 
         // inline without duplicate export: result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
-        /* TODO copy without serialize/deserialize */
+        // TODO copy without serialize/deserialize
         uctProgress(progress, 2);
         var exportStr = uctExportModuleChannelToString(device, module, sourceChannel, "", false, true, false);
         uctProgressCalc(progress, 2, 97, 1+0, 1+targetChannels.length);
@@ -735,7 +735,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (!writeClean) {
         Log.error("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params produced Errors!");
     }
-    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
+    // TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
     var msg = "";
@@ -886,7 +886,7 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     if (channelTarget == channelSource) {
         throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
     }
-    /* TODO copy without serialize/deserialize */
+    // TODO copy without serialize/deserialize
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true, false);
     uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
     return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
