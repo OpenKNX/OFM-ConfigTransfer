@@ -151,8 +151,6 @@ function _uctBtnExport(device, online, progress, context) {
         // multi-channel export is restricted to single line
         var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
 
-        // TODO add p_messageOutput again?
-
         var param_exportOutput = device.getParameterByName(context.p_exportOutput);
         var channelExportResult = [];
         for (var i = 0; i < channels.length; i++) {
