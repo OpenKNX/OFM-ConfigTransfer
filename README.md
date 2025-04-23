@@ -25,6 +25,7 @@ Von Cornelius Köpp 2024
   * [Export](#export)
   * [Import](#import)
   * [Kanaltransfer](#kanaltransfer)
+  * [Kanaltausch](#kanaltausch)
   * [Standardwerte](#standardwerte)
 * [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
 * [OpenKNX-Applikation mit integriertem Konfigurationstransfer](#openknx-applikation-mit-integriertem-konfigurationstransfer)
@@ -157,6 +158,12 @@ Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auc
 ### Kanaltransfer
 
 Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
+
+
+
+### Kanaltausch
+
+Vertauschen der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
 
 
 

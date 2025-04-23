@@ -361,6 +361,7 @@ describe('Button Handler', () => {
     const uctBtnExport = cts.uctBtnExport;
     const uctBtnImport = cts.uctBtnImport;
     const uctBtnCopy = cts.uctBtnCopy;
+    const uctBtnSwap = cts.uctBtnSwap;
     const uctBtnReset= cts.uctBtnReset;
     
     var online = undefined;
@@ -532,6 +533,95 @@ describe('Button Handler', () => {
             device.getParameterByName("UCTD_ChannelSource").value = 4;
             device.getParameterByName("UCTD_ChannelTarget").value = 99;
             expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+        });
+    });
+
+    describe('Swap', () => {
+        var context = {
+            "p_moduleSelection":"UCTD_ModuleIndex",
+            // "p_channelTarget":"UCTD_Channel",
+            "p_channelA":"UCTD_ChannelSource",
+            "p_channelB":"UCTD_ChannelTarget",
+            "p_messageOutput":"UCTD_Output",
+        };
+        test("regular swap and success message + swap again", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 5;
+            device.getParameterByName("CHN_Param6D").value = "Kanal6";
+            device.getParameterByName("CHN_Param5D").value = "Kanal5";
+            uctBtnSwap(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 <--> CHN/5 [OK]");
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal5");
+            uctBtnSwap(device, online, progress, context);
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal5");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal6");
+        });
+        test("regular swap and success message + swap again (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 6,
+                "channelB": 5,
+                "p_messageOutput":"UCTD_Output",
+            };
+            device.getParameterByName("CHN_Param6D").value = "Kanal6";
+            device.getParameterByName("CHN_Param5D").value = "Kanal5";
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 <--> CHN/5 [OK]");
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal5");
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal5");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal6");
+        });
+
+        it("fails on source==target", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on source==target (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 6,
+                "channelB": 6,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
+        });
+
+        it("fails on channelA out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 99;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on channelA out of range (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 99,
+                "channelB": 4,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
+        });
+
+        it("fails on channelB out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 4;
+            device.getParameterByName("UCTD_ChannelTarget").value = 99;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on channelB out of range (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 4,
+                "channelB": 99,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
         });
     });
 

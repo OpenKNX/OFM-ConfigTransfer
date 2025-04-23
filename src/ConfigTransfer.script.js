@@ -1,4 +1,4 @@
-// OFM-ConfigTransfer --
+// OFM-ConfigTransfer -- OpenKNX -- (c) 2024-2025 by Cornelius Köpp --
 // SPDX-License-Identifier: AGPL-3.0-only
 
 var uctFormatVer = "cv1";
@@ -49,6 +49,35 @@ function uctBtnCopy(device, online, progress, context) {
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
     param_messageOutput.value = uctCopyModuleChannel(device, module, channelSource, channelTarget);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]")
+}
+
+/**
+  * Button-handler for swapping two channels of an OpenKNX module.
+ * 
+ * @param {Object} device - The device object to operate on
+ * @param {Object} online -
+ * @param {Object} progress - Progress tracking control
+ * @param {Object} context - The given context with the following properties:
+ * @param {string} [context.module] - The module to operate on, falls back to selection from device parameters
+ * @param {string} [context.p_moduleSelection] - Parameter name for module selection
+ * @param {number} [context.channelA] - Channel A number to swap, falls back to value from device parameters
+ * @param {string} [context.p_channelA] - Parameter name for channel A
+ * @param {number} [context.channelB] - Channel B number to swap, falls back to value from device parameters
+ * @param {string} [context.p_channelB] - Parameter name for channel B
+ * @param {string} [context.p_messageOutput] - Optional Parameter name for result message output
+ * @returns {void}
+ */
+function uctBtnSwap(device, online, progress, context) {
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Swap ...");
+    var module = context.module ? context.module : uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
+    var channelA = context.channelA ? context.channelA : device.getParameterByName(context.p_channelA).value;
+    var channelB = context.channelB ? context.channelB : device.getParameterByName(context.p_channelB).value;
+    var param_messageOutput = context.p_messageOutput ? device.getParameterByName(context.p_messageOutput) : undefined;
+    var resultMessage = uctSwapModuleChannel(device, progress, module, channelA, channelB);
+    if (param_messageOutput) {
+        param_messageOutput.value = resultMessage;
+    }
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Swap [DONE]");
 }
 
 function uctBtnReset(device, online, progress, context) {
@@ -552,6 +581,25 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
     uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
     return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
+}
+
+/**
+ * Swap the configuration of two channels
+ * @param {object} device - the device object provided by ETS
+ * @param {string} module
+ * @param {number} channelA
+ * @param {number} channelB
+ */
+function uctSwapModuleChannel(device, progress, module, channelA, channelB) {
+    if (channelB == channelA) {
+        throw new Error('Zu tauschende Kanäle dürfen NICHT identisch sein!');
+    }
+    /* TODO check swap without serialize/deserialize */
+    var exportStrA = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelA, "", false, true, false);
+    var exportStrB = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelB, "", false, true, false);
+    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelB, exportStrA, 7);
+    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelA, exportStrB, 7);
+    return module + "/" + channelA + " <--> " + module + "/" + channelB + " [OK]";
 }
 
 /**

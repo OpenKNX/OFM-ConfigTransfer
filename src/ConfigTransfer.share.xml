@@ -308,6 +308,11 @@
               <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal"                 Value="1"   />
               <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"          ParameterType="%AID%_PT-Text32KiB"                           Text="Resultat"              Value=""    />
 
+              <Parameter Id="%AID%_P-%TT%00500" Name="SwapModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
+              <Parameter Id="%AID%_P-%TT%00501" Name="SwapChannelA"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal A"               Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00502" Name="SwapChannelB"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Kanal B"               Value="1"   />
+              <Parameter Id="%AID%_P-%TT%00503" Name="SwapUserLog"           ParameterType="%AID%_PT-Text32KiB"                           Text="Tausch-Resultat"       Value=""    />
+
             </Parameters>
             <ParameterRefs>
 
@@ -332,6 +337,11 @@
               <ParameterRef Id="%AID%_P-%TT%00400_R-%TT%0040001" RefId="%AID%_P-%TT%00400" />
               <ParameterRef Id="%AID%_P-%TT%00401_R-%TT%0040101" RefId="%AID%_P-%TT%00401" />
               <ParameterRef Id="%AID%_P-%TT%00402_R-%TT%0040201" RefId="%AID%_P-%TT%00402" />
+
+              <ParameterRef Id="%AID%_P-%TT%00500_R-%TT%0050001" RefId="%AID%_P-%TT%00500" />
+              <ParameterRef Id="%AID%_P-%TT%00501_R-%TT%0050101" RefId="%AID%_P-%TT%00501" />
+              <ParameterRef Id="%AID%_P-%TT%00502_R-%TT%0050201" RefId="%AID%_P-%TT%00502" />
+              <ParameterRef Id="%AID%_P-%TT%00503_R-%TT%0050301" RefId="%AID%_P-%TT%00503" />
 
             </ParameterRefs>
             <ParameterCalculations>
@@ -372,6 +382,16 @@
                 </LParameters>
                 <RParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" AliasName="result"                  /><!-- CopyUserLog -->
+                </RParameters>
+              </ParameterCalculation>
+              <ParameterCalculation Id="%AID%_PC-%TT%00006" Language="JavaScript" Name="UctSwapParamReset"   LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
+                <LParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00500_R-%TT%0050001" AliasName="SwapModul"               />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00501_R-%TT%0050101" AliasName="SwapSource"              />
+                  <ParameterRefRef RefId="%AID%_P-%TT%00502_R-%TT%0050201" AliasName="SwapTarget"              />
+                </LParameters>
+                <RParameters>
+                  <ParameterRefRef RefId="%AID%_P-%TT%00503_R-%TT%0050301" AliasName="result"                  /><!-- SwapLog -->
                 </RParameters>
               </ParameterCalculation>
               <ParameterCalculation Id="%AID%_PC-%TT%00004" Language="JavaScript" Name="UctResetParamReset"  LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
@@ -513,6 +533,25 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
                     <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Swap" Text="Kanaltausch" Icon="folder-swap-outline--like-card--2" HelpContext="UCT-Kanaltausch" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaltausch" UIHint="Headline" />
+                <!--
+                <Parameter Id="%AID%_P-%TT%00500" Name="SwapModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
+                <Parameter Id="%AID%_P-%TT%00501" Name="SwapChannelA"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00502" Name="SwapChannelB"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00503" Name="SwapUserLog"           ParameterType="%AID%_PT-Text32KiB"
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00500_R-%TT%0050001" />
+                <choose ParamRefId="%AID%_P-%TT%00500_R-%TT%0050001">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00501_R-%TT%0050101" IndentLevel="1" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00502_R-%TT%0050201" IndentLevel="1" />
+                    <Button Id="%AID%_B-%TT%00500" Text="Tauschen"      EventHandler="uctBtnSwap"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_SwapModul&quot;, &quot;p_channelA&quot;:&quot;%PREFIX%_SwapChannelA&quot;, &quot;p_channelB&quot;:&quot;%PREFIX%_SwapChannelB&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_SwapUserLog&quot; }" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00503_R-%TT%0050301" />
                   </when>
                 </choose>
               </ParameterBlock>
