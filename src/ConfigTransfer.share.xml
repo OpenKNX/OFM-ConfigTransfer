@@ -387,12 +387,12 @@
             <ComObjectRefs>
               <!-- No ComObjects -->
             </ComObjectRefs>
-            <Script>
-              <op:include href="ConfigTransfer.script.js" prefix="UCT" type="script" />
-            </Script>
             <Messages>
               <Message Id="%AID%_M-%TT%00001" Name="InvalidTransferString" Text="Kein gültiger/vollständiger OpenKNX-ConfigTransfer-String. Erwarte mindestens Beginn &quot;OpenKNX,&quot; und Ende &quot;§;OpenKNX&quot;." />
             </Messages>            
+            <Script>
+              <op:include href="ConfigTransfer.script.js" prefix="UCT" type="script" />
+            </Script>
           </Static>
           <Dynamic>
             <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
