@@ -238,13 +238,13 @@ function uctParseHeader(headerStr) {
 
     var headerParts = headerStr.split(",");
 
-    /* 1. check prefix */
+    // 1. check prefix
     if (headerParts[0] != "OpenKNX") {
         throw new Error('Format-Prefix ungültig! "OpenKNX" erwartet, aber "' + headerParts[0] + '" gefunden!');
     }
     header.prefix = headerParts[0];
 
-    /* 2. check format version */
+    // 2. check format version
     if (headerParts.length < 2) {
         throw new Error('Format-Version NICHT definiert!');
     }
