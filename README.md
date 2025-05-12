@@ -24,7 +24,7 @@ Von Cornelius Köpp 2024
 * [Funktionen](#funktionen)
   * [Export](#export)
   * [Import](#import)
-  * [Kanaltransfer](#kanaltransfer)
+  * [Kanalkopie](#kanalkopie)
   * [Kanaltausch](#kanaltausch)
   * [Standardwerte](#standardwerte)
 * [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
@@ -155,9 +155,9 @@ Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auc
 
 
 
-### Kanaltransfer
+### Kanalkopie
 
-Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
+Duplizieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
 
 
 
