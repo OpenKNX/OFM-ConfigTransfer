@@ -1,3 +1,9 @@
+# (geplant) v0.3
+* Feature #36: **Tausch von Kanälen**
+  * Eigener Parameterblock analog zu *Kanalkopie*
+  * Bereitstellung Funktion zur Nutzung in Modulen
+* Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
+
 # v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
   Exporte aus älteren Versionen von PM konnten nicht importiert werden, weil Parameter entfallen sind.
@@ -16,7 +22,7 @@
   * Fix: Verbesserte Prüfung von Kanal-Definition in Transfer-String beim Import
   * Fix/Rework: Auswertung der Modul-Version in Prüfung vor Import, speziell Fälle ohne Versionsangabe am Modul
   * Improvement: Genauere Fehleranzeige für Spezial-Einträge
-  * Improvement: Fehleranzeige für Unbekannte Einträge
+  * Improvement: Fehleranzeige für unbekannte Einträge
 * Quality: Integration automatisierter Testfälle für JS in ETS-Applikation
 
 # v0.1.0 (2024-07-08, 82f2335a74ffd44254c57ebe58bafb062574f1d2)
