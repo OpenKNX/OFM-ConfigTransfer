@@ -454,37 +454,7 @@
 
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Import" Text="Import" Icon="import" HelpContext="UCT-Import" >
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Import" UIHint="Headline" />
-
-                <!-- 
-                <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"   ParameterType="%AID%_PT-TextMaxLen"     Text="Export-String"         Value=""    />
-                <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"  ParameterType="%AID%_PT-ImportTarget"   Text="Import-Ziel"           Value="255" />
-                <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"   ParameterType="%AID%_PT-ImportCheck"    Text="Kompatiblitätsprüfung" Value="0"   />
-                <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
-                -->
-  
-                <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Transfer-String" />
-                <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" HelpContext="UCT-Import-Ziel" />
-                <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
-                  <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" HelpContext="UCT-Kompatibilitaetspruefung" />
-                    <choose ParamRefId="%AID%_P-%TT%00102_R-%TT%0010201">
-                      <when test="7">
-                      </when>
-                      <when test="1">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Geringfügige Einschränkungen möglich:&#xD;&#xA;z.B. Verknüpfungen zu internen KOs die nicht mehr auf das erwarte Ziel zeigen, wenn KO-Nummern der Applikation abweichen." UIHint="Information" />
-                      </when>
-                      <when test="0">
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Versionsunterschiede und Release-Notes beachten!&#xD;&#xA;&#xD;&#xA;Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko." UIHint="Information" />
-                      </when>
-                    </choose>
-    
-                    <Button Id="%AID%_B-%TT%00100" Text="Importieren"   EventHandler="uctBtnImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_importCheck&quot;:&quot;%PREFIX%_ImportCheck&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
-                  </when>
-                </choose>
-              </ParameterBlock>
+              <op:include href="ConfigTransfer.share.Import.xml" xpath="//Dynamic/Channel/*" prefix="UCT"/>
 
               <op:include href="ConfigTransfer.share.Export.xml" xpath="//Dynamic/Channel/*" prefix="UCT"/>
 
