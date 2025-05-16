@@ -518,24 +518,7 @@
                 </choose>
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Copy" Text="Kanalkopie" Icon="card-multiple-outline" HelpContext="UCT-Kanalkopie" >
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalkopie" UIHint="Headline" />
-                <!-- 
-                <Parameter Id="%AID%_P-%TT%00300" Name="CopyModul"     ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
-                <Parameter Id="%AID%_P-%TT%00301" Name="CopySource"    ParameterType="%AID%_PT-ModuleChannel"  Text="Quell-Kanal "          Value="1"   />
-                <Parameter Id="%AID%_P-%TT%00302" Name="CopyTarget"    ParameterType="%AID%_PT-ModuleChannel"  Text="Ziel-Kanal"            Value="1"   />
-                <Parameter Id="%AID%_P-%TT%00303" Name="CopyUserLog"   ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
-                -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00300_R-%TT%0030001" />
-                <choose ParamRefId="%AID%_P-%TT%00300_R-%TT%0030001">
-                  <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00301_R-%TT%0030101" IndentLevel="1" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00302_R-%TT%0030201" IndentLevel="1" />
-                    <Button Id="%AID%_B-%TT%00300" Text="Kopieren"      EventHandler="uctBtnCopy"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_CopyModul&quot;, &quot;p_channelSource&quot;:&quot;%PREFIX%_CopySource&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_CopyTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_CopyUserLog&quot; }" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00303_R-%TT%0030301" />
-                  </when>
-                </choose>
-              </ParameterBlock>
+              <op:include href="ConfigTransfer.share.Copy.xml" xpath="//Dynamic/Channel/*" prefix="UCT"/>
 
               <op:include href="ConfigTransfer.share.Swap.xml" xpath="//Dynamic/Channel/*" prefix="UCT"/>
 
