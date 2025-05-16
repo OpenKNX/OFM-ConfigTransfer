@@ -537,24 +537,7 @@
                 </choose>
               </ParameterBlock>
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Swap" Text="Kanaltausch" Icon="folder-swap-outline--like-card--2" HelpContext="UCT-Kanaltausch" >
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaltausch" UIHint="Headline" />
-                <!--
-                <Parameter Id="%AID%_P-%TT%00500" Name="SwapModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
-                <Parameter Id="%AID%_P-%TT%00501" Name="SwapChannelA"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
-                <Parameter Id="%AID%_P-%TT%00502" Name="SwapChannelB"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
-                <Parameter Id="%AID%_P-%TT%00503" Name="SwapUserLog"           ParameterType="%AID%_PT-Text32KiB"
-                -->
-                <ParameterRefRef RefId="%AID%_P-%TT%00500_R-%TT%0050001" />
-                <choose ParamRefId="%AID%_P-%TT%00500_R-%TT%0050001">
-                  <when test="!=255">
-                    <ParameterRefRef RefId="%AID%_P-%TT%00501_R-%TT%0050101" IndentLevel="1" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00502_R-%TT%0050201" IndentLevel="1" />
-                    <Button Id="%AID%_B-%TT%00500" Text="Tauschen"      EventHandler="uctBtnSwap"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_SwapModul&quot;, &quot;p_channelA&quot;:&quot;%PREFIX%_SwapChannelA&quot;, &quot;p_channelB&quot;:&quot;%PREFIX%_SwapChannelB&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_SwapUserLog&quot; }" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%00503_R-%TT%0050301" />
-                  </when>
-                </choose>
-              </ParameterBlock>
+              <op:include href="ConfigTransfer.share.Swap.xml" xpath="//Dynamic/Channel/*" prefix="UCT"/>
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="card-remove-outline" HelpContext="UCT-Standardwerte" >
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
