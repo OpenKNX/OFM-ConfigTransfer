@@ -13,6 +13,7 @@
         * [Kompatibilitätsprüfung](#kompatibilitätsprüfung)
     * [**Export**](#export)
     * [**Kanalkopie**](#kanalkopie)
+    * [**Kanaltausch**](#kanaltausch)
     * [**Standardwerte**](#standardwerte)
 
 * [Kommunikationsobjekte](#kommunikationsobjekte)
