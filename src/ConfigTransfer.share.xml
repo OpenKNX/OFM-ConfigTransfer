@@ -256,10 +256,10 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ImportCheck" Name="ImportCheck">
-                <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration   Value="7" Id="%ENID%" Text="streng       (selbe Modul- &amp; ETS-App-Version)"     />
-                  <Enumeration   Value="1" Id="%ENID%" Text="moderat   (selbe Modul-Version)"  />
-                  <Enumeration   Value="0" Id="%ENID%" Text="lockerer   (ignoriert unbekannte Parameter)"/>
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration Id="%ENID%"   Value="7" Text="streng     (selbe Modul- &amp; ETS-App-Version)"     />
+                  <Enumeration Id="%ENID%"   Value="1" Text="moderat  (selbe Modul-Version)"                      />
+                  <Enumeration Id="%ENID%"   Value="0" Text="lockerer   (ignoriert unbekannte Parameter)"         />
                 </TypeRestriction>
               </ParameterType>
 
@@ -289,7 +289,7 @@
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
-              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="7"   />
+              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="0"   />
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00104" Name="DirectImportShow"      ParameterType="%AID%_PT-CheckBox"                            Text="Direktimport anzeigen" Value="0"    />
 
