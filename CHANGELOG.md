@@ -1,8 +1,17 @@
-# (geplant) v0.3
+# (in Vorbereitung) v0.3
 * Feature #36: **Tausch von Kanälen**
   * Eigener Parameterblock analog zu *Kanalkopie*
-  * Bereitstellung Funktion zur Nutzung in Modulen
+  * Bereitstellung Funktion zur Nutzung in Modulen, siehe [Entwicklerdokumentation](doc/Entwicklerdokumentation-ConfigTransfer.md)
+* Verbesserungen/Anpassungen, basierend auf Nutzererfahrungen:
+  * Geänderte Reihenfolge der Parameter-Blöcke (Seiten): Kanalkopie, Kanaltausch, Standardwerte, Import, Export.
+    Operationen innerhalb der Applikation werden in der Praxis häufiger verwendet als Import und Export.
+  * Kompatibilitätslevel **lockerer** als Standard.
+    Das bisherige Level **streng** verhinderte in der Praxis sehr häufig den Import, 
+    was bei Nutzern teilweise für Verwirrung sorgte.
+    In der Praxis führt die geringere Garantie zu keinen gravierenden Problemen.  
+* Fix: Kontexthilfe für Kompatibilitätslevel **lockerer** aus v0.2.0
 * Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
+* Bereinigung XML, Dokumentation, Kommentare
 
 # v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
