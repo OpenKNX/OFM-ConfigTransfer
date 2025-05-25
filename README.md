@@ -1,16 +1,17 @@
+<!--
 # Universal Configuration Transfer for OpenKNX Modules
 
 Application Part for Export, Import, Copy and Cleanup of OpenKNX Modules Channel Configuration 
 
-By Cornelius Koepp 2024
+By Cornelius Koepp 2024-2025
 
 ---
-
+-->
 # Universeller Konfigurationstransfer für OpenKNX-Module
 
 ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
 
-Von Cornelius Köpp 2024
+Von Cornelius Köpp 2024-2025
 
 
 
