@@ -11,6 +11,7 @@
   <op:nowarn id="3" regex="uctPrepareParamValues" />
   <op:nowarn id="3" regex="uctWriteParams" />
   <op:nowarn id="3" regex="uctCopyModuleChannel" />
+  <op:nowarn id="3" regex="uctSwapModuleChannel" />
   <op:nowarn id="3" regex="uctResetModuleChannel" />
   <op:nowarn id="3" regex="uctGetModuleParamsDef" />
   <op:nowarn id="3" regex="uctGetDeviceParameter" />
