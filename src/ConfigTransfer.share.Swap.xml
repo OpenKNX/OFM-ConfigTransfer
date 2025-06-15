@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="M-00FA_CS-OpenKNX" ApplicationNumber="0" ApplicationVersion="0" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="false">
+          <Static>
+          </Static>
+          <Dynamic>
+            <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Swap" Text="Kanaltausch" Icon="folder-swap-outline--like-card--2" HelpContext="UCT-Kanaltausch" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaltausch" UIHint="Headline" />
+                <!--
+                <Parameter Id="%AID%_P-%TT%00500" Name="SwapModul"             ParameterType="%AID%_PT-ModuleSelectorWithChannels"          Text="Modul"                 Value="255" />
+                <Parameter Id="%AID%_P-%TT%00501" Name="SwapChannelA"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Quell-Kanal"           Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00502" Name="SwapChannelB"          ParameterType="%AID%_PT-ModuleChannel"                       Text="Ziel-Kanal"            Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00503" Name="SwapUserLog"           ParameterType="%AID%_PT-Text32KiB"
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00500_R-%TT%0050001" />
+                <choose ParamRefId="%AID%_P-%TT%00500_R-%TT%0050001">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00501_R-%TT%0050101" IndentLevel="1" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00502_R-%TT%0050201" IndentLevel="1" />
+                    <Button Id="%AID%_B-%TT%00500" Text="Tauschen"      EventHandler="uctBtnSwap"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_SwapModul&quot;, &quot;p_channelA&quot;:&quot;%PREFIX%_SwapChannelA&quot;, &quot;p_channelB&quot;:&quot;%PREFIX%_SwapChannelB&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_SwapUserLog&quot; }" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00503_R-%TT%0050301" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

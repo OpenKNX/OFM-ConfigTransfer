@@ -1,16 +1,17 @@
+<!--
 # Universal Configuration Transfer for OpenKNX Modules
 
 Application Part for Export, Import, Copy and Cleanup of OpenKNX Modules Channel Configuration 
 
-By Cornelius Koepp 2024
+By Cornelius Koepp 2024-2025
 
 ---
-
+-->
 # Universeller Konfigurationstransfer für OpenKNX-Module
 
 ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
 
-Von Cornelius Köpp 2024
+Von Cornelius Köpp 2024-2025
 
 
 
@@ -24,7 +25,8 @@ Von Cornelius Köpp 2024
 * [Funktionen](#funktionen)
   * [Export](#export)
   * [Import](#import)
-  * [Kanaltransfer](#kanaltransfer)
+  * [Kanalkopie](#kanalkopie)
+  * [Kanaltausch](#kanaltausch)
   * [Standardwerte](#standardwerte)
 * [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
 * [OpenKNX-Applikation mit integriertem Konfigurationstransfer](#openknx-applikation-mit-integriertem-konfigurationstransfer)
@@ -53,14 +55,14 @@ In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur e
 |     = Erweitert            |    |  
 +----------------------------+    |
 |     ? Hilfe                |   /
-+----------------------------+
-| + # Konfigurationstransfer +   <-  dieses Modul (nur Basiseinstellungen, von Kanaltransfer ausgeschlossen )
-+----------------------------+
-| + # Beispie-Modul A        |
++----------------------------+       dieses Modul
+| + # Konfigurationstransfer +   <-  (nur Basiseinstellungen, von Kanaltransfer 
++----------------------------+        ausgeschlossen)
+| + # Beispiel-Modul A       |
 +----------------------------+
 |   ...                      |
 +----------------------------+
-| - # Beispie-Modul I        |                                                    \  
+| - # Beispiel-Modul I       |                                                    \  
 +----------------------------+                                                     |
 |     # Allgemein            |   \                                                 |
 +----------------------------+     > Basiseinstellungen                            |
@@ -74,7 +76,7 @@ In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur e
 +----------------------------+
 |   ...                      |
 +----------------------------+
-| + # Beispie-Modul N        |
+| + # Beispiel-Modul N       |
 +----------------------------+
 ````
 
@@ -156,7 +158,13 @@ Die Kanal-Nummer kann automatisch aus dem Export übernommen, oder manuell - auc
 
 ### Kanalkopie
 
-Kopieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
+Duplizieren der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
+
+
+
+### Kanaltausch
+
+Vertauschen der Konfiguration eines Kanals auf einen anderen Kanal desselben Moduls.
 
 
 
@@ -180,7 +188,7 @@ Durch die ETS-Funktion **Standardparameter** werden alle Parameter des Gerätes 
 ## Geprüfte OpenKNX-Module
 
 Die Implementation des Konfigurationstransfers unterstützt grundsätzlich jedes OpenKNX-Modul, 
-das über den OpenKNXproducer in eine ETS-Applikation eingebunden werden kann, 
+das über den OpenKNXproducer (Minimalversion siehe [Voraussetzungen](#voraussetzungen)) in eine ETS-Applikation eingebunden werden kann, 
 ohne dass dazu besondere Anpassungen vorgesehen sind.
 
 Nutzung von nicht durch den Konfigurationstansfer unterstützten Konstrukten oder Limitationen der ETS können zu Einschränkungen führen.
@@ -230,7 +238,11 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 ### Voraussetzungen
 
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab 3.2.1 (Release ab 3.3.4 empfohlen) benötigt um die Modulinformationen zur integrieren.
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [3.3.12](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.3.12) benötigt um die Modulinformationen zur integrieren.
+  > **Achtung:** Ältere Versionen des Producers sorgen dafür, dass die erzeugte Applikation Parameter exportieren wird, 
+  > die nicht Teil des Exports sein sollten! 
+  > Bei diesen Parametern handelt es sich um solche, die nicht direkt durch den Nutzer verändert werden können.
+  > Es erfolgt *keine* Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version! 
 
 
 ### ApplikationName.xml

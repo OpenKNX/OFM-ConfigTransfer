@@ -1,73 +1,19 @@
-// OFM-ConfigTransfer --
+// OFM-ConfigTransfer -- OpenKNX -- (c) 2024-2025 by Cornelius Köpp --
 // SPDX-License-Identifier: AGPL-3.0-only
 
 var uctFormatVer = "cv1";
+var uctFormatVerMultiPreview = "cv1multi"; // TODO remove preview, when finale format is defined and processed
 var uctGenVer = "0.1.0";
 var uctGen = "uct";
 var uctAppId = uctVersionInformation[0];
 var uctAppVer = uctVersionInformation[1];
 // var uctAppName = null;
 
-function uctIsDisjoint(a, b) {
-    for (var i = 0; i < a.length; i++) {
-        for (var j = 0; j < b.length; j++) {
-            if (a[i] == b[j]) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-function uctParseRangesString(channelsString) {
-    var channels = [];
-    var ranges = channelsString.split(",");
-    var cs = {};
-    for (var i = 0; i < ranges.length; i++) {
-        var limits = ranges[i].split("-");
-        if (limits.length == 1) {
-            var cn = limits[0];
-            cs[cn] = true;
-        } else if (limits.length == 2) {
-            var lower = parseInt(limits[0]);
-            var upper = parseInt(limits[1]);
-            for (var cn = lower; cn <= upper; cn++) {
-                cs[cn] = true;
-            }
-        } else {
-            // TODO exception
-        }
-    }
-    for (var i = 0; i <= 99; i++) {
-        if (cs[i]) {
-            channels.push(i);
-        }
-    }
-    return channels;
-}
 
 function uctBtnExport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
-    var moduleChannelCount = uctChannelParams[module].channels;
-
-    var channelMode = device.getParameterByName(context.p_channelMode).value;
-    var channels = [0];
-    if (moduleChannelCount > 0) {
-        channels = [device.getParameterByName(context.p_channelSource).value];
-        if (channelMode == 1) {
-            channels = uctParseRangesString(device.getParameterByName(context.p_channelSourcesString).value);
-        }
-    }
-    if (channels.length == 0) {
-        throw new Error("Kein Kanal definiert!");
-    }
-    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
-        throw new Error("Kanal außerhalb von Modul-Bereich!");
-    }
-    if (channels.length > 1) {
-        Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
-    }
+    var channelSource = device.getParameterByName(context.p_channelSource).value;
 
     var includeSelection = device.getParameterByName(context.p_exportParamSelectionSelection).value;
     var includeHidden = (includeSelection == 1);
@@ -75,28 +21,20 @@ function uctBtnExport(device, online, progress, context) {
 
     var exportFormatSelection = device.getParameterByName(context.p_exportFormatSelection).value;
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
-    // multi-channel export is restricted to single line
-    var multiLine = (exportFormatSelection == 1) && (channelMode == 0);
+    var multiLine = (exportFormatSelection==1);
 
     // TODO add p_messageOutput again?
 
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
-    var channelExportResult = [];
-    for (var i = 0; i < channels.length; i++) {
-        var channelNumber = channels[i];
-        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber);
-        channelExportResult.push(uctExportModuleChannelToString(device, module, channelNumber, exportFormat, multiLine, includeHidden, includeDefault));
-        Log.info("OpenKNX ConfigTransfer: Export Channel " + channelNumber + " [DONE]");
-    }
-    param_exportOutput.value = channelExportResult.join("\n");
-    Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]");
+    param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeHidden, includeDefault);
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
 }
 
 function uctBtnImport(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Import ...");
     var module = null; // auto-detection; module is part of export-string!
     var channelTarget = device.getParameterByName(context.p_channelTarget).value;
-    var importLine = device.getParameterByName(context.p_importLine).value;
+    var importLine = device.getParameterByName(context.p_importLine).value.replace(/^\s+|\s+$/g, ''); // trim import
     var importCheck = device.getParameterByName(context.p_importCheck).value;
 
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
@@ -107,101 +45,48 @@ function uctBtnImport(device, online, progress, context) {
 function uctBtnCopy(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
-    var mode = device.getParameterByName(context.p_copyMode).value;
-    var result = [];
-    if (mode == 0) {
-        var sourceChannel = device.getParameterByName(context.p_channelSource).value;
-        var targetChannels = uctParseRangesString(device.getParameterByName(context.p_channelTargetString).value);
-        Log.info("OpenKNX ConfigTransfer: Copy single channel " + sourceChannel + " to " + targetChannels.join(","));
-
-        // precheck channels:
-        // uctGetModuleParamsDef(module, targetChannel[targetChannel.length - 1]);
-        if (targetChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
-            if (!uctIsDisjoint([sourceChannel], targetChannels)) {
-                throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
-            }
-        }
-
-        // inline without duplicate export: result.push(uctCopyModuleChannel(device, module, sourceChannel, targetChannels[i]));
-        /* TODO copy without serialize/deserialize */
-        var exportStr = uctExportModuleChannelToString(device, module, sourceChannel, "", false, true);
-        for (var i = 0; i < targetChannels.length; i++) {
-            uctImportModuleChannelFromString(device, module, targetChannels[i], exportStr, 7);
-            result.push(module + "/" + sourceChannel + " -> " + module + "/" + targetChannels[i] + " [OK]");
-        }
-    } else if (mode == 1) {
-        var sourceChannels = uctParseRangesString(device.getParameterByName(context.p_channelSourceString).value);
-        var targetChannel = device.getParameterByName(context.p_channelTarget).value;
-        var offset = targetChannel - sourceChannels[0];
-        Log.info("OpenKNX ConfigTransfer: Copy channel group " + sourceChannels.join(",") + " to channels starting at " + targetChannel + "; offset=" + offset);
-
-        if (sourceChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, sourceChannels[sourceChannels.length - 1]);
-        }
-
-        var targetChannels = [];
-        for (var i = 0; i < sourceChannels.length; i++) {
-            targetChannels.push(sourceChannels[i] + offset);
-        }
-        if (targetChannels.length > 0) {
-            // ignore result, but expect error for non-existing channel
-            uctGetModuleParamsDef(module, targetChannels[targetChannels.length - 1]);
-        }
-
-        // TODO check range before copy!
-        if (offset < 0) {
-            for (var i = 0; i < sourceChannels.length; i++) {
-                result.push(uctCopyModuleChannel(device, module, sourceChannels[i], sourceChannels[i] + offset));
-            }
-        } else if (offset > 0) {
-            for (var i = sourceChannels.length - 1; i >= 0; i--) {
-                result.push(uctCopyModuleChannel(device, module, sourceChannels[i], sourceChannels[i] + offset));
-            }
-        } else /* (offset == 0) */ {
-            // all channes are the same
-            throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
-        }
-
-        // hide for disjoint only!
-        device.getParameterByName(context.p_showButton).value = uctIsDisjoint(sourceChannels, targetChannels) ? 1 : 0;
-    }
+    var channelSource = device.getParameterByName(context.p_channelSource).value;
+    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    param_messageOutput.value = result.join("\n");
+    param_messageOutput.value = uctCopyModuleChannel(device, module, channelSource, channelTarget);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Copy [DONE]");
+}
+
+/**
+  * Button-handler for swapping two channels of an OpenKNX module.
+ * 
+ * @param {Object} device - The device object to operate on
+ * @param {Object} online -
+ * @param {Object} progress - Progress tracking control
+ * @param {Object} context - The given context with the following properties:
+ * @param {string} [context.module] - The module to operate on, falls back to selection from device parameters
+ * @param {string} [context.p_moduleSelection] - Parameter name for module selection
+ * @param {number} [context.channelA] - Channel A number to swap, falls back to value from device parameters
+ * @param {string} [context.p_channelA] - Parameter name for channel A
+ * @param {number} [context.channelB] - Channel B number to swap, falls back to value from device parameters
+ * @param {string} [context.p_channelB] - Parameter name for channel B
+ * @param {string} [context.p_messageOutput] - Optional Parameter name for result message output
+ * @returns {void}
+ */
+function uctBtnSwap(device, online, progress, context) {
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Swap ...");
+    var module = context.module ? context.module : uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
+    var channelA = context.channelA ? context.channelA : device.getParameterByName(context.p_channelA).value;
+    var channelB = context.channelB ? context.channelB : device.getParameterByName(context.p_channelB).value;
+    var param_messageOutput = context.p_messageOutput ? device.getParameterByName(context.p_messageOutput) : undefined;
+    var resultMessage = uctSwapModuleChannel(device, progress, module, channelA, channelB);
+    if (param_messageOutput) {
+        param_messageOutput.value = resultMessage;
+    }
+    Log.info("OpenKNX ConfigTransfer: Handle Channel Swap [DONE]");
 }
 
 function uctBtnReset(device, online, progress, context) {
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset ...");
     var module = uctModuleOrder[device.getParameterByName(context.p_moduleSelection).value];
-    var moduleChannelCount = uctChannelParams[module].channels;
-
-    var channelMode = device.getParameterByName(context.p_channelMode).value;
-    var channels = [device.getParameterByName(context.p_channelTarget).value];
-    if (channelMode == 1) {
-        channels = uctParseRangesString(device.getParameterByName(context.p_channelTargetsString).value);
-    }
-    if (channels.length == 0) {
-        throw new Error("Kein Kanal definiert!");
-    }
-    if (/* channels.length > 0 */ channels[channels.length - 1] > moduleChannelCount) {
-        throw new Error("Kanal außerhalb von Modul-Bereich!");
-    }
-    if (channels.length > 1) {
-        Log.info("OpenKNX ConfigTransfer: Multi-Channel " + channels.join(","));
-    }
-
+    var channelTarget = device.getParameterByName(context.p_channelTarget).value;
     var param_messageOutput = device.getParameterByName(context.p_messageOutput);
-    var result = [];
-    for (var i = 0; i < channels.length; i++) {
-        var channelNumber = channels[i];
-        Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber);
-        result.push(uctResetModuleChannel(device, module, channelNumber));
-        Log.info("OpenKNX ConfigTransfer: Reset Channel " + channelNumber + " [DONE]");
-    }
-    param_messageOutput.value = result.join("\n");
+    param_messageOutput.value = uctResetModuleChannel(device, module, channelTarget);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Reset [DONE]");
 }
 
@@ -238,7 +123,7 @@ function uctCreateHeader(module, channel) {
         ((moduleVersion != undefined) ? uctHexNumberStr(moduleVersion) : '-')
     ];
 
-    var path = [pathApp.join(":"), pathModule.join(":"), channel];
+    var path =  [pathApp.join(":"), pathModule.join(":"), channel];
 
     var header = ["OpenKNX", version.join(":"), path.join("/")];
     return header.join(",");
@@ -256,7 +141,7 @@ function uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix) {
     var paramObj = device.getParameterByName(paramFullName);
     var paramObjRefId = paramObj.parameterRefId;
     if (paramObjRefId.length>2 && paramObjRefId.slice(-2)!=paramRefIdSuffix) {
-        paramObj = device.getParameterById(paramObjRefId.slice(0, -2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
+        paramObj = device.getParameterById(paramObjRefId.slice(0,-2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
     }
     return paramObj;
 }
@@ -291,7 +176,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
             if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
                 if (exportDefault || paramValue != params.defaults[i]) {
-                    result.push(paramKey + "=" + uctSerializeParamValue(paramValue));
+                    result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
                 }
             }
         } catch (e) {
@@ -325,6 +210,23 @@ function uctExportModuleChannelToString(device, module, channel, keyFormat, mult
 }
 
 
+function uctVersionToStr(ver) {
+    if (typeof ver === 'string') {
+        if (isNaN(ver) || isNaN(parseInt(ver))) {
+            return '"' + ver + '"';
+        } else {
+            ver = parseInt(ver);
+        }
+    }
+    if (typeof ver == 'number' && (ver % 1) == 0) {
+        var minor = ver & 0x0f;
+        var major = ver >> 4;
+        return 'v' + major + '.' + minor;
+    } else {
+        return "" + ver;
+    }
+}
+
 function uctHexNumberStr(x) {
     return "0x"+x.toString(16).toUpperCase();
 }
@@ -353,17 +255,20 @@ function uctParseHeader(headerStr) {
 
     var headerParts = headerStr.split(",");
 
-    /* 1. check prefix */
+    // 1. check prefix
     if (headerParts[0] != "OpenKNX") {
         throw new Error('Format-Prefix ungültig! "OpenKNX" erwartet, aber "' + headerParts[0] + '" gefunden!');
     }
     header.prefix = headerParts[0];
 
-    /* 2. check format version */
+    // 2. check format version
     if (headerParts.length < 2) {
         throw new Error('Format-Version NICHT definiert!');
     }
     var versionParts = headerParts[1].split(":");
+    if (versionParts[0] == uctFormatVerMultiPreview) {
+        throw new Error('Multi-Kanal Format-Version ("' + versionParts[0] + '") NICHT unterstützt! Geplant für zukünftige Versionen von Konfigurationstransfer!');
+    }
     var uctFormatVerDev = "ck-dev0"; // legacy support for version id used in development and internal testing; never use in new transfer-strings; can be removed in later versions without notice!
     if (versionParts[0] != uctFormatVer && versionParts[0] != uctFormatVerDev) {
         throw new Error('Format-Version NICHT unterstützt! Version "'+uctFormatVer+'" erwartet, aber "' + versionParts[0] + '" gefunden!');
@@ -448,7 +353,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var allowMissing = (importCheck == 0);
 
     var checkModuleVersion = (importCheck >= 1);
-    var checkAppId = (importCheck >= 7);
+    var checkAppId =  (importCheck >= 7);
     var checkAppVersion = (importCheck >= 7);
 
     var importLines = exportStr.split("§");
@@ -481,8 +386,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             // => at least one version is missing
             if (paramModVerUndef != headerModVerDash) {
                 // => not both at the same time
-                // TODO show versions in same format, to prevent mixed decimal/hex representation
-                throw new Error('Einseitig unspezifische Modul-Version: '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
+                throw new Error('Einseitig unspezifische Modul-Version: ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
             }
             // => both at the same time
             if (!checkAppVersion && (isDifferentAppId || isDifferentAppVer)) {
@@ -490,8 +394,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             }
 
         } else if (header.modul.ver != uctChannelParams[module].version) {
-            // TODO show versions in same format, to prevent mixed decimal/hex representation
-            throw new Error('Modul-Version '+uctChannelParams[module].version+' erwartet, aber ' +header.modul.ver+' gefunden!');
+            throw new Error('Modul-Version ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
         }
     }
 
@@ -504,7 +407,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             throw new Error('Applikation '+uctAppId+' erwartet, aber '+header.app.id+' gefunden!');
         }
         if (checkAppVersion && isDifferentAppVer) {
-            throw new Error('Applikations-Version '+uctAppVer+' erwartet, aber '+header.app.ver+' gefunden!');
+            throw new Error('Applikations-Version ' + uctVersionToStr(uctAppVer) + ' erwartet, aber ' + uctVersionToStr(header.app.ver) + ' gefunden!');
         }
     }
 
@@ -536,7 +439,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         importContent = importContent.slice(1);
     }
     var result = {
-        'lines': [],
+        'lines':[],
         'messages': 0,
         'warnings': 0,
         'errors': 0
@@ -690,7 +593,6 @@ function uctWriteParams(device, module, channel, params, newValues, result) {
  * @param {number} channelTarget
  */
 function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
-    // TODO recombine with inline extract for 1 to n copy
     if (channelTarget == channelSource) {
         throw new Error('Quell- und Ziel-Kanal dürfen NICHT identisch sein!');
     }
@@ -698,6 +600,25 @@ function uctCopyModuleChannel(device, module, channelSource, channelTarget) {
     var exportStr = uctExportModuleChannelToString(device, module, channelSource, "", false, true);
     uctImportModuleChannelFromString(device, module, channelTarget, exportStr, 7);
     return module + "/" + channelSource + " -> " + module + "/" + channelTarget + " [OK]";
+}
+
+/**
+ * Swap the configuration of two channels
+ * @param {object} device - the device object provided by ETS
+ * @param {string} module
+ * @param {number} channelA
+ * @param {number} channelB
+ */
+function uctSwapModuleChannel(device, progress, module, channelA, channelB) {
+    if (channelB == channelA) {
+        throw new Error('Zu tauschende Kanäle dürfen NICHT identisch sein!');
+    }
+    /* TODO check swap without serialize/deserialize */
+    var exportStrA = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelA, "", false, true, false);
+    var exportStrB = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelB, "", false, true, false);
+    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelB, exportStrA, 7);
+    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelA, exportStrB, 7);
+    return module + "/" + channelA + " <--> " + module + "/" + channelB + " [OK]";
 }
 
 /**
@@ -725,101 +646,6 @@ function uctParamResetSelection(input, output, context) {
 
 function uctParamResetNothing(input, output, context) {
     // do nothing
-}
-
-function uctParamModulSelectionCheck(input, output, context) {
-    Log.info("OpenKNX ConfigTransfer: Param Selection check ...");
-
-    var channelCount = 0;
-    var channelError = false;
-    var overview = "";
-
-    if (input.modul < uctModuleOrder.length) {
-        // get module prefix and module channel count
-        var module = uctModuleOrder[input.modul];
-        channelCount = uctChannelParams[module].channels;
-        channelCount = (channelCount != undefined) ? channelCount : 0;
-        Log.info("OpenKNX UCT Check: module=" + module + " / channelCount=" + channelCount);
-
-        var channels = (input.channelSelectionMode == 0) ? [input.channelSource] : uctParseRangesString(input.channelSourcesString);
-        channelError = (channels.length > 0) && channels[channels.length - 1] > channelCount;
-        Log.info("OpenKNX UCT Check: channels=" + channels.join(",") + " / channelError=" + channelError);
-    } else {
-        Log.info("OpenKNX UCT Check: No Module");
-    }
-
-    output.modulChannelCount = channelCount;
-    output.channelError = channelError ? 1 : 0;
-    output.result = overview;
-}
-
-function uctParamCopyCheck(input, output, context) {
-    Log.info("OpenKNX ConfigTransfer: Param Copy check ...");
-
-    var channelCount = 0;
-    var sourceError = false;
-    var targetError = false;
-    var sameError = false;
-    var error = true;
-    var overview = "";
-
-    if (input.CopyModul < uctModuleOrder.length) {
-        // get module prefix and module channel count
-        var module = uctModuleOrder[input.CopyModul];
-        channelCount = uctChannelParams[module].channels;
-        Log.info("OpenKNX UCT Copy Check: module=" + module + " / channelCount=" + channelCount);
-
-        // check parameter depending on copy mode
-        if (input.CopyMode == 0) {
-            var sourceChannel = input.CopySource;
-            sourceError = (sourceChannel > channelCount);
-            var targetChannels = uctParseRangesString(input.CopyTargetString);
-            var targetChCount = targetChannels.length;
-            targetError = (targetChCount > 0 && targetChannels[targetChCount - 1] > channelCount);
-
-            Log.info("OpenKNX UCT Copy Check: Single channel source " + sourceChannel);
-            sameError = !uctIsDisjoint([sourceChannel], targetChannels);
-            error = sourceError || targetError || sameError;
-            overview = "VORSCHAU\n" + targetChCount + "-fache Kopie von Einzelkanal:\n  " + sourceChannel + " -> " + targetChannels.join(",");
-        } else if (input.CopyMode == 1) {
-            var sourceChannels = uctParseRangesString(input.CopySourceString);
-            var sourceChCount = sourceChannels.length;
-            sourceError = (sourceChCount > 0 && sourceChannels[sourceChCount - 1] > channelCount);
-
-            Log.info("OpenKNX UCT Copy Check: Multi channel source " + sourceChannels.join(","));
-            var targetChannelsList = [];
-            var offset = input.CopyTarget - sourceChannels[0];
-            var src = {};
-            for (var i = 0; i < sourceChCount; i++) {
-                src[sourceChannels[i]] = true;
-                targetChannelsList.push(sourceChannels[i] + offset);
-                Log.info("OpenKNX UCT Copy Check: " + sourceChannels[i] + " -> " + (sourceChannels[i] + offset));
-            }
-            targetError = (targetChannelsList[sourceChCount - 1] > channelCount);
-
-            var ovCh = [];
-            var hasOverlaps = false;
-            for (var i = 0; i < sourceChCount; i++) {
-                var overlaps = src[targetChannelsList[i]];
-                ovCh.push("  " + sourceChannels[i] + " -> " + "\t" + targetChannelsList[i] + (overlaps ? " *" : (targetChannelsList[i] > channelCount ? " !" : "")));
-                hasOverlaps = hasOverlaps || overlaps;
-            }
-            sameError = hasOverlaps;
-
-            error = sourceError || targetError;
-            overview = "VORSCHAU\nKopie von Kanalgruppe mit " + sourceChCount + " Kanälen:\n" + ovCh.join("\n") + (hasOverlaps ? "\n* Überlappung" : "") + (targetError ? "\n! Nicht existierender Kanal" : "");
-        }
-    } else {
-        Log.info("OpenKNX UCT Copy Check: No Module");
-    }
-
-    output.CopyModulChannelCount = channelCount;
-    output.CopySourceError = sourceError ? 1 : 0;
-    output.CopyTargetError = targetError ? 1 : 0;
-    output.CopySameError = sameError ? 1 : 0;
-    output.CopyError = error ? 1 : 0;
-    output.CopyButtonShow = 1; // show ony chaning any input
-    output.result = overview;
 }
 
 // -- OFM-ConfigTransfer //

@@ -1,7 +1,20 @@
-# (geplant) v0.3
-* Fix: Aktualisierung Hilfetexte zu Update in Hotfix #14 
-* Feature #11: Erweiterung der Kopierfunktion um Unterstützung für Kanalgruppen und Mehrfachkopien
-* Feature #17: Batch-Export mit Ausgabe von mehreren Einzelkanälen  
+# (in Vorbereitung) v0.3
+* Feature #36: **Tausch von Kanälen**
+  * Eigener Parameterblock analog zu *Kanalkopie*
+  * Bereitstellung Funktion zur Nutzung in Modulen, siehe [Entwicklerdokumentation](doc/Entwicklerdokumentation-ConfigTransfer.md)
+* Verbesserungen/Anpassungen, basierend auf Nutzererfahrungen:
+  * Geänderte Reihenfolge der Parameter-Blöcke (Seiten): Kanalkopie, Kanaltausch, Standardwerte, Import, Export.
+    Operationen innerhalb der Applikation werden in der Praxis häufiger verwendet als Import und Export.
+  * Kompatibilitätslevel **lockerer** als Standard.
+    Das bisherige Level **streng** verhinderte in der Praxis sehr häufig den Import, 
+    was bei Nutzern teilweise für Verwirrung sorgte.
+    In der Praxis führt die geringere Garantie zu keinen gravierenden Problemen.
+  * Tolerieren/Trimmen von Whitespaces vor und nach Transfer-String
+  * Beschriftung für Auswahl von Export-Format.
+    "Menschenlesbar" wurde häufig fälschlicherweise für Support-Zwecke ausgewählt.
+* Fix: Kontexthilfe für Kompatibilitätslevel **lockerer** aus v0.2.0
+* Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
+* Bereinigung XML, Dokumentation, Kommentare
 
 # v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
@@ -21,7 +34,7 @@
   * Fix: Verbesserte Prüfung von Kanal-Definition in Transfer-String beim Import
   * Fix/Rework: Auswertung der Modul-Version in Prüfung vor Import, speziell Fälle ohne Versionsangabe am Modul
   * Improvement: Genauere Fehleranzeige für Spezial-Einträge
-  * Improvement: Fehleranzeige für Unbekannte Einträge
+  * Improvement: Fehleranzeige für unbekannte Einträge
 * Quality: Integration automatisierter Testfälle für JS in ETS-Applikation
 
 # v0.1.0 (2024-07-08, 82f2335a74ffd44254c57ebe58bafb062574f1d2)

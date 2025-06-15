@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="M-00FA_CS-OpenKNX" ApplicationNumber="0" ApplicationVersion="0" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="false">
+          <Static>
+          </Static>
+          <Dynamic>
+            <Channel Id="%AID%_CH-%PREFIX%" Number="%PREFIX%" Name="ConfigTransfer" Text="Konfigurationstransfer" Icon="ofm-configtransfer">
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="ConfigTransfer-Reset" Text="Standardwerte" Icon="card-remove-outline" HelpContext="UCT-Standardwerte" >
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Standardwerte" UIHint="Headline" />
+                <!--
+                <Parameter Id="%AID%_P-%TT%00400" Name="ResetModul"    ParameterType="%AID%_PT-ModuleSelector" Text="Modul"                 Value="0"   />
+                <Parameter Id="%AID%_P-%TT%00401" Name="ResetChannel"  ParameterType="%AID%_PT-ModuleChannel"  Text="Kanal"                 Value="1"   />
+                <Parameter Id="%AID%_P-%TT%00402" Name="ResetUserLog"  ParameterType="%AID%_PT-Text32KiB"      Text="Transfer-Resultat"     Value=""    />
+                -->
+                <ParameterRefRef RefId="%AID%_P-%TT%00400_R-%TT%0040001" />
+                <choose ParamRefId="%AID%_P-%TT%00400_R-%TT%0040001">
+                  <when test="!=255">
+                    <ParameterRefRef RefId="%AID%_P-%TT%00401_R-%TT%0040101" IndentLevel="1" />
+                    <Button Id="%AID%_B-%TT%00400" Text="Zurücksetzen"  EventHandler="uctBtnReset"  EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_ResetModul&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ResetChannel&quot;,                                                         &quot;p_messageOutput&quot;:&quot;%PREFIX%_ResetUserLog&quot; }" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%00402_R-%TT%0040201" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

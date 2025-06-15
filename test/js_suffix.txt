@@ -12,20 +12,18 @@ module.exports = {
     uctAppVer,
     // uctAppName,
 
-    // helper functions
-    uctIsDisjoint,
-
     // functions
-    uctParseRangesString,
     uctSerializeParamValue, 
     uctUnserializeParamValue, 
     uctCreateHeader,
     uctHexNumberStr,
-    uctParseHeader,  
+    uctParseHeader,
+    uctVersionToStr,
 
     uctBtnExport,
     uctBtnImport,
     uctBtnCopy,
+    uctBtnSwap,
     uctBtnReset,
 
     uctGetModuleParamsDef,
@@ -43,6 +41,4 @@ module.exports = {
     uctParamResetResult,
     uctParamResetSelection,
     uctParamResetNothing,
-    uctParamModulSelectionCheck,
-    uctParamCopyCheck,
 };

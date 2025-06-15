@@ -12,31 +12,6 @@ const cts = require("../test/testing.js");
 
 
 
-describe("Helper Functions", () => {
-    describe("uctIsDisjoint", () => {
-        const uctIsDisjoint = cts.uctIsDisjoint;
-        it("returns false for any empty array", () => {
-            expect(uctIsDisjoint([], [])).toBe(true);
-            expect(uctIsDisjoint([], [0])).toBe(true);
-            expect(uctIsDisjoint([], [1,2,4])).toBe(true);
-            expect(uctIsDisjoint([0], [])).toBe(true);
-            expect(uctIsDisjoint([2,4,7], [])).toBe(true);
-        });
-        it("returns true for same array", () => {
-            expect(uctIsDisjoint([9], [9])).toBe(false);
-            expect(uctIsDisjoint([0,10,100], [0,10,100])).toBe(false);
-        });
-        it("returns true for same set", () => {
-            expect(uctIsDisjoint([100,0,10], [0,10,100])).toBe(false);
-            expect(uctIsDisjoint([1,2,3,4,5], [5,3,2,4,1])).toBe(false);
-        });
-
-        // TODO define behaviour for non-array!
-    });
-});
-
-
-
 describe("uctFindIndexByParamName", () => {
     const uctFindIndexByParamName = cts.uctFindIndexByParamName;
     var params = {
@@ -386,6 +361,7 @@ describe('Button Handler', () => {
     const uctBtnExport = cts.uctBtnExport;
     const uctBtnImport = cts.uctBtnImport;
     const uctBtnCopy = cts.uctBtnCopy;
+    const uctBtnSwap = cts.uctBtnSwap;
     const uctBtnReset= cts.uctBtnReset;
     
     var online = undefined;
@@ -394,111 +370,40 @@ describe('Button Handler', () => {
     describe('Export', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
-            "p_channelMode": "UCTD_ChannelSelectionMode",
             "p_channelSource":"UCTD_Channel",
-            "p_channelSourcesString":"UCTD_ExportSourcesString",
             "p_exportParamSelectionSelection":"UCTD_Opt1",
             "p_exportFormatSelection":"UCTD_Opt2",
             "p_exportOutput":"UCTD_Output",
         };
-        describe('Single-Channel', () => {
-            it("includes non-default", () => {
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
-                device.getParameterByName("UCTD_Channel").value = 3;
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
-            });
-            it("allow single or multi-line output", () => {
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
-                
-                var p = device.getParameterByName("CHN_Param2C"); 
-                expect(p.value).toBe(500);
-                p.value = 400;
-                expect(p.value).toBe(400);
-        
-                device.getParameterByName("UCTD_Channel").value = 2;
-                device.getParameterByName("UCTD_Output").value = "";
-                device.getParameterByName("UCTD_Opt1").value = 1;
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX");
-        
-                // multi-line format
-                device.getParameterByName("UCTD_Opt2").value = 1;
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
+        it("includes non-default and allow single or multi-line output", () => {
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX");
 
-                // TODO FIXME ensure always resetting!
-                device.getParameterByName("UCTD_Opt2").value = 0;
-    
-                // TODO split: move to separate testcase
-                // TODO extract mock for device::getParameterByName fail
-                const failingParamGet = {
-                    getParameterByName: function (name) {
-                        // fail on non UCT fields
-                        return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
-                    },
-                };
-                expect(() => uctBtnExport(failingParamGet, online, progress, context)).toThrow(Error);
-            });
-        });
-        describe('Multi-Channel', () => {
-            it("allows exporting multiple channels", () => {
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+            var p = device.getParameterByName("CHN_Param2C");
+            expect(p.value).toBe(500);
+            p.value = 400;
+            expect(p.value).toBe(400);
 
-                device.getParameterByName("UCTD_ExportSourcesString").value = "1-2";
-                device.getParameterByName("UCTD_Output").value = "";
-                device.getParameterByName("UCTD_Opt1").value = 1;
-                device.getParameterByName("CHN_Param1D").value = "yyyy";
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe(
-                    "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/1§Param~D=yyyy§;OpenKNX\nOpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX"
-                );
-            });
-            it("fails on empty or wrong multi-channel-selection", () => {
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
+            device.getParameterByName("UCTD_Channel").value = 2;
+            device.getParameterByName("UCTD_Output").value = "";
+            device.getParameterByName("UCTD_Opt1").value = 1;
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~C=400§;OpenKNX");
 
-                device.getParameterByName("UCTD_ExportSourcesString").value = "";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
+            // multi-line format
+            device.getParameterByName("UCTD_Opt2").value = 1;
+            uctBtnExport(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2\nParam~C=400\n;OpenKNX");
 
-                device.getParameterByName("UCTD_ExportSourcesString").value = "4-1";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
-
-                device.getParameterByName("UCTD_ExportSourcesString").value = "x";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
-            });
-            it("fails on channels out of range", () => {
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
-
-                device.getParameterByName("UCTD_ExportSourcesString").value = "99";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
-
-                device.getParameterByName("UCTD_ExportSourcesString").value = "7-8";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
-
-                device.getParameterByName("UCTD_ExportSourcesString").value = "1-7";
-                expect(() => uctBtnExport(device, online, progress, context)).not.toThrow(Error);
-
-                device.getParameterByName("UCTD_ExportSourcesString").value = "0-99";
-                expect(() => uctBtnExport(device, online, progress, context)).toThrow(Error);
-            });
-        });
-        describe('Module with 0 Channels', () => {
-            it("ignore channel selection paramters", () => {
-                
-                device.getParameterByName("UCTD_ModuleIndex").value = 2;
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 0;
-                device.getParameterByName("UCTD_Channel").value = 95;
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX");
-
-                device.getParameterByName("UCTD_ChannelSelectionMode").value = 1;
-                device.getParameterByName("UCTD_ExportSourcesString").value = "11-20";
-                uctBtnExport(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("OpenKNX,cv1,0xAF42:0x23/TXS:0x17/0§X=5§;OpenKNX");
-
-                // TODO FIXME ensure always resetting!
-                device.getParameterByName("UCTD_ModuleIndex").value = 3;
-            });
+            // TODO split: move to separate testcase
+            // TODO extract mock for device::getParameterByName fail
+            const failingParamGet = {
+                getParameterByName: function (name) {
+                    // fail on non UCT fields
+                    return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
+                },
+            };
+            expect(() => uctBtnExport(failingParamGet, online, progress, context)).toThrow(Error);
         });
     });
 
@@ -551,7 +456,30 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("CHN_Param4D").value).toBe("existing");
 
         });
-    
+
+        it("tolerates spaces around transfer-string", () => {
+            device.getParameterByName("UCTD_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = " OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX ";
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX   ";
+            expect(() => uctBtnImport(device, online, progress, context)).not.toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+
+            device.getParameterByName("UCTD_Import").value = ".OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§;OpenKNX.";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+        });
+
         it("fails on unsupported format version", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
@@ -598,144 +526,145 @@ describe('Button Handler', () => {
     describe('Copy', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
-            "p_copyMode":"UCTD_CopyMode",
+            // "p_channelTarget":"UCTD_Channel",
             "p_channelSource":"UCTD_ChannelSource",
             "p_channelTarget":"UCTD_ChannelTarget",
-            "p_channelSourceString":"UCTD_ChannelSourceString",
-            "p_channelTargetString":"UCTD_ChannelTargetString",
             "p_messageOutput":"UCTD_Output",
-            "p_showButton":"UCTD_CopyShowButton",
         };
-        describe('Single Channel', () => {
-            test("regular copy and success message", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 0;
-                device.getParameterByName("UCTD_ChannelSource").value = 6;
-                device.getParameterByName("UCTD_ChannelTargetString").value = "5";
-                device.getParameterByName("CHN_Param6D").value = "Kanal6";
-                uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
-                expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
-            test("allow copy one channel multiple times", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 0;
-                device.getParameterByName("UCTD_ChannelSource").value = 6;
-                device.getParameterByName("UCTD_ChannelTargetString").value = "2-4";
-                device.getParameterByName("CHN_Param6D").value = "MulCh6";
-                uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/2 [OK]\nCHN/6 -> CHN/3 [OK]\nCHN/6 -> CHN/4 [OK]");
-                expect(device.getParameterByName("CHN_Param2D").value).toBe("MulCh6");
-                expect(device.getParameterByName("CHN_Param3D").value).toBe("MulCh6");
-                expect(device.getParameterByName("CHN_Param4D").value).toBe("MulCh6");
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
-            // TODO extend tests for multi-copy
-            it("fails on source==target", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 0;
-                device.getParameterByName("UCTD_ChannelSource").value = 6;
-                device.getParameterByName("UCTD_ChannelTargetString").value = "6";
-                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
-    
-            it("fails on source out of range", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 0;
-                device.getParameterByName("UCTD_ChannelSource").value = 99;
-                device.getParameterByName("UCTD_ChannelTargetString").value = "6";
-                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
-    
-            it("fails on target out of range", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 0;
-                device.getParameterByName("UCTD_ChannelSource").value = 4;
-                device.getParameterByName("UCTD_ChannelTargetString").value = "99";
-                expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
+        test("regulare copy and success message", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 5;
+            device.getParameterByName("CHN_Param6D").value = "Kanal6";
+            uctBtnCopy(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 -> CHN/5 [OK]");
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
         });
-        describe('Channel-Group', () => {
-            // TODO add tests for multi-copy
-            // TODO add tests for copy group to starting-point
-            test("allow copy channel group one time", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 1;
-                device.getParameterByName("UCTD_ChannelSourceString").value = "1,3,5";
-                device.getParameterByName("UCTD_ChannelTarget").value = "2";
-                device.getParameterByName("CHN_Param1D").value = "GrCh1";
-                device.getParameterByName("CHN_Param3D").value = "GrCh3";
-                device.getParameterByName("CHN_Param5D").value = "GrCh5";
-                uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/3 -> CHN/4 [OK]\nCHN/1 -> CHN/2 [OK]");
-                expect(device.getParameterByName("CHN_Param2D").value).toBe("GrCh1");
-                expect(device.getParameterByName("CHN_Param4D").value).toBe("GrCh3");
-                expect(device.getParameterByName("CHN_Param6D").value).toBe("GrCh5");
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(1);
-            });
-            test("allow copy overlapping channel group one time with negative offset", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 1;
-                device.getParameterByName("UCTD_ChannelSourceString").value = "2-3,5";
-                device.getParameterByName("UCTD_ChannelTarget").value = "1";
-                device.getParameterByName("CHN_Param2D").value = "GrChOv-A";
-                device.getParameterByName("CHN_Param3D").value = "GrChOv-B";
-                device.getParameterByName("CHN_Param5D").value = "GrChOv-C";
-                uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/2 -> CHN/1 [OK]\nCHN/3 -> CHN/2 [OK]\nCHN/5 -> CHN/4 [OK]");
-                expect(device.getParameterByName("CHN_Param1D").value).toBe("GrChOv-A");
-                expect(device.getParameterByName("CHN_Param2D").value).toBe("GrChOv-B");
-                expect(device.getParameterByName("CHN_Param4D").value).toBe("GrChOv-C");
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(0);
-            });            
-            test("allow copy overlapping channel group one time with positive offset", () => {
-                device.getParameterByName("UCTD_CopyMode").value = 1;
-                device.getParameterByName("UCTD_ChannelSourceString").value = "2,4-5";
-                device.getParameterByName("UCTD_ChannelTarget").value = "3";
-                device.getParameterByName("CHN_Param2D").value = "GrChOv-a";
-                device.getParameterByName("CHN_Param4D").value = "GrChOv-b";
-                device.getParameterByName("CHN_Param5D").value = "GrChOv-c";
-                uctBtnCopy(device, online, progress, context);
-                expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/5 -> CHN/6 [OK]\nCHN/4 -> CHN/5 [OK]\nCHN/2 -> CHN/3 [OK]");
-                expect(device.getParameterByName("CHN_Param3D").value).toBe("GrChOv-a");
-                expect(device.getParameterByName("CHN_Param5D").value).toBe("GrChOv-b");
-                expect(device.getParameterByName("CHN_Param6D").value).toBe("GrChOv-c");
-                expect(device.getParameterByName("UCTD_CopyShowButton").value).toBe(0);
-            });            
+
+        it("fails on source==target", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+        });
+
+        it("fails on source out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 99;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
+        });
+
+        it("fails on target out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 4;
+            device.getParameterByName("UCTD_ChannelTarget").value = 99;
+            expect(() => uctBtnCopy(device, online, progress, context)).toThrow(Error);
         });
     });
 
-    describe("Reset", () => {
+    describe('Swap', () => {
         var context = {
             "p_moduleSelection":"UCTD_ModuleIndex",
-            "p_channelMode":"UCTD_Opt1",
-            "p_channelTarget":"UCTD_Channel",
-            "p_channelTargetsString":"UCTD_ChannelsString",
+            // "p_channelTarget":"UCTD_Channel",
+            "p_channelA":"UCTD_ChannelSource",
+            "p_channelB":"UCTD_ChannelTarget",
             "p_messageOutput":"UCTD_Output",
         };
-        test("Reset single Channel", () => {
-            device.getParameterByName("UCTD_Opt1").value = 0;
-
-            device.getParameterByName("UCTD_Channel").value = 3;
-            uctBtnReset(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/3 Reset [OK]");
-    
-            device.getParameterByName("UCTD_Channel").value = 4;
-            uctBtnReset(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/4 Reset [OK]");
-    
-            device.getParameterByName("UCTD_Channel").value = 1;
-            uctBtnReset(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]");
+        test("regular swap and success message + swap again", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 5;
+            device.getParameterByName("CHN_Param6D").value = "Kanal6";
+            device.getParameterByName("CHN_Param5D").value = "Kanal5";
+            uctBtnSwap(device, online, progress, context);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 <--> CHN/5 [OK]");
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal5");
+            uctBtnSwap(device, online, progress, context);
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal5");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal6");
         });
-        test("Reset multiple Channels", () => {
-            device.getParameterByName("UCTD_Opt1").value = 1;
-
-            device.getParameterByName("UCTD_ChannelsString").value = "1,3";
-            uctBtnReset(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]\nCHN/3 Reset [OK]");
-
-            device.getParameterByName("UCTD_ChannelsString").value = "4,1-2";
-            uctBtnReset(device, online, progress, context);
-            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]\nCHN/2 Reset [OK]\nCHN/4 Reset [OK]");
+        test("regular swap and success message + swap again (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 6,
+                "channelB": 5,
+                "p_messageOutput":"UCTD_Output",
+            };
+            device.getParameterByName("CHN_Param6D").value = "Kanal6";
+            device.getParameterByName("CHN_Param5D").value = "Kanal5";
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/6 <--> CHN/5 [OK]");
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal6");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal5");
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("CHN_Param5D").value).toBe("Kanal5");
+            expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal6");
         });
+
+        it("fails on source==target", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 6;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on source==target (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 6,
+                "channelB": 6,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
+        });
+
+        it("fails on channelA out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 99;
+            device.getParameterByName("UCTD_ChannelTarget").value = 6;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on channelA out of range (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 99,
+                "channelB": 4,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
+        });
+
+        it("fails on channelB out of range", () => {
+            device.getParameterByName("UCTD_ChannelSource").value = 4;
+            device.getParameterByName("UCTD_ChannelTarget").value = 99;
+            expect(() => uctBtnSwap(device, online, progress, context)).toThrow(Error);
+        });
+        it("fails on channelB out of range (given as direct value)", () => {
+            var contextLocal = {
+                // "p_moduleSelection":"UCTD_ModuleIndex",
+                "module":"CHN",
+                "channelA": 4,
+                "channelB": 99,
+                "p_messageOutput":"UCTD_Output",
+            };
+            expect(() => uctBtnSwap(device, online, progress, contextLocal)).toThrow(Error);
+        });
+    });
+
+    test("Reset", () => {
+        var context = {
+            "p_moduleSelection":"UCTD_ModuleIndex",
+            "p_channelTarget":"UCTD_Channel",
+            "p_messageOutput":"UCTD_Output",
+        };
+        device.getParameterByName("UCTD_Channel").value = 3;
+        uctBtnReset(device, online, progress, context);
+        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/3 Reset [OK]");
+
+        device.getParameterByName("UCTD_Channel").value = 4;
+        uctBtnReset(device, online, progress, context);
+        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/4 Reset [OK]");
+
+        device.getParameterByName("UCTD_Channel").value = 1;
+        uctBtnReset(device, online, progress, context);
+        expect(device.getParameterByName("UCTD_Output").value).toBe("CHN/1 Reset [OK]");
 
         // TODO extend
     });
@@ -846,56 +775,71 @@ describe('Helper', () => {
         expect(uctHexNumberStr(255)).toBe("0xFF");
     });
 
-    describe("uctParseRangesString", () => {
-        const uctParseRangesString = cts.uctParseRangesString;
+    describe("uctVersionToStr", () => {
+        const uctVersionToStr = cts.uctVersionToStr;
         it("accepts empty string", () => {
-            expect(uctParseRangesString("")).toStrictEqual([]);
+            expect(uctVersionToStr("")).toBe('""');
         });
-        it("accepts single value", () => {
-            expect(uctParseRangesString("0")).toStrictEqual([0]);
-            expect(uctParseRangesString("1")).toStrictEqual([1]);
-            expect(uctParseRangesString("9")).toStrictEqual([9]);
-            expect(uctParseRangesString("10")).toStrictEqual([10]);
-            expect(uctParseRangesString("45")).toStrictEqual([45]);
-            expect(uctParseRangesString("90")).toStrictEqual([90]);
-            expect(uctParseRangesString("99")).toStrictEqual([99]);
+        it("converts integer to vN.M", () => {
+            expect(uctVersionToStr(0)).toBe('v0.0');
+            expect(uctVersionToStr(0x0)).toBe('v0.0');
+            expect(uctVersionToStr(1)).toBe('v0.1');
+            expect(uctVersionToStr(0x1)).toBe('v0.1');
+            expect(uctVersionToStr(3)).toBe('v0.3');
+            expect(uctVersionToStr(0x3)).toBe('v0.3');
+            expect(uctVersionToStr(15)).toBe('v0.15');
+            expect(uctVersionToStr(0x0f)).toBe('v0.15');
+            expect(uctVersionToStr(16)).toBe('v1.0');
+            expect(uctVersionToStr(0x10)).toBe('v1.0');
+            expect(uctVersionToStr(20)).toBe('v1.4');
+            expect(uctVersionToStr(0x14)).toBe('v1.4');
+            expect(uctVersionToStr(64)).toBe('v4.0');
+            expect(uctVersionToStr(0x40)).toBe('v4.0');
+            expect(uctVersionToStr(255)).toBe('v15.15');
+            expect(uctVersionToStr(0xff)).toBe('v15.15');
+            expect(uctVersionToStr(0x80)).toBe('v8.0');
         });
-        it("accepts list of value", () => {
-            expect(uctParseRangesString("1,2,3,55,80")).toStrictEqual([1,2,3,55,80]);
+        it("converts decimal integer string to vN.M", () => {
+            expect(uctVersionToStr("0")).toBe('v0.0');
+            expect(uctVersionToStr("1")).toBe('v0.1');
+            expect(uctVersionToStr("3")).toBe('v0.3');
+            expect(uctVersionToStr("15")).toBe('v0.15');
+            expect(uctVersionToStr("16")).toBe('v1.0');
+            expect(uctVersionToStr("20")).toBe('v1.4');
+            expect(uctVersionToStr("64")).toBe('v4.0');
+            expect(uctVersionToStr("255")).toBe('v15.15');
         });
-        it("brings values in order", () => {
-            expect(uctParseRangesString("99,80")).toStrictEqual([80,99]);
-            expect(uctParseRangesString("9,8,3,5,4,12")).toStrictEqual([3,4,5,8,9,12]);
+        it("converts hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0x0")).toBe('v0.0');
+            expect(uctVersionToStr("0x1")).toBe('v0.1');
+            expect(uctVersionToStr("0x3")).toBe('v0.3');
+            expect(uctVersionToStr("0x0F")).toBe('v0.15');
+            expect(uctVersionToStr("0x10")).toBe('v1.0');
+            expect(uctVersionToStr("0x14")).toBe('v1.4');
+            expect(uctVersionToStr("0x40")).toBe('v4.0');
+            expect(uctVersionToStr("0xFF")).toBe('v15.15');
+            expect(uctVersionToStr("0x80")).toBe('v8.0');
         });
-        it("accepts ranges", () => {
-            expect(uctParseRangesString("42-46")).toStrictEqual([42,43,44,45,46]);
-            expect(uctParseRangesString("96-99")).toStrictEqual([96,97,98,99]);
-            expect(uctParseRangesString("0-9")).toStrictEqual([0,1,2,3,4,5,6,7,8,9]);
+        it("converts lowercase hex integer string to vN.M", () => {
+            expect(uctVersionToStr("0xab")).toBe('v10.11');
+            expect(uctVersionToStr("0x0f")).toBe('v0.15');
+            expect(uctVersionToStr("0xff")).toBe('v15.15');
         });
-        it("accepts list of ranges", () => {
-            expect(uctParseRangesString("8-9,3-5,12")).toStrictEqual([3,4,5,8,9,12]);
+        it("encloses '*' and '-'", () => {
+            expect(uctVersionToStr('*')).toBe('"*"');
+            expect(uctVersionToStr('-')).toBe('"-"');
         });
-        it("ignores values out out of 0..99", () => {
-            expect(uctParseRangesString("100")).toStrictEqual([]);
-            expect(uctParseRangesString("999")).toStrictEqual([]);
-            expect(uctParseRangesString("1000")).toStrictEqual([]);
+        it("encloses strings", () => {
+            expect(uctVersionToStr('X')).toBe('"X"');
+            expect(uctVersionToStr('other_string')).toBe('"other_string"');
+            expect(uctVersionToStr('v1.0')).toBe('"v1.0"');
         });
-        it("ignores ranges out out of 0..99", () => {
-            expect(uctParseRangesString("96-150")).toStrictEqual([96,97,98,99]);
+        // TODO check fail as unexpected
+        it("conserves non-integer numbers", () => {
+            expect(uctVersionToStr(1.5)).toBe('1.5');
+            expect(uctVersionToStr(0.7)).toBe('0.7');
         });
-        it("ignores reversed ranges", () => {
-            expect(uctParseRangesString("5-3")).toStrictEqual([]);
-            expect(uctParseRangesString("5-3,3-5")).toStrictEqual([3,4,5]);
-        });
-        it("ignores duplicates ", () => {
-            // in list
-            expect(uctParseRangesString("2,2,55,55,80")).toStrictEqual([2,55,80]);
-            // in ranges with subsets
-            expect(uctParseRangesString("2-8,4,5,6-7")).toStrictEqual([2,3,4,5,6,7,8]);
-            // in ranges with overlap
-            expect(uctParseRangesString("3-7,4-9")).toStrictEqual([3,4,5,6,7,8,9]);
-        });
-        // TODO handling of non-strings?
+        // TODO expected for null, undefined or other?
     });
 
 });
@@ -1092,255 +1036,6 @@ describe('Param Calculation', () => {
         expect(input).toStrictEqual({"f1":"value", "f2":3});
         expect(output).toStrictEqual({"f3":"x"});
         expect(context).toStrictEqual({"c1": "z"});
-    });
-
-    describe("uctParamModulSelectionCheck", () => {
-        const uctParamModulSelectionCheck = cts.uctParamModulSelectionCheck;
-        var input;
-        var context = {};
-        var output;
-
-        it("handles no module selected", () => {
-            input = {
-                "modul": 255,
-                "channelSelectionMode": 0,
-                "channelSource": 1,
-                "channelSourcesString": "1",
-            };
-            output = {
-                "modulChannelCount": 10,
-                "channelError": 1,
-                "result": "x"
-            };
-            uctParamModulSelectionCheck(input, output, context);
-            expect(context).toStrictEqual({});                
-            expect(input).toStrictEqual(input);
-            expect(output.modulChannelCount).toBe(0);
-            expect(output.channelError).toBe(0);
-            // TODO add test for result?
-        });
-
-        describe("single channel mode", () => {
-            it("detects out of range channel", () => {
-                input = {
-                    "modul": 3,
-                    "channelSelectionMode": 0,
-                    "channelSource": 8,
-                    "channelSourcesString": "1",
-                };
-                output = {
-                    "modulChannelCount": 0,
-                    "channelError": 0,
-                    "result": "x"
-                };
-                uctParamModulSelectionCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.modulChannelCount).toBe(7);
-                expect(output.channelError).toBe(1);
-                // TODO add test for result?
-            });
-        });
-        describe("multi channel mode", () => {
-            it("detects out of range channel", () => {
-                input = {
-                    "modul": 3,
-                    "channelSelectionMode": 1,
-                    "channelSource": 8,
-                    "channelSourcesString": "7-8",
-                };
-                output = {
-                    "modulChannelCount": 0,
-                    "channelError": 0,
-                    "result": "x"
-                };
-                uctParamModulSelectionCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.modulChannelCount).toBe(7);
-                expect(output.channelError).toBe(1);                
-                // TODO add test for result?
-            });
-        });
-    });
-
-    describe("uctParamCopyCheck", () => {
-        const uctParamCopyCheck = cts.uctParamCopyCheck;
-        var input;
-        var context = {};
-        var output;
-
-        it("handles no module selected", () => {
-            input = {
-                "CopyModul": 255,
-                "CopyMode": 0,
-                "CopySource": 1,
-                "CopySourceString": "1",
-                "CopyTarget": 1,
-                "CopyTargetString": "1"
-            };
-            output = {
-                "CopyModulChannelCount": 10,
-                "CopySourceError": 1,
-                "CopyTargetError": 1,
-                "CopySameError": 1,
-                "CopyError": 1,
-                "result": "x"
-            };
-            uctParamCopyCheck(input, output, context);
-            expect(context).toStrictEqual({});                
-            expect(input).toStrictEqual(input);
-            expect(output.CopyModulChannelCount).toBe(0);
-            expect(output.CopySourceError).toBe(0);
-            expect(output.CopyTargetError).toBe(0);
-            expect(output.CopySameError).toBe(0);
-            expect(output.CopyError).toBe(1);
-            // TODO add test for result?
-        });
-
-        describe("single channel mode", () => {
-            it("detects same channel", () => {
-                input = {
-                    "CopyModul": 3,
-                    "CopyMode": 0,
-                    "CopySource": 1,
-                    "CopySourceString": "1",
-                    "CopyTarget": 1,
-                    "CopyTargetString": "1"
-                };
-                output = {
-                    "CopyModulChannelCount": 1,
-                    "CopySourceError": 1,
-                    "CopyTargetError": 1,
-                    "CopySameError": 0,
-                    "CopyError": 0,
-                    "result": "x"
-                };
-                uctParamCopyCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.CopyModulChannelCount).toBe(7);
-                expect(output.CopySourceError).toBe(0);
-                expect(output.CopyTargetError).toBe(0);
-                expect(output.CopySameError).toBe(1);
-                expect(output.CopyError).toBe(1);
-                // TODO add test for result?
-            });
-            it("detects out of range channels", () => {
-                input = {
-                    "CopyModul": 3,
-                    "CopyMode": 0,
-                    "CopySource": 8,
-                    "CopySourceString": "1",
-                    "CopyTarget": 1,
-                    "CopyTargetString": "11"
-                };
-                output = {
-                    "CopyModulChannelCount": 0,
-                    "CopySourceError": 0,
-                    "CopyTargetError": 0,
-                    "CopySameError": 1,
-                    "CopyError": 0,
-                    "result": "x"
-                };
-                uctParamCopyCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.CopyModulChannelCount).toBe(7);
-                expect(output.CopySourceError).toBe(1);
-                expect(output.CopyTargetError).toBe(1);
-                expect(output.CopySameError).toBe(0);
-                expect(output.CopyError).toBe(1);
-                // TODO add test for result?
-            });
-        });
-        describe("multi channel mode", () => {
-            it("detects overlapping", () => {
-                input = {
-                    "CopyModul": 3,
-                    "CopyMode": 1,
-                    "CopySource": 1,
-                    "CopySourceString": "1-2,4",
-                    "CopyTarget": 3,
-                    "CopyTargetString": "11"
-                };
-                output = {
-                    "CopyModulChannelCount": 0,
-                    "CopySourceError": 1,
-                    "CopyTargetError": 0,
-                    "CopySameError": 1,
-                    "CopyError": 0,
-                    "result": "x"
-                };
-                uctParamCopyCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.CopyModulChannelCount).toBe(7);
-                expect(output.CopySourceError).toBe(0);
-                expect(output.CopyTargetError).toBe(0);
-                expect(output.CopySameError).toBe(1);
-                expect(output.CopyError).toBe(0);
-                // TODO add test for result?
-            });
-            it("detects out of range at end", () => {
-                input = {
-                    "CopyModul": 3,
-                    "CopyMode": 1,
-                    "CopySource": 1,
-                    "CopySourceString": "1-4",
-                    "CopyTarget": 5,
-                    "CopyTargetString": "11"
-                };
-                output = {
-                    "CopyModulChannelCount": 0,
-                    "CopySourceError": 1,
-                    "CopyTargetError": 0,
-                    "CopySameError": 1,
-                    "CopyError": 0,
-                    "result": "x"
-                };
-                uctParamCopyCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.CopyModulChannelCount).toBe(7);
-                expect(output.CopySourceError).toBe(0);
-                expect(output.CopyTargetError).toBe(1);
-                expect(output.CopySameError).toBe(0);
-                expect(output.CopyError).toBe(1);
-                // TODO add test for result?
-            });
-            it("detects out of range at begin", () => {
-                input = {
-                    "CopyModul": 3,
-                    "CopyMode": 1,
-                    "CopySource": 1,
-                    "CopySourceString": "1-4",
-                    "CopyTarget": 11,
-                    "CopyTargetString": "11"
-                };
-                output = {
-                    "CopyModulChannelCount": 0,
-                    "CopySourceError": 1,
-                    "CopyTargetError": 0,
-                    "CopySameError": 1,
-                    "CopyError": 0,
-                    "result": "x"
-                };
-                uctParamCopyCheck(input, output, context);
-                expect(context).toStrictEqual({});                
-                expect(input).toStrictEqual(input);
-                expect(output.CopyModulChannelCount).toBe(7);
-                expect(output.CopySourceError).toBe(0);
-                expect(output.CopyTargetError).toBe(1);
-                expect(output.CopySameError).toBe(0);
-                expect(output.CopyError).toBe(1);
-                // TODO add test for result?
-            });            
-            it.skip("other tests", () => {
-                // TODO implement
-            });            
-        });
-
     });
 
 });

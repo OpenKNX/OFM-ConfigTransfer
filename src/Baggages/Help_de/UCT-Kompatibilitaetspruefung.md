@@ -19,9 +19,9 @@ bei Abweichungen in referenzierten Kanälen sind jedoch auch hier Einschränkung
 
 Akzeptiert Importe, solange diese aus derselben Modulversion stammen.
 
-Diese Einstellung bietet immer noch eine hohe Sicherheit der korrekten Konfigurationsübernahme, 
+Diese Einstellung bietet immer noch eine hohe Sicherheit der korrekten Konfigurationsübernahme,
 solange die Kanal-Konfiguration keinen Bezug nach außen hat.
-Erwartbare Einschränkungen sind z.B. Verknüpfungen zu internen KOs, die nicht mehr auf das erwarte Ziel zeigen, 
+Erwartbare Einschränkungen sind z.B. Verknüpfungen zu internen KOs, die nicht mehr auf das erwarte Ziel zeigen,
 wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
 
 
@@ -31,9 +31,9 @@ wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
 Versucht den Import durchzuführen, so gut es möglich ist.
 Werte mit Parameternamen die im Modul dieser Applikation unbekannt sind, werden beim Import ignoriert und führen zu einer Warnmeldung, ohne den Import zu stoppen.
 
-Dieses Vorgehen wird in vielen Fällen immer noch zum gewünschten Ergebnis führen, 
-wobei die in den anderen Stufen genannten Einschränkungen weiterhin gelten. 
-Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen. 
+Dieses Vorgehen wird in vielen Fällen immer noch zum gewünschten Ergebnis führen,
+wobei die in den anderen Stufen genannten Einschränkungen weiterhin gelten.
+Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen.
 Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko.
 
 Unter individueller Beachtung der Versionsunterschiede erlaubt diese Option eine sehr hohe Flexibilität.
