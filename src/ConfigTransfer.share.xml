@@ -256,6 +256,7 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="99" />
               </ParameterType>
 
+              <!-- Remove Compatibility Check
               <ParameterType Id="%AID%_PT-ImportCheck" Name="ImportCheck">
                 <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Id="%ENID%"   Value="7" Text="streng     (selbe Modul- &amp; ETS-App-Version)"     />
@@ -263,6 +264,7 @@
                   <Enumeration Id="%ENID%"   Value="0" Text="lockerer   (ignoriert unbekannte Parameter)"         />
                 </TypeRestriction>
               </ParameterType>
+              -->
 
               <ParameterType Id="%AID%_PT-ExportFormat" Name="ExportFormat">
                 <TypeRestriction Base="Value" SizeInBit="8">
@@ -290,7 +292,7 @@
 
               <Parameter Id="%AID%_P-%TT%00100" Name="ImportInput"           ParameterType="%AID%_PT-TransferString"                      Text="Transfer-String"       Value=""    />
               <Parameter Id="%AID%_P-%TT%00101" Name="ImportTarget"          ParameterType="%AID%_PT-ImportTarget"                        Text="Import-Ziel"           Value="255" />
-              <Parameter Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="0"   />
+              <!--       Id="%AID%_P-%TT%00102" Name="ImportCheck"           ParameterType="%AID%_PT-ImportCheck"                         Text="Kompatiblitätsprüfung" Value="0"  -->
               <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog"         ParameterType="%AID%_PT-Text32KiB"                           Text="Import-Resultat"       Value=""    />
               <!--       Id="%AID%_P-%TT%00104" Name="DirectImportShow"      ParameterType="%AID%_PT-CheckBox"                            Text="Direktimport anzeigen" Value="0"  -->
 
@@ -320,7 +322,6 @@
 
               <ParameterRef Id="%AID%_P-%TT%00100_R-%TT%0010001" RefId="%AID%_P-%TT%00100" />
               <ParameterRef Id="%AID%_P-%TT%00101_R-%TT%0010101" RefId="%AID%_P-%TT%00101" />
-              <ParameterRef Id="%AID%_P-%TT%00102_R-%TT%0010201" RefId="%AID%_P-%TT%00102" />
               <ParameterRef Id="%AID%_P-%TT%00103_R-%TT%0010301" RefId="%AID%_P-%TT%00103" />
               <ParameterRef Id="%AID%_P-%TT%00200_R-%TT%0020001" RefId="%AID%_P-%TT%00200" />
 
@@ -349,7 +350,6 @@
               <ParameterCalculation Id="%AID%_PC-%TT%00001" Language="JavaScript" Name="UctImportParamReset" LRTransformationFunc="uctParamResetResult" RLTransformationFunc="uctParamResetNothing">
                 <LParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" AliasName="ImportTarget"          />
-                  <ParameterRefRef RefId="%AID%_P-%TT%00102_R-%TT%0010201" AliasName="ImportCheck"           />
                 </LParameters>
                 <RParameters>
                   <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" AliasName="result"                /><!-- ImportUserLog -->

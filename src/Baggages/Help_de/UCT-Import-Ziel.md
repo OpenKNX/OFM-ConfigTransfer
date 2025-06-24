@@ -31,4 +31,3 @@ falls ein kanalunabhängiger ConfigTransfer-String genutzt wird,
 oder eine Kanal-Nummer angegeben ist die in dieser Applikation nicht für das Modul definiert ist.
 
 
-

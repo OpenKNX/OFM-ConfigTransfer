@@ -5,10 +5,11 @@
 * Verbesserungen/Anpassungen, basierend auf Nutzererfahrungen:
   * Geänderte Reihenfolge der Parameter-Blöcke (Seiten): Kanalkopie, Kanaltausch, Standardwerte, Import, Export.
     Operationen innerhalb der Applikation werden in der Praxis häufiger verwendet als Import und Export.
-  * Kompatibilitätslevel **lockerer** als Standard.
-    Das bisherige Level **streng** verhinderte in der Praxis sehr häufig den Import, 
+  * Konfiguration der Kompatibilitätsprüfung aus der Benutzeroberfläche entfernt.
+    Das Verhalten entspricht nun dem Kompatibilitätslevel **lockerer**.
+    Der bisherige Standard-Level **streng** verhinderte in der Praxis sehr häufig den Import, 
     was bei Nutzern teilweise für Verwirrung sorgte.
-    In der Praxis führt die geringere Garantie zu keinen gravierenden Problemen.
+    In der Praxis führte die deutlich höhere Toleranz von **lockerer** zu keinen gravierenden Problemen.
   * Tolerieren/Trimmen von Whitespaces vor und nach Transfer-String
   * Beschriftung für Auswahl von Export-Format.
     "Menschenlesbar" wurde häufig fälschlicherweise für Support-Zwecke ausgewählt.

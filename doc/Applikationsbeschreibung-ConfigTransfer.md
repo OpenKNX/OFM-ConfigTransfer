@@ -14,7 +14,6 @@
     * [**Kanaltausch**](#kanaltausch)
     * [**Standardwerte**](#standardwerte)
     * [**Import**](#import)
-        * [Kompatibilitätsprüfung](#kompatibilitätsprüfung)
     * [**Export**](#export)
 
 * [Kommunikationsobjekte](#kommunikationsobjekte)
@@ -287,65 +286,6 @@ unabhängig davon aus welchem Kanal sie exportiert wurde.
 Der Import mit dieser Einstellung wird scheitern,
 falls ein kanalunabhängiger ConfigTransfer-String genutzt wird,
 oder eine Kanal-Nummer angegeben ist die in dieser Applikation nicht für das Modul definiert ist.
-
-
-
-<!-- DOC -->
-### Kompatibilitätsprüfung
-
-Ein Konfigurationstransfer zwischen unterschiedlichen Applikationen birgt ein gewisses Risiko von unerwarteten Ergebnissen,
-bedingt durch z.B. unterschiedliche KO-Nummern, veränderte Parameter, Parameterwerten und deren Interpretation innerhalb eines Moduls.
-
-Durch das Level der Kompatibilitätsprüfung kann dieses Risiko, zu Lasten eines flexibleren Konfiguratrionstransfers, beschränkt werden.
-
-
-#### streng       (selbe Modul- & ETS-App-Version)
-
-Akzeptiert nur Importe, die aus exakt derselben Applikation mit exakt derselben Version stammen (und damit auch gleichzeitig dieselbe Modul-Version aufweisen).
-
-Abgesehen von allgemeinen technischen Limitationen, bietet diese Einstellung die höchste Sicherheit einer unveränderten Konfigurationsübernahme,
-bei Abweichungen in referenzierten Kanälen sind jedoch auch hier Einschränkungen möglich.
-
-<!-- DOC Skip="4" -->
-> Anwendungsszenarien:
->
-> * Verschiebung von einzelnen Funktionalitäten zwischen (von Applikationsseite) identischen OpenKNX-Geräten
-> * Aktualisierung von einzelnen Funktionalitäten die identisch auf mehreren Geräten umgesetzt wurde (z.B. selbe Funktion in je einem Gerät pro Raum)
-
-
-#### moderat   (selbe Modul-Version)
-
-Akzeptiert Importe, solange diese aus derselben Modulversion stammen.
-
-Diese Einstellung bietet immer noch eine hohe Sicherheit der korrekten Konfigurationsübernahme,
-solange die Kanal-Konfiguration keinen Bezug nach außen hat.
-Erwartbare Einschränkungen sind z.B. Verknüpfungen zu internen KOs, die nicht mehr auf das erwarte Ziel zeigen,
-wenn KO-Nummern zwischen den beteiligten Applikation abweichen.
-
-<!-- DOC Skip="4" -->
-> Anwendungsszenarien:
->
-> * Verschiebung von einzelnen Funktionalitäten (oder Migration) zwischen verschiedenen OpenKNX-Applikationen derselben Generation (z.B. zwischen TP und IP, von OAM-LogicModule auf OAM-DFA oder OAM-PresenceModule)
-> * Weitergabe von Konfigurationsbeispielen einer aktuellen Modul-Version
-
-
-#### lockerer     (ignoriert unbekannte Parameter)
-
-Versucht den Import durchzuführen, so gut es möglich ist.
-Werte mit Parameternamen die im Modul dieser Applikation unbekannt sind, werden beim Import ignoriert und führen zu einer Warnmeldung, ohne den Import zu stoppen.
-
-Dieses Vorgehen wird in vielen Fällen immer noch zum gewünschten Ergebnis führen,
-wobei die in den anderen Stufen genannten Einschränkungen weiterhin gelten.
-Das Risiko von unerwarteten Effekten steigt mit dem Abstand zwischen den Versionen.
-Fälle in denen auch ein ETS-Upgrade möglich wäre bergen nur ein geringes Risiko.
-
-Unter individueller Beachtung der Versionsunterschiede erlaubt diese Option eine sehr hohe Flexibilität.
-
-<!-- DOC Skip="3" -->
-> Anwendungsszenarien:
-> * Verschiebung von einzelnen Funktionalitäten (oder Migration) zwischen sehr unterschiedlichen OpenKNX-Applikationen
-> * Weitergabe von Versions-unabhängigen Konfigurationsbeispielen mit Bezug zu stabilen Konfigurationsoptionen
-
 
 
 <!-- DOC -->
