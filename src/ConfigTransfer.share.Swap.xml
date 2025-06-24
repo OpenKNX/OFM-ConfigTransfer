@@ -23,6 +23,9 @@
                   <when test="!=255">
                     <ParameterRefRef RefId="%AID%_P-%TT%00501_R-%TT%0050101" IndentLevel="1" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00502_R-%TT%0050201" IndentLevel="1" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Kommunikationsobjekte werden nicht getauscht!" UIHint="Information" />
+
                     <Button Id="%AID%_B-%TT%00500" Text="Tauschen"      EventHandler="uctBtnSwap"   EventHandlerParameters="{ &quot;p_moduleSelection&quot;:&quot;%PREFIX%_SwapModul&quot;, &quot;p_channelA&quot;:&quot;%PREFIX%_SwapChannelA&quot;, &quot;p_channelB&quot;:&quot;%PREFIX%_SwapChannelB&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_SwapUserLog&quot; }" />
                     <ParameterRefRef RefId="%AID%_P-%TT%00503_R-%TT%0050301" />
                   </when>
