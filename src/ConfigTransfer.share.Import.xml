@@ -20,14 +20,27 @@
                 <Parameter Id="%AID%_P-%TT%00103" Name="ImportUserLog" ParameterType="%AID%_PT-Text32KiB"      Text="Import-Resultat"       Value=""    />
                 -->
 
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="1. Eingabe des Transfer-Strings" UIHint="Headline" />
+
                 <ParameterRefRef RefId="%AID%_P-%TT%00100_R-%TT%0010001" HelpContext="UCT-Transfer-String" />
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="2. Auswahl des Import-Ziels" UIHint="Headline" />
+
                 <ParameterRefRef RefId="%AID%_P-%TT%00101_R-%TT%0010101" HelpContext="UCT-Import-Ziel" />
                 <choose ParamRefId="%AID%_P-%TT%00101_R-%TT%0010101">
                   <when test="!=255">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Versucht zu importieren, soweit möglich. Erkannte Abweichungen werden toleriert!" UIHint="Information" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="3. Ausführen" UIHint="Headline" />
 
                     <Button Id="%AID%_B-%TT%00100" Text="Importieren"   EventHandler="uctBtnImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="4. Ergebnis" UIHint="Headline" />
+
                     <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="5. Nachbereitung" UIHint="Headline" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Verknüpfungen von KOs und GAs können nicht importiert werden und müssen anschließend manuell erfolgen." />
+
                   </when>
                 </choose>
               </ParameterBlock>
