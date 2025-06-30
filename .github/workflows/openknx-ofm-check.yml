@@ -72,6 +72,10 @@ jobs:
           # ref: ${{ github.ref_name }}
           path: OFM-ConfigTransfer
 
+      - name: Show all library.json Files
+        run: |
+          cat */library.json
+
       - name: Extract OFM-version (major.minor) from library.json
         id: get_version
         run: |
@@ -84,8 +88,11 @@ jobs:
       - name: Patch OAM to Current OFM-Version ${{ env.VERSION_MAJOR_MINOR }}
         run: |
           cd ${{ inputs.oam }}
+          cp src/StateEngine.conf.xml src/StateEngine.conf.xml~
+          cat src/StateEngine.conf.xml
           sed -i 's/\(<op:config name="%UCT_VerifyVersion%"[ ]*value="\)[^"]*\(".*\/>\)/\1'"$VERSION_MAJOR_MINOR"'\2/' src/StateEngine.conf.xml
           echo "Set %UCT_VerifyVersion% to $VERSION_MAJOR_MINOR"
+          diff src/StateEngine.conf.xml src/StateEngine.conf.xml~
 
       - name: Download OpenKNXproducer ${{ env.PRODUCER_VERSION }} and Verify
         run: |
