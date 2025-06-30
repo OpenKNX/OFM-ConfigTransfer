@@ -48,7 +48,7 @@ jobs:
           echo "ref_name=$BRANCH" >> $GITHUB_OUTPUT
           echo "Selected branch: $BRANCH"
 
-      - name: Checkout Reference OAM
+      - name: "Checkout Reference OAM: ${{ inputs.oam }}@${{ steps.oam_branch.outputs.ref_name }}"
         uses: actions/checkout@v4
         with:
           repository: openknx/${{ inputs.oam }}
