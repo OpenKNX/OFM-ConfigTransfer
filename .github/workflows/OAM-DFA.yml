@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2024-2025 Cornelius Koepp
 
-name: DFA-check
-run-name: Check OFM-DFA Build
+name: OFM-check
+run-name: Check OFM-Build
 
 on: [push]
 
