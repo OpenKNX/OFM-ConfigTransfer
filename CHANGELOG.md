@@ -1,4 +1,4 @@
-# (in Vorbereitung) v0.3
+# 0.4.0 (2025-07-02)
 * Feature #36: **Tausch von Kanälen**
   * Eigener Parameterblock analog zu *Kanalkopie*
   * Bereitstellung Funktion zur Nutzung in Modulen, siehe [Entwicklerdokumentation](doc/Entwicklerdokumentation-ConfigTransfer.md)
@@ -15,7 +15,6 @@
     * Direkte Integration von Hinweis zur erforderlichen Nachbereitung
   * Beschriftung für Auswahl von Export-Format.
     "Menschenlesbar" wurde häufig fälschlicherweise für Support-Zwecke ausgewählt.
-* Fix: Kontexthilfe für Kompatibilitätslevel **lockerer** aus v0.2.0
 * Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
 * Bereinigung XML, Dokumentation, Kommentare
 
