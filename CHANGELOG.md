@@ -1,4 +1,15 @@
-# 0.4.0 (2025-07-02)
+# 0.4.0 (2025-07-03)
+
+* **Wichtig:** Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) muss auf Version [3.8.0](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.8.0) aktualisiert werden!
+  > ***Achtung:*** Es erfolgt keine Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version!
+  
+  Folgende Änderungen/Verbesserungen ergeben sich durch Updates des OpenKNXproducer seit Erscheinen von ConfigTransfer v0.2.0 und sind ggf. auch schon in einzelnen OpenKNX-Applikationen mit ConfigTransfer v0.2 verfügbar:
+  * Fix: Ausschluss von Parametern die nicht direkt durch den Nutzer geändert werden können.
+    (Diese hatten teilweise für Probleme beim Transfer gesorgt und werden i.d.R. aus den anderen Parametern abgeleitet. Durch den Ausschluss haben sich in der Praxis bisher keine Nachteile gezeigt.)
+  * Fix: Standard-Parameter-Werte können nun das Zeichen `%` enthalten
+  * Detail-Verbesserung: Darstellung der Modul-Auswahl
+  * Erweiterung: Explizite Beeinflussung ob Parameter-Werte in den Transfer eingeschlossen/ausgeschlossen werden, oder immer exportiert werden. 
+    Diese Möglichkeit ist erforderlich zur Verbesserung der Kompatiblität beim Transfer mit veränderten Standardwerten und wird im neuen OpenKNX Common 1.4 benötigt. 
 * Feature #36: **Tausch von Kanälen**
   * Eigener Parameterblock analog zu *Kanalkopie*
   * Bereitstellung Funktion zur Nutzung in Modulen, siehe [Entwicklerdokumentation](doc/Entwicklerdokumentation-ConfigTransfer.md)
@@ -15,10 +26,13 @@
     * Direkte Integration von Hinweis zur erforderlichen Nachbereitung
   * Beschriftung für Auswahl von Export-Format.
     "Menschenlesbar" wurde häufig fälschlicherweise für Support-Zwecke ausgewählt.
+  * Anzeige von Applikations- und Modul-Versionsnummern in lesbarer einheitlicher Form
+  * Dokumentation Bekannte Limitationen in Kontexthilfe verschoben
 * Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
 * Bereinigung XML, Dokumentation, Kommentare
 
 # v0.2.0 (2024-07-28, 5e1b62604e6c71fb299dbdece9e8c145a9e35fde)
+
 * **Hotfix #14 für OAM-PresenceModule/OFM-PresenceModule:**
   Exporte aus älteren Versionen von PM konnten nicht importiert werden, weil Parameter entfallen sind.
   Mit Kompatibilität **lockerer** wird der Import nun nicht mehr abgebrochen, wenn unbekannte Parameter-Namen auftreten,
