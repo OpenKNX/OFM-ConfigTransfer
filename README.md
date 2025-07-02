@@ -238,8 +238,8 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 ### Voraussetzungen
 
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [3.3.12](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.3.12) benötigt um die Modulinformationen zur integrieren.
-  > **Achtung:** Ältere Versionen des Producers sorgen dafür, dass die erzeugte Applikation Parameter exportieren wird, 
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [3.8.0](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.8.0) benötigt um die Modulinformationen zur integrieren.
+  > **Achtung:** Ältere Versionen des Producers sorgen u.A. dafür, dass die erzeugte Applikation Parameter exportieren wird, 
   > die nicht Teil des Exports sein sollten! 
   > Bei diesen Parametern handelt es sich um solche, die nicht direkt durch den Nutzer verändert werden können.
   > Es erfolgt *keine* Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version! 
