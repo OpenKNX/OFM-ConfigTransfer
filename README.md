@@ -199,10 +199,9 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 | Modul              | Versionen  | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                | ETS-Log       |
 |--------------------|------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | OGM-Common         | 1.2        | OK     |                                                                                                                                                                                   | -             |
-| OFM-DFA            | 0.1        | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
-| OFM-Generic        | 0.1        | OK     |                                                                                                                                                                                   | -             |
+| OFM-DFA            | 0.1<br>0.4 | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                           | -             |
 | OFM-LogicModule    | 3.1<br>3.2 | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                        | WARN-Einträge |
-| OFM-LogicModule    | 3.3        | OK     |                                                                                                                                                                                   | ?             |
+| OFM-LogicModule    | 3.3<br>3.5 | OK     |                                                                                                                                                                                   | ?             |
 | OFM-PresenceModule | 3.0        | OK     |                                                                                                                                                                                   | ?             |
 | OFM-SensorModule   |            | OK     |                                                                                                                                                                                   | ?             |
 | OFM-VirtualButton  | bis 0.4    | FEHLER | Nicht nutzbar in ETS5.7, durch Parameternamen die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind. | -             |
@@ -214,19 +213,21 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 
 ## OpenKNX-Applikation mit integriertem Konfigurationstransfer
 
-Der Konfigurationstransfer ist derzeit in den nachfolgend aufgelisteten Releases integriert.
+Der Konfigurationstransfer ist in die meisten ab Juli 2024 veröffentlichten Releases von OpenKNX-Applikationen integriert.
 Ein Austausch von Einstellungen kann zwischen allen Applikationen mit demselben OpenKNX-Modul (siehe Spalten) erfolgen.
 Einschränkungen sind ggf. durch abweichenden Versionen, oder (sofern diese referenziert werden) durch unterschiedliche Nummerierung von KOs möglich.
 
-| OpenKNX-Applikation | Version | Release                                               | (UCT) | BASE | NET | LOG | PM   | BTN | BI  | SOM     | FIN | FINACT | SWA |
-|---------------------|---------|-------------------------------------------------------|-------|------|-----|-----|------|-----|-----|---------|-----|--------|-----|
-| OAM-LogicModule     | 3.3     | LogicModule-Release-3.3                               | 0.1   | 1.2  |     | 3.3 |      |     |     |         |     |        |     |
-| OAM-LogicModule     | 3.3     | LogicModule-**IP**-3.3                                | 0.1   | 1.2  | 0.3 | 3.3 |      |     |     |         |     |        |     |
-| OAM-PresenceModule  | 1.12.3  | *Nur zur Migration!*<br>PresenceModule-Release-1.12.3 | 0.1   | alt  |     | alt | alt  |     |     |         |     |        |     |
-| OAM-PresenceModule  | 3.1     | PresenceModule-Big-3.1                                | 0.1   | 1.2  |     | 3.3 | 3.1  | 0.5 |     |         |     |        |     |
-| OAM-PresenceModule  | 3.1     | PresenceModule-**IP**-3.1                             | 0.1   | 1.2  | 0.3 | 3.3 | 3.1  | 0.5 |     |         |     |        |     |
-| SOM-UP              | 1.0     | SoundModule-Release-1.0                               | 0.1   | 1.2  |     | 3.3 |      | 0.4 | 0.2 | - (App) |     |        |     |
-| OAM-Fingerprint     | 0.6     | FingerPrintModuleReleaseR503-0.6                      | 0.1   | 1.2  |     | 3.3 |      | 0.4 | 0.2 |         | 0.6 | - (?)  | 0.1 |
+### Beispiele von Applikationen und Modulen (unvollständig)
+| OpenKNX-Applikation | Version | Release                                               | (UCT) | BASE | NET | LOG | DFA | PM   | BTN | BI  | SOM     | FIN | FINACT | SWA |
+|---------------------|---------|-------------------------------------------------------|-------|------|-----|-----|-----|------|-----|-----|---------|-----|--------|-----|
+| OAM-LogicModule     | 3.3     | LogicModule-Release-3.3                               | 0.1   | 1.2  |     | 3.3 |     |      |     |     |         |     |        |     |
+| OAM-LogicModule     | 3.3     | LogicModule-**IP**-3.3                                | 0.1   | 1.2  | 0.3 | 3.3 |     |      |     |     |         |     |        |     |
+| OAM-StateEngine     | 0.1     | StateEngineDFA16 1.0 Beta                             | 0.2   | 1.2  |     | 3.5 | 0.4 |      |     |     |         |     |        |     |
+| OAM-PresenceModule  | 1.12.3  | *Nur zur Migration!*<br>PresenceModule-Release-1.12.3 | 0.1   | alt  |     | alt |     | alt  |     |     |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-Big-3.1                                | 0.1   | 1.2  |     | 3.3 |     | 3.1  | 0.5 |     |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-**IP**-3.1                             | 0.1   | 1.2  | 0.3 | 3.3 |     | 3.1  | 0.5 |     |         |     |        |     |
+| SOM-UP              | 1.0     | SoundModule-Release-1.0                               | 0.1   | 1.2  |     | 3.3 |     |      | 0.4 | 0.2 | - (App) |     |        |     |
+| OAM-Fingerprint     | 0.6     | FingerPrintModuleReleaseR503-0.6                      | 0.1   | 1.2  |     | 3.3 |     |      | 0.4 | 0.2 |         | 0.6 | - (?)  | 0.1 |
 
 
 
