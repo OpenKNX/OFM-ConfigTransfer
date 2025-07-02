@@ -1,0 +1,18 @@
+name: same-version-check
+run-name: Ensure Same Version
+on: [push]
+jobs:
+  same-version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Same Versions in library.json and package.json
+        run: |
+          LIB_VERSION=$(jq -r .version library.json)
+          PKG_VERSION=$(jq -r .version package.json)
+          echo "library.json version: $LIB_VERSION"
+          echo "package.json version: $PKG_VERSION"
+          if [ "$LIB_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Version mismatch: library.json ($LIB_VERSION) != package.json ($PKG_VERSION)"
+            exit 1
+          fi
