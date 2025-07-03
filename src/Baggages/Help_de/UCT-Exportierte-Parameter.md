@@ -6,7 +6,11 @@ die keinen aktuellen Einfluss auf die Konfiguration besitzen.
 
 #### Standard (aktive mit individuellem Wert)
 
-Exportiert nur solche Parameter, die aktuell in der ETS angezeigt werden und auf einen Wert haben der nicht dem Standard-Wert entspricht.
+Exportiert nur solche Parameter, die aktuell in der ETS angezeigt werden und entweder
+auf einen Wert eingestellt sind, der nicht dem Standard-Wert entspricht,
+oder
+unabhängig vom Wert immer exportiert werden müssen.
+
 Frühere vorgenommene Einstellungen, die durch Änderung anderer Parameter ausgeblendet wurden, werden vom Export ausgeschlossen.
 
 Diese Einstellung vermeidet, dass Altlasten in der Konfiguration weiterleben.
