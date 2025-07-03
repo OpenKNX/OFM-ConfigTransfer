@@ -1,19 +1,20 @@
-# (in Vorbereitung) v0.3
+# 0.4.0 (2025-07-02)
 * Feature #36: **Tausch von Kanälen**
   * Eigener Parameterblock analog zu *Kanalkopie*
   * Bereitstellung Funktion zur Nutzung in Modulen, siehe [Entwicklerdokumentation](doc/Entwicklerdokumentation-ConfigTransfer.md)
 * Verbesserungen/Anpassungen, basierend auf Nutzererfahrungen:
   * Geänderte Reihenfolge der Parameter-Blöcke (Seiten): Kanalkopie, Kanaltausch, Standardwerte, Import, Export.
     Operationen innerhalb der Applikation werden in der Praxis häufiger verwendet als Import und Export.
-  * Konfiguration der Kompatibilitätsprüfung aus der Benutzeroberfläche entfernt.
-    Das Verhalten entspricht nun dem Kompatibilitätslevel **lockerer**.
-    Der bisherige Standard-Level **streng** verhinderte in der Praxis sehr häufig den Import, 
-    was bei Nutzern teilweise für Verwirrung sorgte.
-    In der Praxis führte die deutlich höhere Toleranz von **lockerer** zu keinen gravierenden Problemen.
-  * Tolerieren/Trimmen von Whitespaces vor und nach Transfer-String
+  * Import
+    * Konfiguration der Kompatibilitätsprüfung aus der Benutzeroberfläche entfernt.
+      Das Verhalten entspricht nun dem Kompatibilitätslevel **lockerer**.
+      Der bisherige Standard-Level **streng** verhinderte in der Praxis sehr häufig den Import, 
+      was bei Nutzern teilweise für Verwirrung sorgte.
+      In der Praxis führte die deutlich höhere Toleranz von **lockerer** zu keinen gravierenden Problemen.
+    * Tolerieren/Trimmen von Whitespaces vor und nach Transfer-String
+    * Direkte Integration von Hinweis zur erforderlichen Nachbereitung
   * Beschriftung für Auswahl von Export-Format.
     "Menschenlesbar" wurde häufig fälschlicherweise für Support-Zwecke ausgewählt.
-* Fix: Kontexthilfe für Kompatibilitätslevel **lockerer** aus v0.2.0
 * Vorbereitung auf Multi-Channel-Transfer: Hinweis bei Erkennung von geplanter Format-Version
 * Bereinigung XML, Dokumentation, Kommentare
 
