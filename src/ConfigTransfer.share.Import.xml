@@ -34,12 +34,14 @@
 
                     <Button Id="%AID%_B-%TT%00100" Text="Importieren"   EventHandler="uctBtnImport" EventHandlerParameters="{ &quot;p_importLine&quot;:&quot;%PREFIX%_ImportInput&quot;, &quot;p_channelTarget&quot;:&quot;%PREFIX%_ImportTarget&quot;, &quot;p_messageOutput&quot;:&quot;%PREFIX%_ImportUserLog&quot; }" />
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="4. Ergebnis" UIHint="Headline" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="4. Ergebnis prüfen" UIHint="Headline" />
 
                     <ParameterRefRef RefId="%AID%_P-%TT%00103_R-%TT%0010301" HelpContext="UCT-Import-Resultat" />
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="5. Nachbereitung" UIHint="Headline" />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Verknüpfungen von KOs und GAs können nicht importiert werden und müssen anschließend manuell erfolgen." />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="KOs können nicht importiert werden und müssen anschließend manuell konfiguriert werden:" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="a) Verknüpfungen mit GAs" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="b) Individuell angepasste Kommunikationsflags (falls erforderlich, oder vor dem Import vorhanden)" />
 
                   </when>
                 </choose>
