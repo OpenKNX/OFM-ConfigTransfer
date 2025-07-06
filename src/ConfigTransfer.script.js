@@ -211,7 +211,7 @@ function uctExportModuleChannelToString(device, module, channel, keyFormat, mult
 
 
 function uctVersionToStr(ver) {
-    if (typeof ver === 'string') {
+    if (typeof ver == 'string') {
         if (isNaN(ver) || isNaN(parseInt(ver))) {
             return '"' + ver + '"';
         } else {
