@@ -92,7 +92,7 @@ jobs:
           cat src/StateEngine.conf.xml
           sed -i 's/\(<op:config name="%UCT_VerifyVersion%"[ ]*value="\)[^"]*\(".*\/>\)/\1'"$VERSION_MAJOR_MINOR"'\2/' src/StateEngine.conf.xml
           echo "Set %UCT_VerifyVersion% to $VERSION_MAJOR_MINOR"
-          diff src/StateEngine.conf.xml src/StateEngine.conf.xml~
+          diff src/StateEngine.conf.xml src/StateEngine.conf.xml~ || echo "::info::Building after patch the OAM to Current OFM-Version ${{ env.VERSION_MAJOR_MINOR }}"
 
       - name: Download OpenKNXproducer ${{ env.PRODUCER_VERSION }} and Verify
         run: |
