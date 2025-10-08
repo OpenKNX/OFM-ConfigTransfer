@@ -248,32 +248,32 @@ describe("uctPrepareParamValues", () => {
     it("fails on unknown parameter", () => {
         var importContent = ["NonExisting=7"];
         var result = createResultStructure();
-        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+        expect(() => uctPrepareParamValues("XXX", params, importContent, result, false)).toThrow(Error);
     });
 
     it("fails on unknown commands", () => {
         var importContent = ["!undefcmd"];
         var result = createResultStructure();
-        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+        expect(() => uctPrepareParamValues("XXX", params, importContent, result, false)).toThrow(Error);
     });
 
     it("fails on unknown entry format", () => {
         var importContent = ["unspecFormat"];
         var result = createResultStructure();
-        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+        expect(() => uctPrepareParamValues("XXX", params, importContent, result, false)).toThrow(Error);
     });
 
     it("fails on empty entry", () => {
         var importContent = [""];
         var result = createResultStructure();
-        expect(() => uctPrepareParamValues(params, importContent, result, false)).toThrow(Error);
+        expect(() => uctPrepareParamValues("XXX", params, importContent, result, false)).toThrow(Error);
     });
 
     it("ignores comments", () => {
         // TODO extend
         var importContent = ["#Kommentar", "# noch ein Kommentar"];
         var result = createResultStructure();
-        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(params.defaults);
+        expect(uctPrepareParamValues("XXX", params, importContent, result, false)).toStrictEqual(params.defaults);
         expect(result).toStrictEqual(createResultStructure());
     });
 
@@ -281,7 +281,7 @@ describe("uctPrepareParamValues", () => {
         // TODO extend
         var importContent = [">output1", ">output2"];
         var result = createResultStructure();
-        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(params.defaults);
+        expect(uctPrepareParamValues("XXX", params, importContent, result, false)).toStrictEqual(params.defaults);
         expect(result.lines).toStrictEqual([">output1", ">output2"]);
         expect(result.messages).toBe(2);
     });
@@ -289,7 +289,7 @@ describe("uctPrepareParamValues", () => {
     it("without merge uses default for undefined values", () => {
         var importContent = ["Second=neuer Wert"];
         var result = createResultStructure();
-        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(
+        expect(uctPrepareParamValues("XXX", params, importContent, result, false)).toStrictEqual(
             [22, "neuer Wert", 0, 999]
         );
         expect(result).toStrictEqual(createResultStructure());
@@ -298,7 +298,7 @@ describe("uctPrepareParamValues", () => {
     it("without merge uses default for undefined values + use string only", () => {
         var importContent = ["First=25", "Second=neuer Wert"];
         var result = createResultStructure();
-        expect(uctPrepareParamValues(params, importContent, result, false)).toStrictEqual(
+        expect(uctPrepareParamValues("XXX", params, importContent, result, false)).toStrictEqual(
             // TODO check or FIXME?
             ["25", "neuer Wert", 0, 999]
         );
@@ -307,7 +307,7 @@ describe("uctPrepareParamValues", () => {
 
     it("with merge uses null for undefined values", () => {
         var result = createResultStructure();
-        expect(uctPrepareParamValues(params, ["Second=alleine"], result, true)).toStrictEqual(
+        expect(uctPrepareParamValues("XXX", params, ["Second=alleine"], result, true)).toStrictEqual(
             [null, "alleine", null, null]
         );
         expect(result).toStrictEqual(createResultStructure());
@@ -321,20 +321,24 @@ describe("uctPrepareParamValues", () => {
     
         var result = createResultStructure();
         var input = ["Erster=DieEins", "^Wert", "Z1=dz", "Y1=dy", "X1=dx", "^", "Anderer="];
-        expect(uctPrepareParamValues(params, input, result, false)).toStrictEqual(
+        expect(uctPrepareParamValues("XXX", params, input, result, false)).toStrictEqual(
             ["DieEins", "", "dx", "k!", "dy", "dz"]
         );
         expect(result).toStrictEqual(createResultStructure());
 
         // works with comments and echo
         var input = ["Erster=DieEins", "^Wert", ">out1", "Z1=dz", "# ignore ign", "Y1=dy", "X1=dx", "^", "Anderer="];
-        expect(uctPrepareParamValues(params, input, result, false)).toStrictEqual(
+        expect(uctPrepareParamValues("XXX", params, input, result, false)).toStrictEqual(
             ["DieEins", "", "dx", "k!", "dy", "dz"]
         );
         var expectedResult = createResultStructure();
         expectedResult.lines = [">out1"];
         expectedResult.messages = 1;
         expect(result).toStrictEqual(expectedResult);
+    });
+
+    it.skip("SPECIAL LOG", () => {
+        // TODO implement
     });
 
     it.skip("handle numeric keys", () => {
