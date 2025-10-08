@@ -174,7 +174,11 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
             if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
                 if (exportDefault || paramValue != params.defaults[i]) {
-                    result.push(paramKey + "=" +  uctSerializeParamValue(paramValue));
+                    if (module == "LOG") { // SPECIAL PATCH
+                        uctSpecialLOG_ExportOutputParamsExtension(paramKey, result, paramValue);
+                    } // END // SPECIAL PATCH
+
+                    result.push(paramKey + "=" + uctSerializeParamValue(paramValue));
                 }
             }
         } catch (e) {
@@ -187,6 +191,51 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
         throw new Error(errors.length + " FEHLER beim Export! Details siehe ETS-Log; erster Fehler:" + errors[0]);
     }
     return result;
+}
+
+function uctSpecialLOG_ExportOutputParamsExtension(paramKey, result, paramValue) {
+    // Affected Parameters:
+    // f%C%OOn      : neighter Buzzer, nor Led enabled
+    // f%C%OOnBuzzer: Buzzer enabled, but NO Led
+    // f%C%OOnLed   : Led enabled, but NO Buzzer
+    // f%C%OOnAll   : always present
+    // same as for ~On..
+    // f%C%OOff
+    // f%C%OOffBuzzer
+    // f%C%OOffLed
+    // f%C%OOffAll
+
+    // <Enumeration Text="Nein" Value="0" Id="%ENID%" />
+    // <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="%ENID%" />
+    // <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="%ENID%" />
+    // <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="%ENID%" />
+    // <Enumeration Text="Ja - Wert eines KO" Value="9" Id="%ENID%" />
+    // <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="%ENID%" />
+    // <Enumeration Text="Ja - Read Request senden" Value="4" Id="%ENID%" />
+    // <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="%ENID%" />
+    // <!-- Enum... Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="%ENID%" / -->
+    // <!-- Enum... Text="Ja - RGB-LED schalten" Value="7" Id="%ENID%" / -->    
+
+    // TODO ASSERT paramKey==params.names[i], keyFormat should always be "name" in current implementation!
+    if (paramKey == "f~OOnAll") {
+        // TODO ASSERT order of parameters!
+        // TODO prevent duplicates!
+        var isBuzzer = (paramValue == 6);
+        var isLed = (paramValue == 7);
+        result.push("f~OOn"       + "=" + uctSerializeParamValue((isBuzzer || isLed) ? 0 : paramValue));
+        result.push("f~OOnBuzzer" + "=" + uctSerializeParamValue((            isLed) ? 0 : paramValue));
+        result.push("f~OOnLed"    + "=" + uctSerializeParamValue((isBuzzer         ) ? 0 : paramValue));
+    }
+    else
+    if (paramKey == "f~OOffAll") {
+        // TODO ASSERT order of parameters!
+        // TODO prevent duplicates!
+        var isBuzzer = (paramValue == 6);
+        var isLed = (paramValue == 7);
+        result.push("f~OOff"       + "=" + uctSerializeParamValue((isBuzzer || isLed) ? 0 : paramValue));
+        result.push("f~OOffBuzzer" + "=" + uctSerializeParamValue((            isLed) ? 0 : paramValue));
+        result.push("f~OOffLed"    + "=" + uctSerializeParamValue((isBuzzer         ) ? 0 : paramValue));
+    }
 }
 
 /**
