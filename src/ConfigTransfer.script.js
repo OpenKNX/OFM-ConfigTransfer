@@ -167,8 +167,6 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
         var paramKey = (keyFormat=="name") ? params.names[i] : i;
 
         try {
-
-            /* TODO extract to function! */
             var paramNameDef = params.names[i].split(":");
             var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
             var paramObj = uctGetDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
@@ -535,15 +533,12 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
                 var paramValue = uctUnserializeParamValue(paramValuePair.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
             } else if (allowMissing) {
-                // TODO handling of invalid parameters!
                 result.lines.push('[WARN] Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
                 result.warnings++;
             } else {
-                // TODO handling of invalid parameters!
                 throw new Error('Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
             }
         } else {
-            // TODO error-handling; this is not a param=value pair
             throw new Error('Ungültiger Eintrag: "'+entry+'"');
         }
     }
