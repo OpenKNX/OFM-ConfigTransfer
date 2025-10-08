@@ -1,3 +1,8 @@
+# (upcoming) 0.5.0 LOG-Patches
+
+* Patch für Parameter im LOG-Modul
+
+
 # 0.4.0 (2025-07-03)
 
 * **Wichtig:** Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) muss auf Version [3.8.0](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.8.0) aktualisiert werden!
