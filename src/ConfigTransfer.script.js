@@ -530,16 +530,9 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
  */
 function uctPrepareParamValues(params, importContent, result, merge, allowMissing) {
     var newValues = [];
-    if (merge) {
-        // use empty values - to ignore in writing
-        for (var i = 0; i < params.defaults.length; i++) {
-            newValues[i] = null;
-        }
-    } else {
-        // use defaults for values not defined in import
-        for (var i = 0; i < params.defaults.length; i++) {
-            newValues[i] = params.defaults[i];
-        }
+    // init with empty values. Write defaults at the end, when NOT merging
+    for (var i = 0; i < params.defaults.length; i++) {
+        newValues[i] = null;
     }
 
     var prefix = '';
@@ -592,6 +585,14 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
         }
     }
 
+    if (!merge) {
+        // use defaults for values not defined in import
+        for (var i = 0; i < params.defaults.length; i++) {
+            if (newValues[i] == null) {
+                newValues[i] = params.defaults[i];
+            }
+        }
+    }
     return newValues;
 }
 
