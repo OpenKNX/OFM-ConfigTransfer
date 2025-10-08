@@ -491,7 +491,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         'warnings': 0,
         'errors': 0
     };
-    var newValues = uctPrepareParamValues(params, importContent, result, merge, allowMissing);
+    var newValues = uctPrepareParamValues(module, params, importContent, result, merge, allowMissing);
 
     /* write new values */
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params ...");
@@ -521,6 +521,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
 /**
  * Define new values for all paramters of a module channel
+ * @param {string} module - the module prefix e.g. 'LOG'
  * @param {object} params - module-channel's parameter definition
  * @param {array} importContent - the entries from ConfigTransfer-string; typical case is the format 'key[:ref]=value', other possibilities are '#comment', '>msg', '!cmd'
  * @param {array} result - (output) collection of ouput-messages
@@ -528,7 +529,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
  * @param {boolean} allowMissing - defines behaviour when unkown paramter is found: `false` = throw Error, `true` = add warning-message to result
  * @returns {array} - new param values, or `null` to keep current, by index of param-definition
  */
-function uctPrepareParamValues(params, importContent, result, merge, allowMissing) {
+function uctPrepareParamValues(module, params, importContent, result, merge, allowMissing) {
     var newValues = [];
     // init with empty values. Write defaults at the end, when NOT merging
     for (var i = 0; i < params.defaults.length; i++) {
@@ -585,6 +586,9 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
         }
     }
 
+    if (module == "LOG") {
+        uctSpecialLOG_PrepareParamValues(params, newValues);
+    }
     if (!merge) {
         // use defaults for values not defined in import
         for (var i = 0; i < params.defaults.length; i++) {
@@ -594,6 +598,55 @@ function uctPrepareParamValues(params, importContent, result, merge, allowMissin
         }
     }
     return newValues;
+}
+
+/**
+ * Handles special parameter value preparation for the LOG module, ensuring related parameters are set correctly based on "All" values.
+ * @param {object} params - The parameter definitions for the module/channel.
+ * @param {Array} newValues - The array of new parameter values to be updated in place.
+ */
+function uctSpecialLOG_PrepareParamValues(params, newValues) {
+    var i;
+    // On
+    i = uctFindIndexByParamName(params, "f~OOnAll", 1);
+    if (i >= 0 && newValues[i] != null) {
+        var allValue = newValues[i];
+        var isBuzzer = (allValue == 6);
+        var isLed = (allValue == 7);
+
+        i = uctFindIndexByParamName(params, "f~OOn", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = (isBuzzer || isLed) ? 0 : allValue;
+        }
+        i = uctFindIndexByParamName(params, "f~OOnBuzzer", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = isLed ? 0 : allValue;
+        }
+        i = uctFindIndexByParamName(params, "f~OOnLed", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = isBuzzer ? 0 : allValue;
+        }
+    }
+    // Off
+    i = uctFindIndexByParamName(params, "f~OOffAll", 1);
+    if (i >= 0 && newValues[i] != null) {
+        var allValue = newValues[i];
+        var isBuzzer = (allValue == 6);
+        var isLed = (allValue == 7);
+
+        i = uctFindIndexByParamName(params, "f~OOff", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = (isBuzzer || isLed) ? 0 : allValue;
+        }
+        i = uctFindIndexByParamName(params, "f~OOffBuzzer", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = isLed ? 0 : allValue;
+        }
+        i = uctFindIndexByParamName(params, "f~OOffLed", 1);
+        if (i >= 0 && newValues[i] == null) {
+            newValues[i] = isBuzzer ? 0 : allValue;
+        }
+    }
 }
 
 function uctWriteParams(device, module, channel, params, newValues, result) {
