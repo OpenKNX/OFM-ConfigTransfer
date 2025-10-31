@@ -9,7 +9,7 @@ By Cornelius Koepp 2024-2025
 -->
 # Universeller Konfigurationstransfer für OpenKNX-Module
 
-ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
+ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren, Reorganisieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
 
 Von Cornelius Köpp 2024-2025
 
