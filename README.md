@@ -250,11 +250,15 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden:
 ```
+  <!-- Set current version to use: -->
+  <op:config name="%UCT_VerifyVersion%"  value="..." />
+  
+  <!-- no KOs -->
   <op:define prefix="UCT"
              share="../lib/OFM-ConfigTransfer/src/ConfigTransfer.share.xml"
              ModuleType="19">
-    <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="0.1" /> 
-  </op:define> />
+    <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="%UCT_VerifyVersion%" />
+  </op:define>
 ```
 
 # Formatspezifikation (Entwurf)
