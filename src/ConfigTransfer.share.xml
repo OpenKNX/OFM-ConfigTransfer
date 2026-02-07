@@ -18,6 +18,8 @@
   <op:nowarn id="3" regex="uctHexNumberStr" />
   <op:nowarn id="3" regex="uctFindIndexByParamName" />
   <op:nowarn id="3" regex="uctVersionToStr" />
+  <op:nowarn id="3" regex="uctSpecialIgnoreParamValues" />
+  <op:nowarn id="3" regex="uctSpecialLOG_ExportOutputParamsExtension" />
   <!--
   <op:nowarn id="3" regex="uctParseVersion" />
   -->

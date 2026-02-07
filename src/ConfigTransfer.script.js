@@ -1,4 +1,4 @@
-// OFM-ConfigTransfer -- OpenKNX -- (c) 2024-2025 by Cornelius Köpp --
+// OFM-ConfigTransfer -- OpenKNX -- (c) 2024-2026 by Cornelius Köpp --
 // SPDX-License-Identifier: AGPL-3.0-only
 
 var uctFormatVer = "cv1";
@@ -161,6 +161,7 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
 
     var result = [];
     var errors = [];
+    var exportValues = {};
     for (var i = 0; i < params.names.length; i++) {
 
         /* compact or human readable output */
@@ -174,11 +175,8 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
             if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
                 if (exportDefault || paramValue != params.defaults[i]) {
-                    if (module == "LOG") { // SPECIAL PATCH
-                        uctSpecialLOG_ExportOutputParamsExtension(paramKey, result, paramValue);
-                    } // END // SPECIAL PATCH
-
                     result.push(paramKey + "=" + uctSerializeParamValue(paramValue));
+                    exportValues[paramKey] = paramValue;
                 }
             }
         } catch (e) {
@@ -187,23 +185,25 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
             errors.push(errMsg);
         }
     }
+
+    // SPECIAL PATCH
+    if (module == "LOG") {
+        result = result.concat(uctSpecialLOG_ExportOutputParamsExtension(exportValues))
+    }
+    // END // SPECIAL PATCH
+
     if (errors.length > 0) {
         throw new Error(errors.length + " FEHLER beim Export! Details siehe ETS-Log; erster Fehler:" + errors[0]);
     }
     return result;
 }
 
-function uctSpecialLOG_ExportOutputParamsExtension(paramKey, result, paramValue) {
+function uctSpecialLOG_ExportOutputParamsExtension(exportValues) {
     // Affected Parameters:
-    // f%C%OOn      : neighter Buzzer, nor Led enabled
-    // f%C%OOnBuzzer: Buzzer enabled, but NO Led
-    // f%C%OOnLed   : Led enabled, but NO Buzzer
-    // f%C%OOnAll   : always present
-    // same as for ~On..
-    // f%C%OOff
-    // f%C%OOffBuzzer
-    // f%C%OOffLed
-    // f%C%OOffAll
+    // f%C%OOn       / f%C%OOff      : neither Buzzer, nor Led enabled
+    // f%C%OOnBuzzer / f%C%OOffBuzzer: Buzzer enabled, but NO Led
+    // f%C%OOnLed    / f%C%OOffLed   : Led enabled, but NO Buzzer
+    // f%C%OOnAll    / f%C%OOffAll   : always present
 
     // <Enumeration Text="Nein" Value="0" Id="%ENID%" />
     // <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="%ENID%" />
@@ -214,28 +214,28 @@ function uctSpecialLOG_ExportOutputParamsExtension(paramKey, result, paramValue)
     // <Enumeration Text="Ja - Read Request senden" Value="4" Id="%ENID%" />
     // <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="%ENID%" />
     // <!-- Enum... Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="%ENID%" / -->
-    // <!-- Enum... Text="Ja - RGB-LED schalten" Value="7" Id="%ENID%" / -->    
+    // <!-- Enum... Text="Ja - RGB-LED schalten" Value="7" Id="%ENID%" / -->
 
-    // TODO ASSERT paramKey==params.names[i], keyFormat should always be "name" in current implementation!
-    if (paramKey == "f~OOnAll") {
-        // TODO ASSERT order of parameters!
-        // TODO prevent duplicates!
-        var isBuzzer = (paramValue == 6);
-        var isLed = (paramValue == 7);
-        result.push("f~OOn"       + "=" + uctSerializeParamValue((isBuzzer || isLed) ? 0 : paramValue));
-        result.push("f~OOnBuzzer" + "=" + uctSerializeParamValue((            isLed) ? 0 : paramValue));
-        result.push("f~OOnLed"    + "=" + uctSerializeParamValue((isBuzzer         ) ? 0 : paramValue));
+    var resultExt = [];
+    for (var i = 0; i <= 1; i++) {
+        var outval = ["On", "Off"][i];
+        var paramValue = exportValues["f~O" + outval + "All"];
+        if (paramValue != undefined) {
+            var isBuzzer = (paramValue == 6);
+            var isLed = (paramValue == 7);
+            if (exportValues["f~O" + outval] == undefined)
+                resultExt.push("f~O" + outval            + "=" + uctSerializeParamValue((isBuzzer || isLed) ? 0 : paramValue));
+            if (exportValues["f~O" + outval + "Buzzer"] == undefined)
+                resultExt.push("f~O" + outval + "Buzzer" + "=" + uctSerializeParamValue((            isLed) ? 0 : paramValue));
+            if (exportValues["f~O" + outval + "Led"] == undefined)
+                resultExt.push("f~O" + outval + "Led"    + "=" + uctSerializeParamValue((isBuzzer         ) ? 0 : paramValue));
+        }
     }
-    else
-    if (paramKey == "f~OOffAll") {
-        // TODO ASSERT order of parameters!
-        // TODO prevent duplicates!
-        var isBuzzer = (paramValue == 6);
-        var isLed = (paramValue == 7);
-        result.push("f~OOff"       + "=" + uctSerializeParamValue((isBuzzer || isLed) ? 0 : paramValue));
-        result.push("f~OOffBuzzer" + "=" + uctSerializeParamValue((            isLed) ? 0 : paramValue));
-        result.push("f~OOffLed"    + "=" + uctSerializeParamValue((isBuzzer         ) ? 0 : paramValue));
+    if (resultExt.length > 0) {
+        Log.info("OpenKNX ConfigTransfer: LOG-Export-Patch: " + resultExt.join("§"));
+        return ["#!#!#!<4.0"].concat(resultExt);
     }
+    return [];
 }
 
 /**
@@ -526,14 +526,21 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
  * @param {array} importContent - the entries from ConfigTransfer-string; typical case is the format 'key[:ref]=value', other possibilities are '#comment', '>msg', '!cmd'
  * @param {array} result - (output) collection of ouput-messages
  * @param {boolean} merge - `false` = overwrite and use default for all missing params, `true` = keep values of all missing params
- * @param {boolean} allowMissing - defines behaviour when unkown paramter is found: `false` = throw Error, `true` = add warning-message to result
+ * @param {boolean} allowMissing - defines behaviour when unknown parameter is found: `false` = throw Error, `true` = add warning-message to result
  * @returns {array} - new param values, or `null` to keep current, by index of param-definition
  */
 function uctPrepareParamValues(module, params, importContent, result, merge, allowMissing) {
     var newValues = [];
-    // init with empty values. Write defaults at the end, when NOT merging
-    for (var i = 0; i < params.defaults.length; i++) {
-        newValues[i] = null;
+    if (merge) {
+        // use empty values - to ignore in writing
+        for (var i = 0; i < params.defaults.length; i++) {
+            newValues[i] = null;
+        }
+    } else {
+        // use defaults for values not defined in import
+        for (var i = 0; i < params.defaults.length; i++) {
+            newValues[i] = params.defaults[i];
+        }
     }
 
     var prefix = '';
@@ -557,7 +564,6 @@ function uctPrepareParamValues(module, params, importContent, result, merge, all
         } else if (paramValuePair.length >= 2) {
             var paramPart = paramValuePair[0].split(":");
             var paramKey = prefix + paramPart[0];
-            /* TODO check format */
             var paramRefSuffix = paramPart.length>1 ? parseInt(paramPart[1]) : 1;
 
             var paramIndex = -1;
@@ -575,6 +581,8 @@ function uctPrepareParamValues(module, params, importContent, result, merge, all
             if (paramIndex >=0) {
                 var paramValue = uctUnserializeParamValue(paramValuePair.slice(1).join("="));
                 newValues[paramIndex] = paramValue;
+            } else if (uctSpecialIgnoreParamValues(module, paramKey)) {
+                Log.info("OpenKNX ConfigTransfer: Ignored parameter " + module + "/" + paramKey + " (Special Handling)");
             } else if (allowMissing) {
                 result.lines.push('[WARN] Unbekannter Parameter: '+ paramKey + ' ("'+entry+'")');
                 result.warnings++;
@@ -586,67 +594,16 @@ function uctPrepareParamValues(module, params, importContent, result, merge, all
         }
     }
 
-    if (module == "LOG") {
-        uctSpecialLOG_PrepareParamValues(params, newValues);
-    }
-    if (!merge) {
-        // use defaults for values not defined in import
-        for (var i = 0; i < params.defaults.length; i++) {
-            if (newValues[i] == null) {
-                newValues[i] = params.defaults[i];
-            }
-        }
-    }
     return newValues;
 }
 
-/**
- * Handles special parameter value preparation for the LOG module, ensuring related parameters are set correctly based on "All" values.
- * @param {object} params - The parameter definitions for the module/channel.
- * @param {Array} newValues - The array of new parameter values to be updated in place.
- */
-function uctSpecialLOG_PrepareParamValues(params, newValues) {
-    var i;
-    // On
-    i = uctFindIndexByParamName(params, "f~OOnAll", 1);
-    if (i >= 0 && newValues[i] != null) {
-        var allValue = newValues[i];
-        var isBuzzer = (allValue == 6);
-        var isLed = (allValue == 7);
-
-        i = uctFindIndexByParamName(params, "f~OOn", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = (isBuzzer || isLed) ? 0 : allValue;
-        }
-        i = uctFindIndexByParamName(params, "f~OOnBuzzer", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = isLed ? 0 : allValue;
-        }
-        i = uctFindIndexByParamName(params, "f~OOnLed", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = isBuzzer ? 0 : allValue;
-        }
+function uctSpecialIgnoreParamValues(module, paramKey) {
+    if (module == "LOG") { // TODO check for version?
+        // "f~OOn", "f~OOnBuzzer", "f~OOnLed"
+        // "f~OOff", "f~OOffBuzzer", "f~OOffLed"
+        return paramKey.search(/^f~OO(n|ff)(|Buzzer|Led)$/g) > -1;
     }
-    // Off
-    i = uctFindIndexByParamName(params, "f~OOffAll", 1);
-    if (i >= 0 && newValues[i] != null) {
-        var allValue = newValues[i];
-        var isBuzzer = (allValue == 6);
-        var isLed = (allValue == 7);
-
-        i = uctFindIndexByParamName(params, "f~OOff", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = (isBuzzer || isLed) ? 0 : allValue;
-        }
-        i = uctFindIndexByParamName(params, "f~OOffBuzzer", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = isLed ? 0 : allValue;
-        }
-        i = uctFindIndexByParamName(params, "f~OOffLed", 1);
-        if (i >= 0 && newValues[i] == null) {
-            newValues[i] = isBuzzer ? 0 : allValue;
-        }
-    }
+    return false;
 }
 
 function uctWriteParams(device, module, channel, params, newValues, result) {
