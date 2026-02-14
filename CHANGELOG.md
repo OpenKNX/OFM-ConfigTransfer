@@ -1,6 +1,11 @@
 # (upcoming) 0.5.0 LOG-Patches
 
-* Patch für Parameter im LOG-Modul
+* Fix: Patch zur Parameter-Umstellung im Logikmodul 4.0
+  * Verhindert Fehlermeldungen beim ansonsten funktionierenden Import aus älteren Versionen
+  * Verhindert Fehler Konfigurationsverlust der bei den häufigsten Hardware-Konfigurationen eintreten würde
+* Import:
+  * Anpassung von Parameter-Fehlermeldungen
+  * Hinweise bei Versionsänderungen
 
 
 # 0.4.0 (2025-07-03)
