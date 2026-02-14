@@ -426,21 +426,28 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var isDifferentAppVer = (header.app.ver != uctAppVer);
 
     // check module version
-    if (checkModuleVersion) {
-        var headerModVerDash = (header.modul.ver=='-');
-        var paramModVerUndef = (uctChannelParams[module].version==undefined);
-        if (headerModVerDash || paramModVerUndef) {
-            // => at least one version is missing
-            if (paramModVerUndef != headerModVerDash) {
-                // => not both at the same time
+    var versionMismatch = false;
+    var headerModVerDash = (header.modul.ver=='-');
+    var paramModVerUndef = (uctChannelParams[module].version==undefined);
+    if (headerModVerDash || paramModVerUndef) {
+        // => at least one version is missing
+        if (paramModVerUndef != headerModVerDash) {
+            // => not both at the same time
+            versionMismatch = true;
+            if (checkModuleVersion) {
                 throw new Error('Einseitig unspezifische Modul-Version: ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
             }
+        } else if (!checkAppVersion && (isDifferentAppId || isDifferentAppVer)) {
             // => both at the same time
-            if (!checkAppVersion && (isDifferentAppId || isDifferentAppVer)) {
+            versionMismatch = true;
+            if (checkModuleVersion) {
                 throw new Error('Für Modul-Version "-" ist Gleichheit nur bei identischer Applikation und Version möglich!');
             }
+        }
 
-        } else if (header.modul.ver != uctChannelParams[module].version) {
+    } else if (header.modul.ver != uctChannelParams[module].version) {
+        versionMismatch = true;
+        if (checkModuleVersion) {
             throw new Error('Modul-Version ' + uctVersionToStr(uctChannelParams[module].version) + ' erwartet, aber ' + uctVersionToStr(header.modul.ver) + ' gefunden!');
         }
     }
@@ -509,6 +516,16 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         msg = msg + "[ >>> Warnungen beachten! <<< ]\n";
     } else {
         msg = msg + "[OK]";
+    }
+    if (versionMismatch) {
+        if (result.errors || result.warnings) {
+            msg = msg + "\n\nMögliche Ursache: Abweichende Modulversionen\n* Quell-Version: " + uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version) + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
+        } else {
+            msg = msg + "\n\n* Quell-Version: " + uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version) + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
+        }
+        if (result.messages) {
+            msg = msg + '\n';
+        }
     }
     if (result.messages) {
         msg = msg + '\nTransfer-String enthält Hinweise:\n';
