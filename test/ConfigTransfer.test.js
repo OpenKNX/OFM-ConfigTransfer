@@ -64,8 +64,8 @@ describe("uctImportModuleChannelFromString", () => {
         expect(resultLines.length).toBeGreaterThanOrEqual(1+2);
         expect(resultLines[0]).toBe("CHN/0 Import [ >>> FEHLER! <<< ]");
         // TODO check using regex...
-        expect(resultLines[2].split("]")[0]).toBe("[ERR@0;CHN_A=5");
-        expect(resultLines[3].split("]")[0]).toBe("[ERR@1;CHN_B=385");
+        expect(resultLines[2].split(" > ")[0]).toBe("[FEHLER] CHN_A=5");
+        expect(resultLines[3].split(" > ")[0]).toBe("[FEHLER] CHN_B=385");
     });
 
     it("checks target-chanel for import definition of channel 0", () => {
