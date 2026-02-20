@@ -511,25 +511,25 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
     var msg = module + "/" + channel + " Import ";
-    if (result.errors) {
-        msg = msg + "[ >>> FEHLER! <<< ]\n";
-    } else if (result.warnings) {
-        msg = msg + "[ >>> Warnungen beachten! <<< ]\n";
+    if (result.errors || result.warnings) {
+        if (result.errors) {
+            msg = msg + "[ >>> FEHLER! <<< ]\n";
+        } else if (result.warnings) {
+            msg = msg + "[ >>> Warnungen beachten! <<< ]\n";
+        }
+        if (versionMismatch) {
+            var verMsg = uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version);
+            msg = msg + "\nMögliche Ursache: Abweichende Modulversionen\n* Quell-Version: " + verMsg + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
+        } else {
+            // this should never happen, with unmodified transfer-strings, and is a real error
+        }
+    } else if (versionMismatch) {
+        msg = msg + '["OK"; Version ' + uctVersionToStr(header.modul.ver) + ' -> ' + uctVersionToStr(uctChannelParams[module].version) + ']';
     } else {
         msg = msg + "[OK]";
     }
-    if (versionMismatch) {
-        if (result.errors || result.warnings) {
-            msg = msg + "\n\nMögliche Ursache: Abweichende Modulversionen\n* Quell-Version: " + uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version) + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
-        } else {
-            msg = msg + "\n\n* Quell-Version: " + uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version) + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
-        }
-        if (result.messages) {
-            msg = msg + '\n';
-        }
-    }
     if (result.messages) {
-        msg = msg + '\nTransfer-String enthält Hinweise:\n';
+        msg = msg + '\n\nTransfer-String enthält Hinweise:\n';
     }
     if (result.lines.length) {
         msg = msg + '\n' + result.lines.join('\n');
