@@ -205,16 +205,17 @@ function uctSpecialLOG_ExportOutputParamsExtension(exportValues) {
     // f%C%OOnLed    / f%C%OOffLed   : Led enabled, but NO Buzzer
     // f%C%OOnAll    / f%C%OOffAll   : always present
 
-    // <Enumeration Text="Nein" Value="0" Id="%ENID%" />
-    // <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="%ENID%" />
-    // <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="%ENID%" />
-    // <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="%ENID%" />
-    // <Enumeration Text="Ja - Wert eines KO" Value="9" Id="%ENID%" />
-    // <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="%ENID%" />
-    // <Enumeration Text="Ja - Read Request senden" Value="4" Id="%ENID%" />
-    // <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="%ENID%" />
-    // <!-- Enum... Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="%ENID%" / -->
-    // <!-- Enum... Text="Ja - RGB-LED schalten" Value="7" Id="%ENID%" / -->
+    //  <4   >=4
+    //   x    x   <Enum Value="0" Text="Nein"                             />
+    //   x    x   <Enum Value="1" Text="Ja - Wert vorgeben"               />
+    //   x    x   <Enum Value="2" Text="Ja - Wert von Eingang 1"          />
+    //   x    x   <Enum Value="3" Text="Ja - Wert von Eingang 2"          />
+    //   x    x   <Enum Value="9" Text="Ja - Wert eines KO"               />
+    //   x    x   <Enum Value="8" Text="Ja - Wert einer Funktion"         />
+    //   x    x   <Enum Value="4" Text="Ja - Read Request senden"         />
+    //   x    x   <Enum Value="5" Text="Ja - 'Gerät zurücksetzen' senden" />
+    //   x    -   <Enum Value="6" Text="Ja - Tonwiedegabe (Buzzer)"       />
+    //   x    x   <Enum Value="7" Text="Ja - RGB-LED schalten"            />
 
     var resultExt = [];
     for (var i = 0; i <= 1; i++) {
