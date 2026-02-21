@@ -41,4 +41,8 @@ module.exports = {
     uctParamResetResult,
     uctParamResetSelection,
     uctParamResetNothing,
+
+    // LOG Patches
+    uctSpecialLOG_ExportOutputParamsExtension,
+    uctSpecialIgnoreParamValues,
 };

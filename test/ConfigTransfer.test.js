@@ -1068,3 +1068,113 @@ describe('Param Calculation', () => {
 
 });
 
+
+describe('LOG Patch', () => {
+    const uctSpecialLOG_ExportOutputParamsExtension = cts.uctSpecialLOG_ExportOutputParamsExtension;
+    const uctSpecialIgnoreParamValues = cts.uctSpecialIgnoreParamValues;
+
+    describe("uctSpecialLOG_ExportOutputParamsExtension(exportValues)", () => {
+        it("is neutral without any param for output-values", () => {
+            expect(uctSpecialLOG_ExportOutputParamsExtension({"f~AnyOther": 1})).toStrictEqual([]);
+            expect(uctSpecialLOG_ExportOutputParamsExtension({})).toStrictEqual([]);
+
+            expect(uctSpecialLOG_ExportOutputParamsExtension({"f~OOnAll": 4})).not.toStrictEqual([]);
+            expect(uctSpecialLOG_ExportOutputParamsExtension({"f~OOffAll": 3})).not.toStrictEqual([]);
+            expect(uctSpecialLOG_ExportOutputParamsExtension({"f~OOnAll": 5, "f~OOffAll": 2})).not.toStrictEqual([]);
+        });
+        it("adds legacy params for output-values", () => {
+            var result;
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOnAll": 1});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOn=1");
+            expect(result).toContain("f~OOnBuzzer=1");
+            expect(result).toContain("f~OOnLed=1");
+            expect(result).not.toContain("f~OOnAll=1");
+            expect(result.some(r => /f~OOnAll=/.test(r))).not.toBe(true); // not with other value
+
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOffAll": 1});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOff=1");
+            expect(result).toContain("f~OOffBuzzer=1");
+            expect(result).toContain("f~OOffLed=1");
+            expect(result).not.toContain("f~OOffAll=1");
+            expect(result.some(r => /f~OOffAll=/.test(r))).not.toBe(true); // not with other value
+        });
+        // TODO add other values?
+        it.skip("adds values 0 to 5 for output-values", () => {
+        });
+
+        it("converts Led values to fallback", () => {
+            var result;
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOnAll": 7});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOn=0");
+            expect(result).toContain("f~OOnBuzzer=0");
+            expect(result).toContain("f~OOnLed=7");
+            expect(result.some(r => /f~OOnAll=/.test(r))).not.toBe(true); // not with other value
+
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOffAll": 7});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOff=0");
+            expect(result).toContain("f~OOffBuzzer=0");
+            expect(result).toContain("f~OOffLed=7");
+            expect(result.some(r => /f~OOffAll=/.test(r))).not.toBe(true); // not with other value
+        });
+
+        // TODO think about removing, as this value is not supported
+        it("converts Buzzer values to fallback", () => {
+            var result;
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOnAll": 6});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOn=0");
+            expect(result).toContain("f~OOnBuzzer=6");
+            expect(result).toContain("f~OOnLed=0");
+            expect(result.some(r => /f~OOnAll=/.test(r))).not.toBe(true); // not with other value
+
+            result = uctSpecialLOG_ExportOutputParamsExtension({"f~OOffAll": 6});
+            expect(result[0]).toBe("#!#!#!<4.0");
+            expect(result).toContain("f~OOff=0");
+            expect(result).toContain("f~OOffBuzzer=6");
+            expect(result).toContain("f~OOffLed=0");
+            expect(result.some(r => /f~OOffAll=/.test(r))).not.toBe(true); // not with other value
+        });
+    });
+
+    describe("uctSpecialIgnoreParamValues(module, paramKey)", () => {
+        it("ignores outdated LOG params", () => {
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOn")).toBe(true);
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOnBuzzer")).toBe(true);
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOnLed")).toBe(true);
+
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOff")).toBe(true);
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOffBuzzer")).toBe(true);
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOffLed")).toBe(true);
+        });
+        it("keeps still used LOG params", () => {
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOnAll")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("LOG", "f~OOffAll")).toBe(false);
+        });
+        it("keeps other LOG params", () => {
+            expect(uctSpecialIgnoreParamValues("LOG", "other")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("LOG", "totallyDifferent")).toBe(false);
+        });
+
+        it("keeps outdated params from LOG in other modules", () => {
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOn")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOnBuzzer")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOnLed")).toBe(false);
+
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOff")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOffBuzzer")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOffLed")).toBe(false);
+        });
+        it("keeps other params in other modules", () => {
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOnAll")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "f~OOffAll")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "other")).toBe(false);
+            expect(uctSpecialIgnoreParamValues("GOL", "totallyDifferent")).toBe(false);
+        });
+    });
+
+});
+
