@@ -524,7 +524,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
             // this should never happen, with unmodified transfer-strings, and is a real error
         }
     } else if (versionMismatch) {
-        msg = msg + '["OK"; Version ' + uctVersionToStr(header.modul.ver) + ' -> ' + uctVersionToStr(uctChannelParams[module].version) + ']';
+        msg = msg + '[OK; Version ' + uctVersionToStr(header.modul.ver) + ' -> ' + uctVersionToStr(uctChannelParams[module].version) + ']';
     } else {
         msg = msg + "[OK]";
     }

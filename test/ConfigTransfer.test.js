@@ -81,7 +81,7 @@ describe("uctImportModuleChannelFromString", () => {
         var importCheck = 0; // allow different version without error
 
         // Success on import without error
-        expect(uctImportModuleChannelFromString(device, null, 0, importStringOtherVer, importCheck)).toMatch(/CHN\/0 Import \["?OK"?.*\]/);
+        expect(uctImportModuleChannelFromString(device, null, 0, importStringOtherVer, importCheck)).toMatch(/CHN\/0 Import \[OK.*\]/);
 
         // Produce error, when access fails
         const result = uctImportModuleChannelFromString(failingParamGet, null, 0, importStringOtherVer, importCheck);
