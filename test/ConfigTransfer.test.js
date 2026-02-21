@@ -481,8 +481,17 @@ describe('Button Handler', () => {
         });
 
         it("fails on unsupported format version", () => {
+            // next version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv2,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
+
+            // future version
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
-            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
+
+            // far future version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv12,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
         });
     
         it("prints outputs and ignores comments", () => {
