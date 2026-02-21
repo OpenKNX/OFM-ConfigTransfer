@@ -50,22 +50,46 @@ describe("uctImportModuleChannelFromString", () => {
     <Enumeration   Value="0" Id="%ENID%" Text="locker       (gleiche Parameternamen)"          />
     */
 
-    it("collect errors while wrting parameters", () => {
+    // produce access errors
+    const failingParamGet = {
+        getParameterByName: function (name) {
+            // fail on non UCT fields
+            return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
+        },
+    };
+
+    it("collects errors while writing parameters", () => {
+        var importStringSameVer = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX";
         var importCheck = 7;
-        expect(uctImportModuleChannelFromString(device, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck)).toBe("CHN/0 Import [OK]");
-        const failingParamGet = {
-            getParameterByName: function (name) {
-                // fail on non UCT fields
-                return (name.slice(0,4)=="UCTD") ? device.getParameterByName(name) : undefined;
-            },
-        };
-        const result = uctImportModuleChannelFromString(failingParamGet, null, 0, "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/0§;OpenKNX", importCheck);
+
+        // Success on import without error
+        expect(uctImportModuleChannelFromString(device, null, 0, importStringSameVer, importCheck)).toBe("CHN/0 Import [OK]");
+
+        // Produce error, when access fails
+        const result = uctImportModuleChannelFromString(failingParamGet, null, 0, importStringSameVer, importCheck);
         const resultLines = result.split("\n");
         expect(resultLines.length).toBeGreaterThanOrEqual(1+2);
         expect(resultLines[0]).toBe("CHN/0 Import [ >>> FEHLER! <<< ]");
-        // TODO check using regex...
+        expect(resultLines[1]).toBe("");
         expect(resultLines[2].split(" > ")[0]).toBe("[FEHLER] CHN_A=5");
         expect(resultLines[3].split(" > ")[0]).toBe("[FEHLER] CHN_B=385");
+    });
+
+    it("shows additional message for errors in different module version", () => {
+        // TODO add older version too
+        var importStringOtherVer = "OpenKNX,cv1,0xAF42:0x23/CHN:0x22/0§;OpenKNX";
+        var importCheck = 0; // allow different version without error
+
+        // Success on import without error
+        expect(uctImportModuleChannelFromString(device, null, 0, importStringOtherVer, importCheck)).toMatch(/CHN\/0 Import \["?OK"?.*\]/);
+
+        // Produce error, when access fails
+        const result = uctImportModuleChannelFromString(failingParamGet, null, 0, importStringOtherVer, importCheck);
+
+        expect(result.split("\n")[0]).toBe("CHN/0 Import [ >>> FEHLER! <<< ]");
+        expect(result).toMatch(/Mögliche Ursache: Abweichende Modulversionen/);
+        expect(result).toMatch(/Quell-Version: .+ -> .+ in dieser Applikation/);
+        expect(result).toMatch(/Release-Informationen des Moduls beachten./);
     });
 
     it("checks target-chanel for import definition of channel 0", () => {
