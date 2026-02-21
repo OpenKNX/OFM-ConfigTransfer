@@ -496,7 +496,7 @@ describe('Button Handler', () => {
         });
     
         it("fails on unknown command", () => {
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§!unbekannt§;OpenKNX";
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§!unbekannt§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);   
         });
     
