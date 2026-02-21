@@ -509,10 +509,29 @@ describe('Button Handler', () => {
         });
 
         it("fails on unsupported format version", () => {
+            // next version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv2,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
+
+            // future version
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
-            expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
+
+            // far future version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv12,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
         });
-    
+
+        it("fails with special error-message on planned multi-channel-format version", () => {
+            // next version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1multi,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Multi-Kanal Format-Version.* NICHT unterstützt!/i);
+
+            // wrong written next version
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1-multi,0xAF42:0x23/CHN:0x18/3§;OpenKNX";
+            expect(() => uctBtnImport(device, online, progress, context)).toThrow(/Format-Version NICHT unterstützt!/i);
+        });
+
         it("prints outputs and ignores comments", () => {
             device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§>echo1§#comment§>echo 2§;OpenKNX";
             device.getParameterByName("UCTD_Channel").value = 3;
@@ -524,7 +543,7 @@ describe('Button Handler', () => {
         });
     
         it("fails on unknown command", () => {
-            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv5,0xAF42:0x23/CHN:0x18/3§!unbekannt§;OpenKNX";
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/3§!unbekannt§;OpenKNX";
             expect(() => uctBtnImport(device, online, progress, context)).toThrow(Error);   
         });
     

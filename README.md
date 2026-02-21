@@ -9,7 +9,7 @@ By Cornelius Koepp 2024-2026
 -->
 # Universeller Konfigurationstransfer für OpenKNX-Module
 
-ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
+ETS-Anwendungsteil zum Exportieren, Importieren, Kopieren, Reorganisieren und Zurücksetzen der Konfiguration von OpenKNX-Modul-Kanälen
 
 Von Cornelius Köpp 2024-2026
 
@@ -196,19 +196,21 @@ Im Rahmen der Neuentwicklung von Applikationen mit integrierten Konfigurationstr
 Die Ergebnisse dieser Prüfungen sind soweit bekannt in der nachfolgenden tabellarischen Auflistung dokumentiert, 
 im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eingeplant.
 
-| Modul              | Versionen      | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                                               | ETS-Log       |
-|--------------------|----------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| OGM-Common         | 1.2            | OK     |                                                                                                                                                                                                                  | -             |
-| OFM-DFA            | 0.1<br>0.4     | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                                                          | -             |
-| OFM-LogicModule    | 3.1<br>3.2     | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                                                       | WARN-Einträge |
-| OFM-LogicModule    | 3.3<br>3.5     | OK     |                                                                                                                                                                                                                  | ?             |
-| OFM-LogicModule    | <4.0 <-> >=4.0 | OK     | ***Einschränkung bei Transfer zwischen Versionen vor und ab 4.0.** Durch Änderungen an der Parameter-Struktur und Verschieben von Funktionen in andere Module können nicht alle Einstellungen übertragen werden. | ?             |
-| OFM-PresenceModule | 3.0            | OK     |                                                                                                                                                                                                                  | ?             |
-| OFM-SensorModule   |                | OK     |                                                                                                                                                                                                                  | ?             |
-| OFM-VirtualButton  | bis 0.4        | FEHLER | Nicht nutzbar in ETS5.7, durch Parameternamen die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind.                                | -             |
-| OFM-VirtualButton  | 0.5            | OK     |                                                                                                                                                                                                                  | ?             |
-| OFM-Meter          | 0.2            | OK     |                                                                                                                                                                                                                  | ?             |
-| SOM-UP             | 1.0            | OK     |                                                                                                                                                                                                                  | ?             |
+| Modul              | Versionen                | Test   | Ergänzende Bemerkungen zur Prüfung                                                                                                                                                                                                                                                                                                                                                                                                                       | ETS-Log       |
+|--------------------|--------------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| OGM-Common         | 1.5                      | OK     | Modul-Sichtbarkeit wurde bewusst von der Verarbeitung ausgeschlossen.                                                                                                                                                                                                                                                                                                                                                                                    | -             |
+| OGM-Common         | 1.4<br>1.2               | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | -             |
+| OFM-LogicModule    | zwischen <4.0 und>=4.0   | OK*    | ***Einschränkung bei Transfer zwischen Versionen vor und ab 4.0.** Durch Änderungen an der Parameter-Struktur und Verschieben von Funktionen in andere Module können nicht alle Einstellungen beim Wechsel zwischen den Modul-Versionen vor 4.0 und ab 4.0 übertragen werden.                                                                                                                                                                            | ?             |
+| OFM-LogicModule    | alle bis inklusive 3.7   | (OK)*  | ***Bekanntes Problem:**<br>Das Sende-Verhalten für EIN und AUS wird abhängig vom einstellten Hardware-Support im Modul (vorhandener Buzzer und vorhandene LED) übertragen. Beim Austausch zwischen Geräten mit unterschiedlicher Konfiguration kann dieser Wert nicht übertragen werden. Bei den meisten Applikationen ist der Hardware-Support nicht konfigurierbar. Probleme können in Verbindung mit OAM-RaumController und OAM-SensorModul auftreten | -             |
+| OFM-LogicModule    | 3.5<br>3.3               | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
+| OFM-LogicModule    | 3.2<br>3.1               | OK*    | ***Bekannte Einschränkung:**<br>Der mehrzeilige Kanal-Kommentar kann bislang nicht übertragen werden. Dies ist bedingt durch die Einbindung als ETS-Modul.                                                                                                                                                                                                                                                                                               | WARN-Einträge |
+| OFM-DFA            | 0.7<br>0.6<br>0.4<br>0.1 | OK     | Sehr lange Operationsdauern. In Tests bis zu 2 Minuten.                                                                                                                                                                                                                                                                                                                                                                                                  | -             |
+| OFM-PresenceModule | 3.0                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
+| OFM-SensorModule   |                          | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
+| OFM-VirtualButton  | 0.5                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
+| OFM-VirtualButton  | bis 0.4                  | FEHLER | Nicht nutzbar in ETS5.7, durch Parameternamen die die beim Zugriff unterstützte Maximallänge überschreiten. Anpassung des Moduls erfolgt, so dass Folgeversionen kompatibel sind.                                                                                                                                                                                                                                                                        | -             |
+| OFM-Meter          | 0.2                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
+| SOM-UP             | 1.0                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
 
 
 
@@ -219,16 +221,19 @@ Ein Austausch von Einstellungen kann zwischen allen Applikationen mit demselben 
 Einschränkungen sind ggf. durch abweichenden Versionen, oder (sofern diese referenziert werden) durch unterschiedliche Nummerierung von KOs möglich.
 
 ### Beispiele von Applikationen und Modulen (unvollständig)
-| OpenKNX-Applikation | Version | Release                                               | (UCT) | BASE | NET | LOG | DFA | PM   | BTN | BI  | SOM     | FIN | FINACT | SWA |
-|---------------------|---------|-------------------------------------------------------|-------|------|-----|-----|-----|------|-----|-----|---------|-----|--------|-----|
-| OAM-LogicModule     | 3.3     | LogicModule-Release-3.3                               | 0.1   | 1.2  |     | 3.3 |     |      |     |     |         |     |        |     |
-| OAM-LogicModule     | 3.3     | LogicModule-**IP**-3.3                                | 0.1   | 1.2  | 0.3 | 3.3 |     |      |     |     |         |     |        |     |
-| OAM-StateEngine     | 0.1     | StateEngineDFA16 1.0 Beta                             | 0.2   | 1.2  |     | 3.5 | 0.4 |      |     |     |         |     |        |     |
-| OAM-PresenceModule  | 1.12.3  | *Nur zur Migration!*<br>PresenceModule-Release-1.12.3 | 0.1   | alt  |     | alt |     | alt  |     |     |         |     |        |     |
-| OAM-PresenceModule  | 3.1     | PresenceModule-Big-3.1                                | 0.1   | 1.2  |     | 3.3 |     | 3.1  | 0.5 |     |         |     |        |     |
-| OAM-PresenceModule  | 3.1     | PresenceModule-**IP**-3.1                             | 0.1   | 1.2  | 0.3 | 3.3 |     | 3.1  | 0.5 |     |         |     |        |     |
-| SOM-UP              | 1.0     | SoundModule-Release-1.0                               | 0.1   | 1.2  |     | 3.3 |     |      | 0.4 | 0.2 | - (App) |     |        |     |
-| OAM-Fingerprint     | 0.6     | FingerPrintModuleReleaseR503-0.6                      | 0.1   | 1.2  |     | 3.3 |     |      | 0.4 | 0.2 |         | 0.6 | - (?)  | 0.1 |
+
+| OpenKNX-Applikation | Version | Release                                               | (UCT) | BASE | NET | LOG | DFA | FCB | SHC | PM  | MTR | BTN | BI  | SENS | WIRE | ADC | SOM     | FIN | FINACT | SWA |
+|---------------------|---------|-------------------------------------------------------|-------|------|-----|-----|-----|-----|-----|-----|-----|-----|-----|------|------|-----|---------|-----|--------|-----|
+| OAM-LogicModule     | 3.3     | LogicModule-Release-3.3                               | 0.1   | 1.2  |     | 3.3 |     |     |     |     |     |     |     |      |      |     |         |     |        |     |
+| OAM-LogicModule     | 3.3     | LogicModule-**IP**-3.3                                | 0.1   | 1.2  | 0.3 | 3.3 |     |     |     |     |     |     |     |      |      |     |         |     |        |     |
+| OAM-StateEngine     | 0.7.1   | StateEngine-DFA16-Release-0.7.1                       | 0.4   | 1.5  |     | 3.7 | 0.7 |     |     |     |     |     |     |      |      |     |         |     |        |     |
+| OAM-StateEngine     | 0.1     | StateEngineDFA16 1.0 Beta                             | 0.2   | 1.2  |     | 3.5 | 0.4 |     |     |     |     |     |     |      |      |     |         |     |        |     |
+| OAM-RaumController  | 5.1.5   | RaumController-Release-5.1.5                          | 0.4   | 1.5  | 0.5 | 3.7 | 0.6 | 0.6 | 0.4 | 3.9 | 0.5 | 0.5 | 0.2 | 4.10 | 2.1  | 0.1 |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-Big-3.1                                | 0.1   | 1.2  |     | 3.3 |     |     |     | 3.1 |     | 0.5 |     |      |      |     |         |     |        |     |
+| OAM-PresenceModule  | 3.1     | PresenceModule-**IP**-3.1                             | 0.1   | 1.2  | 0.3 | 3.3 |     |     |     | 3.1 |     | 0.5 |     |      |      |     |         |     |        |     |
+| OAM-PresenceModule  | 1.12.3  | *Nur zur Migration!*<br>PresenceModule-Release-1.12.3 | 0.1   | alt  |     | alt |     |     |     | alt |     |     |     |      |      |     |         |     |        |     |
+| SOM-UP              | 1.0     | SoundModule-Release-1.0                               | 0.1   | 1.2  |     | 3.3 |     |     |     |     |     | 0.4 | 0.2 |      |      |     | - (App) |     |        |     |
+| OAM-Fingerprint     | 0.6     | FingerPrintModuleReleaseR503-0.6                      | 0.1   | 1.2  |     | 3.3 |     |     |     |     |     | 0.4 | 0.2 |      |      |     |         | 0.6 | - (?)  | 0.1 |
 
 
 
@@ -251,11 +256,15 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden:
 ```
+  <!-- Set current version to use: -->
+  <op:config name="%UCT_VerifyVersion%"  value="..." />
+  
+  <!-- no KOs -->
   <op:define prefix="UCT"
              share="../lib/OFM-ConfigTransfer/src/ConfigTransfer.share.xml"
              ModuleType="19">
-    <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="0.1" /> 
-  </op:define> />
+    <op:verify File="../lib/OFM-ConfigTransfer/library.json" ModuleVersion="%UCT_VerifyVersion%" />
+  </op:define>
 ```
 
 # Formatspezifikation (Entwurf)

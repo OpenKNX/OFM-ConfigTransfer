@@ -1,0 +1,52 @@
+cff-version: 1.2.0
+title: 'OFM-ConfigTransfer: Universal Configuration Transfer for Arbitrary OpenKNX Modules'
+message: >-
+  If you use this module, or implement a solution based on the concept,
+  please cite it using the metadata from this file.
+type: software
+authors:
+  - affiliation: OpenKNX
+    # email: ck@example.com
+    given-names: Cornelius
+    family-names: Köpp
+repository-code: 'https://github.com/OpenKNX/OFM-ConfigTransfer.git'
+url: 'https://github.com/OpenKNX/OFM-ConfigTransfer'
+abstract: >-
+  Typical KNX ETS (Engineering Tool Software) applications for OpenKNX devices
+  are composed of multiple modules with multiple channels. Especially feature-rich
+  modules and their channels can have a complex configuration with a large number
+  of parameters. The ETS does not scale well in this scenarios, as there is a lack
+  of combined handling multiple parameters on channel level. The OpenKNX universal
+  configuration transfer module (OFM-ConfigTransfer) is the first known solution
+  to resolve this limitations, providing comprehensive functionality for managing
+  channel configurations. The export and import function allow sharing partial
+  configurations with other user and between different applications with the same
+  OpenKNX module, in many cases even with different modules versions. Within the
+  application the channels of a module can be copied, swapped or set to default
+  values.
+  The module integrates seamlessly into OpenKNX ETS applications generated with
+  OpenKNXproducer (minimum version 3.8.0). It supports parameter handling of
+  arbitrary OpenKNX modules, which was confirmed with various widely used OpenKNX
+  modules.
+  The configuration data is serialized into a string using an identifiable defined
+  transfer format that includes reference information about the ETS application,
+  module key, module version, and channel number, enabling automatic compatibility
+  verification during import operations to make it a robust solution.
+  Overall this module enables configuration reuse, collaborative
+  configuration sharing in the KNX community, simplified migration between device
+  versions, and significantly reduces configuration time for recurring patterns in
+  building automation projects.
+date-released: 2024
+keywords:
+  - knx
+  - building automation
+  - openknx
+  - ets
+  - configuration
+  - configuration-transfer
+  - configuration-serialization
+  - configuration-import
+  - configuration-export
+  - parameter-transfer
+  - knx-ets
+license: AGPL-3.0-only
