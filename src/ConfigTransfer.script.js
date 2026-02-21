@@ -513,13 +513,13 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     var msg = module + "/" + channel + " Import ";
     if (result.errors || result.warnings) {
         if (result.errors) {
-            msg = msg + "[ >>> FEHLER! <<< ]\n";
+            msg = msg + "[ >>> FEHLER! <<< ]";
         } else if (result.warnings) {
-            msg = msg + "[ >>> Warnungen beachten! <<< ]\n";
+            msg = msg + "[ >>> Warnungen beachten! <<< ]";
         }
         if (versionMismatch) {
             var verMsg = uctVersionToStr(header.modul.ver) + " -> " + uctVersionToStr(uctChannelParams[module].version);
-            msg = msg + "\nMögliche Ursache: Abweichende Modulversionen\n* Quell-Version: " + verMsg + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
+            msg = msg + "\n\nMögliche Ursache: Abweichende Modulversionen\n* Quell-Version: " + verMsg + " in dieser Applikation\nRelease-Informationen des Moduls beachten.";
         } else {
             // this should never happen, with unmodified transfer-strings, and is a real error
         }
@@ -529,10 +529,10 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         msg = msg + "[OK]";
     }
     if (result.messages) {
-        msg = msg + '\n\nTransfer-String enthält Hinweise:\n';
+        msg = msg + '\n\nTransfer-String enthält Hinweise:';
     }
     if (result.lines.length) {
-        msg = msg + '\n' + result.lines.join('\n');
+        msg = msg + '\n\n' + result.lines.join('\n');
     }
     return msg;
 }
