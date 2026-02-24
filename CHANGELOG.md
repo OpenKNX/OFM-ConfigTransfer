@@ -1,11 +1,17 @@
-# (upcoming) 0.5.0 LOG-Patches
+# 0.5.0 "LOG-Patches" (2026-02-24)
+
+* **Wichtig:** Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) muss auf Version [4.0.1](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v4.0.1) aktualisiert werden!
+  > ***Achtung:*** Es erfolgt keine Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version!
+
 
 * Fix: Patch zur Parameter-Umstellung im Logikmodul 4.0
   * Verhindert Fehlermeldungen beim ansonsten funktionierenden Import aus älteren Versionen
-  * Verhindert Fehler Konfigurationsverlust der bei den häufigsten Hardware-Konfigurationen eintreten würde
+  * Verhindert stillen Konfigurationsverlust beim Import in ältere Versionen des LogikModuls (der bei den häufigsten Hardware-Konfigurationen eintreten würde)
 * Import:
-  * Anpassung von Parameter-Fehlermeldungen
   * Hinweise bei Versionsänderungen
+  * Zusätzlicher Hinweis bei Fehlern/Warnungen, falls eine Änderung der Modulversion erfolgt 
+  * Anpassung von Parameter-Fehlermeldungen
+* Dokumentation: Update/Erweiterung
 
 
 # 0.4.0 (2025-07-03)

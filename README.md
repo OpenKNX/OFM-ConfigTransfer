@@ -29,6 +29,8 @@ Von Cornelius Köpp 2024-2026
   * [Kanaltausch](#kanaltausch)
   * [Standardwerte](#standardwerte)
 * [Geprüfte OpenKNX-Module](#geprüfte-openknx-module)
+  * [LogikModul](#logikmodul)
+    * [Patch für Parameteränderung mit LogikModul Version 4.0](#patch-für-parameteränderung-mit-logikmodul-version-40)
 * [OpenKNX-Applikation mit integriertem Konfigurationstransfer](#openknx-applikation-mit-integriertem-konfigurationstransfer)
 * [Integration in ETS-Applikation](#integration-in-ets-applikation)
   * [Voraussetzungen](#voraussetzungen)
@@ -212,6 +214,19 @@ im Fall von behebbaren Auffälligkeiten wird ggf. eine Korrektur des Moduls eing
 | OFM-Meter          | 0.2                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
 | SOM-UP             | 1.0                      | OK     |                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ?             |
 
+### LogikModul
+
+#### Patch für Parameteränderung mit LogikModul Version 4.0
+
+Mit der LogikModul Version 4.0 werden LED und Buzzer-Funktionen in separate Module ausgelagert und Probleme im Zusammenhang mit der Hardwarekonfiguration beseitigt.
+In diesem Zusammenhang erfolgt auch eine Änderung der Parameter-Struktur für Konfiguration der Ausgangswerte.
+Angesichts der Integration des LogikModuls in nahezu alle OpenKNX-Applikationen wurde in den Konfigurationstransfer 
+ab Version 0.5 eine Patch-Funktion integriert, die Probleme beim Übertragen zwischen älteren (vor 4.0) und neueren (ab 4.0) Versionen des Logikmoduls reduziert.
+
+Hintergründe siehe [Besonderheiten ab der Version 4.0 bezüglich Update und Konfigurationstransfer](https://github.com/OpenKNX/OFM-LogicModule/blob/v1/doc/Applikationsbeschreibung-Logik.md#besonderheiten-ab-der-version-40-bez%C3%BCglich-update-und-konfigurationstransfer)
+
+
+Der Konfigurationstransfer enthält ab v0.5 eine Anpassung die den Austausch von Logiken vor und ab Version 4.0 zu ermöglichen.
 
 
 ## OpenKNX-Applikation mit integriertem Konfigurationstransfer
@@ -245,11 +260,15 @@ An der Firmware ist zum aktuellen Zeitpunkt keine Anpassung erforderlich; dies k
 
 ### Voraussetzungen
 
-* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [3.8.0](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.8.0) benötigt um die Modulinformationen zur integrieren.
-  > **Achtung:** Ältere Versionen des Producers sorgen u.A. dafür, dass die erzeugte Applikation Parameter exportieren wird, 
-  > die nicht Teil des Exports sein sollten! 
-  > Bei diesen Parametern handelt es sich um solche, die nicht direkt durch den Nutzer verändert werden können.
-  > Es erfolgt *keine* Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version! 
+* Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) wird in einer Version ab Release [4.0.1](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v4.0.1) benötigt um die Modulinformationen zur integrieren.
+  > **Achtung:** Es erfolgt technisch bedingt *keine* Warnung und kein Hinweis beim Einsatz einer veralteten Producer-Version (vor 4.0)!
+  > 
+  > Ältere Versionen des Producers sind u.A. nicht in der Lage die erforderliche Minimalversion anderer Module sicherzustellen,
+  > dies würde zu erheblichen Problemen bei Verwendung mit dem LogikModul führen!
+  > Ältere Versionen können auch Parameter einschließen, die nicht im Konfigurationstransfer verwendet werden dürfen.
+* Das [LogikModul](https://github.com/OpenKNX/OAM-LogicModule) muss auf Version 4.0 aktualisiert werden, falls gemeinsam verwendet.
+  Bei älteren Versionen kann durch den Migrations-Patch für dieses Modul ein Verlust der Ausgangskonfiguration beim Import auftreten.
+  Der OpenKNXProducer ab Version 4.0 wird eine gemeinsame Nutzung mit einem veralteten LogikModul verhindern 
 
 
 ### ApplikationName.xml
