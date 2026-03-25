@@ -40,10 +40,10 @@ Von Cornelius Köpp 2024-2026
 
 
 
-# Konzepte
+## Konzepte
 
 
-## OpenKNX-Module und -Module-Kanäle
+### OpenKNX-Module und -Module-Kanäle
 
 Die ETS-Applikationen für OpenKNX-Geräte bestehen aus mehreren Teil-Applikationen die von den genutzten OpenKNX-Modulen bereitgestellt werden.
 In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur einer Applikation sichtbar:
@@ -82,7 +82,7 @@ In den meisten Fällen sind die Module in der ETS direkt in der Block-Struktur e
 +----------------------------+
 ````
 
-### Modul
+#### Modul
 
 > ***ACHTUNG***: Dieser Modul-Begriff weicht vom Konzept der ETS-XML-Module ab!
 
@@ -96,7 +96,7 @@ Beispiele:
 * Konfigurationstransfer (UCT aus OFM-ConfigTransfer, also dieses Modul selbst)
 
 
-### Kanal
+#### Kanal
 
 Ein OpenKNX-Modul kann mehrere Instanzen (von ConficTransfer werden bislang 99 unterstützt) der enthaltenen Funktionalität bereitstellen,
 die unabhängig voneinander konfigurierbar sind. 
@@ -109,7 +109,7 @@ Beispiele:
 * Die grundlegende Gerätekonfiguration und der Konfigurationstransfer enthalten keine Kanäle.
 
 
-## Serialisierung der Konfigurationsdaten als Zeichenkette
+### Serialisierung der Konfigurationsdaten als Zeichenkette
 
 Die Übertragung der Konfigurationsdaten erfolgt serialisiert als Zeichenkette.
 Diese kann über die Zwischenablage mit der ETS-Applikation ausgetauscht werden. 
@@ -286,5 +286,5 @@ An der gewünschten Stelle (z.B. hinter BASE) den folgenden Code einbinden:
   </op:define>
 ```
 
-# Formatspezifikation (Entwurf)
+## Formatspezifikation (Entwurf)
 ![EBNF Format-Spezifikation](doc/config-serial-format.ebnf.png)
