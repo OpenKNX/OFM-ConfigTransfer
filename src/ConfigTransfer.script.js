@@ -23,8 +23,6 @@ function uctBtnExport(device, online, progress, context) {
     var exportFormat = (exportFormatSelection==3) ? "" : "name";
     var multiLine = (exportFormatSelection==1);
 
-    // TODO add p_messageOutput again?
-
     var param_exportOutput = device.getParameterByName(context.p_exportOutput);
     param_exportOutput.value = uctExportModuleChannelToString(device, module, channelSource, exportFormat, multiLine, includeHidden, includeDefault);
     Log.info("OpenKNX ConfigTransfer: Handle Channel Export [DONE]")
@@ -94,7 +92,6 @@ function uctBtnReset(device, online, progress, context) {
 
 
 function uctSerializeParamValue(paramValue) {
-    /* TODO check inclusion of ` ` and common characters without encoding */
     return encodeURIComponent(paramValue);
 }
 
@@ -453,7 +450,7 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
         }
     }
 
-    // TODO implement handling of module version '*'
+    // module version '*' is deprecated and should not longer used, but never created by export
 
     // check app
     // '*' will not be accepted when app should be the same
@@ -507,7 +504,6 @@ function uctImportModuleChannelFromString(device, module, channel, exportStr, im
     if (!writeClean) {
         Log.error("OpenKNX ConfigTransfer: ImportModuleChannelFromString - Write Params produced Errors!");
     }
-    /* TODO check need of validation, or repeated writing to compensate values updated by ETS, e.g. by calc */
 
     Log.info("OpenKNX ConfigTransfer: ImportModuleChannelFromString [DONE]");
     var msg = module + "/" + channel + " Import ";
@@ -593,7 +589,7 @@ function uctPrepareParamValues(module, params, importContent, result, merge, all
                 // TODO FIXME: Ensure same version!
                 paramIndex = paramKey;
             } else {
-                // TODO error-handling
+                // will be ignored, ware or produce an error (depending on module and call)
             }
 
             if (paramIndex >=0) {
@@ -687,10 +683,10 @@ function uctSwapModuleChannel(device, progress, module, channelA, channelB) {
         throw new Error('Zu tauschende Kanäle dürfen NICHT identisch sein!');
     }
     /* TODO check swap without serialize/deserialize */
-    var exportStrA = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelA, "", false, true, false);
-    var exportStrB = uctExportModuleChannelToString(device, /* TODO progress,*/ module, channelB, "", false, true, false);
-    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelB, exportStrA, 7);
-    uctImportModuleChannelFromString(device, /* TODO progress,*/ module, channelA, exportStrB, 7);
+    var exportStrA = uctExportModuleChannelToString(device, /* progress,*/ module, channelA, "", false, true, false);
+    var exportStrB = uctExportModuleChannelToString(device, /* progress,*/ module, channelB, "", false, true, false);
+    uctImportModuleChannelFromString(device, /* progress,*/ module, channelB, exportStrA, 7);
+    uctImportModuleChannelFromString(device, /* progress,*/ module, channelA, exportStrB, 7);
     return module + "/" + channelA + " <--> " + module + "/" + channelB + " [OK]";
 }
 

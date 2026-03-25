@@ -1,5 +1,8 @@
 # (upcoming) v0.6.0 "Fehler-Behandlung"
 
+* Cleanup:
+  * Remove `p_messageOutput` from Context of `uctBtnExport`, as Parameter `UCT_ExportUserLog` does not exist Anymore
+  * Remove Outdated TODOs
 * Dokumentation: Fix Einrückung in Readme 
 * Chore: Replace Deprecated GitHub Actions
 
