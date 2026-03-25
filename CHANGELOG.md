@@ -1,4 +1,9 @@
-# 0.5.0 "LOG-Patches" (2026-02-24)
+# (upcoming) v0.6.0 "Fehler-Behandlung"
+
+* Dokumentation: Fix Einrückung in Readme 
+
+
+# v0.5.0 "LOG-Patches" (2026-02-24)
 
 * **Wichtig:** Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) muss auf Version [4.0.1](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v4.0.1) aktualisiert werden!
   > ***Achtung:*** Es erfolgt keine Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version!
@@ -14,7 +19,7 @@
 * Dokumentation: Update/Erweiterung
 
 
-# 0.4.0 (2025-07-03)
+# v0.4.0 (2025-07-03)
 
 * **Wichtig:** Der [OpenKNXProducer](https://github.com/OpenKNX/OpenKNXproducer) muss auf Version [3.8.0](https://github.com/OpenKNX/OpenKNXproducer/releases/tag/v3.8.0) aktualisiert werden!
   > ***Achtung:*** Es erfolgt keine Warnung oder Hinweis beim Einsatz einer veralteten Producer-Version!
