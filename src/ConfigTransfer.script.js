@@ -138,9 +138,12 @@ function uctGetModuleParamsDef(module, channel) {
 }
 
 function uctGetDeviceParameter(device, paramFullName, paramRefIdSuffix) {
+    Log.info("(Debug 2000)OpenKNX ConfigTransfer: uctGetDeviceParameter(" + paramFullName + ", " + paramRefIdSuffix + ")");
     var paramObj = device.getParameterByName(paramFullName);
     var paramObjRefId = paramObj.parameterRefId;
+    Log.info("(Debug 2100)OpenKNX ConfigTransfer: uctGetDeviceParameter paramObjRefId=" + paramObjRefId);
     if (paramObjRefId.length>2 && paramObjRefId.slice(-2)!=paramRefIdSuffix) {
+        Log.info("(Debug 2200)OpenKNX ConfigTransfer: Use Suffix");
         paramObj = device.getParameterById(paramObjRefId.slice(0,-2) + (paramRefIdSuffix<10 ? "0":"") + paramRefIdSuffix);
     }
     return paramObj;
@@ -170,10 +173,12 @@ function uctExportModuleChannelToStrings(device, module, channel, keyFormat, exp
         try {
             var paramNameDef = params.names[i].split(":");
             var paramFullName = module + "_" + paramNameDef[0].replace('~', channel);
+            Log.info("(Debug 1000)OpenKNX ConfigTransfer: " + paramNameDef + " / " + paramFullName);
             var paramObj = uctGetDeviceParameter(device, paramFullName, (paramNameDef.length>1) ? parseInt(paramNameDef[1]) : 1);
 
             if (exportHidden || paramObj.isActive) {
                 var paramValue = paramObj.value;
+                Log.info("(Debug 3000)OpenKNX ConfigTransfer: val=" + paramValue + " / defaults["+i+"]=" + params.defaults[i]);
                 if (exportDefault || paramValue != params.defaults[i]) {
                     result.push(paramKey + "=" + uctSerializeParamValue(paramValue));
                     exportValues[paramKey] = paramValue;
