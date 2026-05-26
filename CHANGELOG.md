@@ -1,6 +1,7 @@
 # (upcoming) v0.6.0 "Fehler-Behandlung"
 
 * Dokumentation: Fix Einrückung in Readme 
+* Chore: Replace Deprecated GitHub Actions
 
 
 # v0.5.0 "LOG-Patches" (2026-02-24)

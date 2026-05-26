@@ -5,7 +5,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Create Combined JS File for Testing
         run: cat test/js_prefix.txt test/ConfigTransfer.mock.js src/ConfigTransfer.script.js test/js_suffix.txt > test/testing.js && cat -n test/testing.js
       - name: Install modules

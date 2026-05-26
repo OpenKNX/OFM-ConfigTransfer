@@ -5,7 +5,7 @@ jobs:
   same-version-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check Same Versions in library.json and package.json
         run: |
           LIB_VERSION=$(jq -r .version library.json)
