@@ -3,7 +3,9 @@
 * Cleanup:
   * Remove `p_messageOutput` from Context of `uctBtnExport`, as Parameter `UCT_ExportUserLog` does not exist Anymore
   * Remove Outdated TODOs
-* Quality: Add testcase for swap without message-output
+* Quality:
+  * Add testcase for swap without message-output
+  * Add testcase for import without compatibility level parameter
 * Dokumentation: Fix Einrückung in Readme 
 * Chore: Replace Deprecated GitHub Actions
 
