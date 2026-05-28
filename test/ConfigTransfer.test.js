@@ -443,6 +443,12 @@ describe('Button Handler', () => {
             "p_importCheck":"UCTD_ImportCheck",
             "p_messageOutput":"UCTD_Output",
         };
+        const contextWithoutCheckLevelParam = {
+            "p_importLine":"UCTD_Import",
+            "p_channelTarget":"UCTD_Channel",
+            // do NOT include "p_importCheck"
+            "p_messageOutput":"UCTD_Output",
+        };
 
         it("fails on arbitraty string", () => {
             // var device = {};
@@ -482,7 +488,23 @@ describe('Button Handler', () => {
             expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: Param~NOT_EXISTING"));
             expect(result).toEqual(expect.not.stringContaining("Param~D"));
             expect(device.getParameterByName("CHN_Param4D").value).toBe("existing");
+        });
 
+        it("use tolerant check if config parameter is not given", () => {
+            device.getParameterByName("UCTD_Import").value = "OpenKNX,cv1,0xAF42:0x23/CHN:0x18/2§Param~_NOT_EXISTING_=EGAL§Param~D=eXXisting§;OpenKNX";
+            device.getParameterByName("UCTD_Channel").value = 3;
+
+            device.getParameterByName("UCTD_ImportCheck").value = 99; // invalid value, but will be ignored
+            expect(device.getParameterByName("CHN_Param3D").value).not.toBe("eXXisting");
+            expect(() => uctBtnImport(device, online, progress, contextWithoutCheckLevelParam)).not.toThrow(Error);
+            // check warning and success:
+            const result = device.getParameterByName("UCTD_Output").value;
+            expect(result.split("\n")[0]).toEqual(expect.stringContaining("CHN/3 Import "));
+            expect(result.split("\n")[0]).not.toEqual(expect.stringContaining("[OK]"));
+            expect(result.split("\n")[0]).toEqual(expect.stringContaining("Warnungen"));
+            expect(result).toEqual(expect.stringContaining("[WARN] Unbekannter Parameter: Param~_NOT_EXISTING_"));
+            expect(result).toEqual(expect.not.stringContaining("Param~D"));
+            expect(device.getParameterByName("CHN_Param3D").value).toBe("eXXisting");
         });
 
         it("tolerates spaces around transfer-string", () => {
