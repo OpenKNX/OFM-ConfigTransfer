@@ -646,6 +646,28 @@ describe('Button Handler', () => {
             expect(device.getParameterByName("CHN_Param6D").value).toBe("Kanal6");
         });
 
+        it("it works without message output param", () => {
+            const contextLocal = {
+                "p_moduleSelection":"UCTD_ModuleIndex",
+                "p_channelA":"UCTD_ChannelSource",
+                "p_channelB":"UCTD_ChannelTarget",
+                // do NOT include "p_messageOutput"
+            };
+
+            device.getParameterByName("UCTD_ChannelSource").value = 7;
+            device.getParameterByName("UCTD_ChannelTarget").value = 3;
+            device.getParameterByName("CHN_Param3D").value = "Kanal3";
+            device.getParameterByName("CHN_Param7D").value = "Kanal7";
+            device.getParameterByName("UCTD_Output").value = "NO_OUTPUT"
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("UCTD_Output").value).toBe("NO_OUTPUT");
+            expect(device.getParameterByName("CHN_Param3D").value).toBe("Kanal7");
+            expect(device.getParameterByName("CHN_Param7D").value).toBe("Kanal3");
+            uctBtnSwap(device, online, progress, contextLocal);
+            expect(device.getParameterByName("CHN_Param3D").value).toBe("Kanal3");
+            expect(device.getParameterByName("CHN_Param7D").value).toBe("Kanal7");
+        });
+
         it("fails on source==target", () => {
             device.getParameterByName("UCTD_ChannelSource").value = 6;
             device.getParameterByName("UCTD_ChannelTarget").value = 6;
