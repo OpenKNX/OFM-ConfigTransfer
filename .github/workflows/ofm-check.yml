@@ -1,4 +1,3 @@
-name: ofm-check
 
 on: [push]
 
@@ -9,9 +8,9 @@ jobs:
     uses: openknx/actions/.github/workflows/openknx-ofm-check.yml@v0
     with:
       # TODO use this as default in action
-      ofm: ${{ github.event.repository.name }}
+      # ofm: ${{ github.event.repository.name }}
       # TODO use this as default in action
-      ofm_ref: ${{ github.ref_name }}
+      # ofm_ref: ${{ github.ref_name }}
       # TODO get this from OFM-repo
       ofm_prefix: UCT
       # TODO get this from OFM-repo
