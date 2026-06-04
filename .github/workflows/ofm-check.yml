@@ -1,5 +1,4 @@
 name: ofm-check
-run-name: OFM-Check
 
 on: [push]
 
@@ -9,12 +8,17 @@ jobs:
 
     uses: openknx/actions/.github/workflows/openknx-ofm-check.yml@v0
     with:
-      ofm: OFM-ConfigTransfer
-      # Note: use ${{ github.ref_name }} from OFM-repo
+      # TODO use this as default in action
+      ofm: ${{ github.event.repository.name }}
+      # TODO use this as default in action
       ofm_ref: ${{ github.ref_name }}
+      # TODO get this from OFM-repo
       ofm_prefix: UCT
+      # TODO get this from OFM-repo
       oam: OAM-StateEngine
       # oam_ref: v1dev
       # knxprod_xml: StateEngine-DFA16-Release
+      # TODO get this from OAM-repo
       target: DFA16-Release
+      # TODO get this from OAM-repo
       KNXPROD_PREFIX: StateEngine
