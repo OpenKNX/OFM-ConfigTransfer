@@ -1,0 +1,20 @@
+name: ofm-check
+run-name: OFM-Check
+
+on: [push]
+
+jobs:
+  ofm-check-job:
+    name: Check OFM
+
+    uses: openknx/actions/.github/workflows/openknx-ofm-check.yml@v0
+    with:
+      ofm: OFM-ConfigTransfer
+      # Note: use ${{ github.ref_name }} from OFM-repo
+      ofm_ref: ${{ github.ref_name }}
+      ofm_prefix: UCT
+      oam: OAM-StateEngine
+      # oam_ref: v1dev
+      # knxprod_xml: StateEngine-DFA16-Release
+      target: DFA16-Release
+      KNXPROD_PREFIX: StateEngine
